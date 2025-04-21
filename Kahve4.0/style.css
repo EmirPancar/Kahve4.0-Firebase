@@ -1,0 +1,1619 @@
+
+body,html{
+ 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background-image: linear-gradient(rgba(142, 86, 61, 0.7), rgba(0, 0, 0, 0.7)), url("Gorsel/Arka_Kahve2.jpg");
+
+    /*background-image: linear-gradient(rgba(75, 46, 43, 0.7), rgba(18, 18, 18, 0.7)), url("Gorsel/Arka_Kahve2.jpg");*/
+    /*background-image:linear-gradient( rgba(68, 160, 183, 0.5) ,rgba(165, 67, 124, 0.5)),url('Gorsel/Arka_Kahve2.jpg'); */
+    background-size: cover; 
+    background-position: center; 
+    background-repeat: no-repeat; 
+
+
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+
+    scroll-behavior: smooth;
+
+} 
+
+
+.Container{
+
+    height: auto;
+    width: 1200px;
+    background-color: rgba(211, 211, 211, 0.4);  /* Lavanta 230,230,250       Açık Bej 245,245,220    */
+
+    flex-wrap: wrap;
+    display: flex;
+
+}
+
+.Header{
+
+    height: 160px;
+    width: 1100px;
+   /* background-color: cadetblue; */
+
+    margin-top: 20px;
+    margin-left: 50px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+
+
+}
+
+.Body0{
+    height: 700px;
+    width: 1000px;
+    background-color:rgb(21, 20, 20);
+    border-radius: 2%;
+
+    margin-top: 20px;
+    margin-left: 50px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    position: relative;
+    left: 50px;
+
+}
+
+
+
+
+
+
+
+
+
+
+@keyframes moveToTop {
+  0% {
+    transform: translate(300px, 100px); /* Mevcut konum */
+    width: 525px;
+    height: 300px; 
+    opacity: 0; 
+
+  }
+  100% {
+    transform: translate(50px, -20px); /* Hedef konum */
+    width: 1000px;
+    height: 150px;
+    opacity: 1; 
+  }
+}
+
+.Body1 {
+  height: 300px;
+  width: 525px;
+  object-fit: center;
+  object-position: cover;
+  border-radius: 10px;
+  margin-left: 50px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  transition: all 0.5s ease;
+
+  cursor: pointer;
+}
+
+.goBackButton.hidden,
+.Body1.hidden {
+  display: none;
+}
+
+.Body1.active {
+  animation: moveToTop 0.5s forwards;
+  z-index: 10;
+}
+
+.order-form {
+  display: none;
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+  padding: 20px;
+  margin-top: 20px;
+}
+.order-form.active {
+  display: block;
+}
+
+#goBackButton {
+  display: none;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  padding: 10px 20px;
+  background-color: #f44336;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+#goBackButton.visible {
+  display: block;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+.Body2{
+    height: 400px;
+    width: 700px;
+    background-color:aquamarine;
+    border-radius: 60%;
+    
+    margin-left: 250px;
+    margin-top: 300px;
+    margin-right: 250px;
+    margin-bottom: 15px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+
+}
+
+/*.Body3{
+    height:300px;
+    width:300px;
+    background-color: lightpink;
+
+    margin-left:50px;
+    margin-bottom: 20px;
+    margin-right: 50px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}*/
+
+.Footer{
+    height: 100px;
+    width: 1100px;
+   /* background-color:cornflowerblue; */
+
+    margin-bottom: 20px;
+    margin-left: 50px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    margin-top: 100px;
+
+}
+
+
+/* ------------------------------ Dönen Kartlar Başlangıç --------------------------------- */
+
+
+.Cwrapper {
+    width: 100%;
+    height: 55vh;
+    position: relative;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden; 
+    margin-top: 20px;
+}
+
+.inner {
+    --w: 100px;
+    --h: 150px;
+    --translateZ: calc((var(--w) + var(--h)) + 0px);
+    --rotateX: -15deg;
+    --perspective: 1000px;
+    position: absolute;
+    width: var(--w);
+    height: var(--h);
+    top: 25%;
+    left: calc(50% - (var(--w) / 2) - 2.5px);
+    z-index: 2;
+    transform-style: preserve-3d;
+    transform: perspective(var(--perspective));
+    animation: rotating 20s linear infinite;
+}
+
+@keyframes rotating {
+    from {
+        transform: perspective(var(--perspective)) rotateX(var(--rotateX))
+            rotateY(0);
+    }
+    to {
+        transform: perspective(var(--perspective)) rotateX(var(--rotateX))
+            rotateY(1turn);
+    }
+}
+
+.card {
+    position: absolute;
+    border: 2px solid rgba(var(--color-card));
+    border-radius: 12px;
+    overflow: hidden;
+    inset: 0;
+    transform: rotateY(calc((360deg / var(--quantity)) * var(--index)))
+        translateZ(var(--translateZ));
+}
+
+.img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    background-size: cover;
+    background-position: center;
+}
+
+.card:nth-child(1) .img {
+    background-image: url('Gorsel/Kah_Çek.png');
+}
+.card:nth-child(2) .img {
+    background-image: url('Gorsel/Kah_Çek.png');
+}
+.card:nth-child(3) .img {
+    background-image: url('Gorsel/Kah_Çek.png');
+}
+.card:nth-child(4) .img {
+    background-image: url('Gorsel/Kah_Çek.png');
+}
+.card:nth-child(5) .img {
+    background-image: url('Gorsel/Kah_Çek.png');
+}
+.card:nth-child(6) .img {
+    background-image: url('Gorsel/Kah_Çek.png');
+}
+.card:nth-child(7) .img {
+    background-image: url('Gorsel/Kah_Çek.png');
+}
+.card:nth-child(8) .img {
+    background-image: url('Gorsel/Kah_Çek.png');
+}
+.card:nth-child(9) .img {
+    background-image: url('Gorsel/Kah_Çek.png');
+}
+.card:nth-child(10) .img {
+    background-image: url('Gorsel/Kah_Çek.png');
+}
+
+
+/* ------------------------------ Dönen Kartlar Bitiş --------------------------------- */
+
+
+
+/* ------------------------------ Kahve Makinası Başlangıç --------------------------------- */
+
+.coffee-Asa {
+    width: 100%;
+    height: 100px;
+    position: relative;
+    /*background-color: cornflowerblue;*/
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+    padding-right: 10px;
+}
+
+.container {
+    width: 150px; 
+    height: 130px; 
+    position: absolute;
+    bottom: 40px; 
+    right: 5px; 
+}
+
+.coffee-header {
+    width: 100%;
+    height: 50px; 
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: #ddcfcc;
+    border-radius: 10px;
+}
+
+.coffee-header__buttons {
+    width: 18px;  
+    height: 18px; 
+    position: absolute;
+    top: 20px;
+    background-color: #282323;
+    border-radius: 50%;
+}
+
+.coffee-header__buttons::after {
+    content: "";
+    width: 6px;
+    height: 6px;
+    position: absolute;
+    bottom: -6px;
+    left: calc(50% - 3px);
+    background-color: #615e5e;
+}
+
+.coffee-header__button-one {
+    left: 10px;
+}
+
+.coffee-header__button-two {
+    left: 35px;
+}
+
+.coffee-header__display {
+    width: 30px;  
+    height: 30px; 
+    position: absolute;
+    top: calc(50% - 15px);
+    left: calc(50% - 15px);
+    border-radius: 50%;
+    background-color: #9acfc5;
+    border: 4px solid #43beae;
+    box-sizing: border-box;
+}
+
+.coffee-header__details {
+    width: 6px;
+    height: 12px; 
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background-color: #9b9091;
+    box-shadow: -8px 0 0 #9b9091, -16px 0 0 #9b9091;
+}
+
+.coffee-medium {
+    width: 80%;
+    height: 100px; 
+    position: absolute;
+    top: 50px;
+    left: calc(50% - 40%);
+    background-color: #bcb0af;
+}
+
+.coffee-medium:before {
+    content: "";
+    width: 80%;
+    height: 60px;
+    background-color: #776f6e;
+    position: absolute;
+    bottom: 0;
+    left: calc(50% - 40%);
+    border-radius: 20px 20px 0 0;
+}
+
+.coffe-medium__exit {
+    width: 45px;
+    height: 12px;
+    position: absolute;
+    top: 0;
+    left: calc(50% - 22.5px);
+    background-color: #231f20;
+}
+
+.coffe-medium__exit::before {
+    content: "";
+    width: 35px;
+    height: 12px;
+    border-radius: 0 0 50% 50%;
+    position: absolute;
+    bottom: -12px;
+    left: calc(50% - 17.5px);
+    background-color: #231f20;
+}
+
+.coffe-medium__exit::after {
+    content: "";
+    width: 7px;
+    height: 7px;
+    position: absolute;
+    bottom: -18px;
+    left: calc(50% - 3.5px);
+    background-color: #231f20;
+}
+
+.coffee-medium__arm {
+    width: 50px;
+    height: 12px;
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    background-color: #231f20;
+}
+
+.coffee-medium__arm::before {
+    content: "";
+    width: 10px;
+    height: 4px;
+    position: absolute;
+    top: 4px;
+    left: -10px;
+    background-color: #9e9495;
+}
+
+.coffee-medium__cup {
+    width: 60px;
+    height: 35px;
+    position: absolute;
+    bottom: 0;
+    left: calc(50% - 30px);
+    background-color: #fff;
+    border-radius: 0 0 60px 60px / 0 0 90px 90px;
+}
+
+.coffee-medium__cup::after {
+    content: "";
+    width: 15px;
+    height: 15px;
+    position: absolute;
+    top: 5px;
+    right: -8px;
+    border: 4px solid #fff;
+    border-radius: 50%;
+}
+
+@keyframes liquid {
+    0% {
+        height: 0px;
+        opacity: 1;
+    }
+    5% {
+        height: 0px;
+        opacity: 1;
+    }
+    20% {
+        height: 45px; /* Küçültülmüş sıvı yüksekliği */
+        opacity: 1;
+    }
+    95% {
+        height: 45px;
+        opacity: 1;
+    }
+    100% {
+        height: 45px;
+        opacity: 0;
+    }
+}
+
+.coffee-medium__liquid {
+    width: 5px;
+    height: 45px;
+    opacity: 0;
+    position: absolute;
+    top: 30px;
+    left: calc(50% - 2.5px);
+    background-color: #74372b;
+    animation: liquid 4s 4s linear infinite;
+}
+
+ /*.Sivi{
+
+    width: 5px;
+    height: 45px;
+    opacity: 0;
+    position: absolute;
+    top: 30px;
+    left: calc(50% - 2.5px);
+    background-color: #74372b;
+    animation: liquid 6s 1s linear infinite;
+
+} */
+
+.coffee-medium__smoke {
+    width: 6px;
+    height: 15px;
+    position: absolute;
+    border-radius: 5px;
+    background-color: #b3aeae;
+}
+
+@keyframes smokeOne {
+    0% {
+        bottom: 10px;
+        opacity: 0;
+    }
+    40% {
+        bottom: 30px;
+        opacity: 0.5;
+    }
+    80% {
+        bottom: 50px;
+        opacity: 0.3;
+    }
+    100% {
+        bottom: 50px;
+        opacity: 0;
+    }
+}
+
+@keyframes smokeTwo {
+    0% {
+        bottom: 20px;
+        opacity: 0;
+    }
+    40% {
+        bottom: 50px;
+        opacity: 0.5;
+    }
+    80% {
+        bottom: 55px;
+        opacity: 0.3;
+    }
+    100% {
+        bottom: 55px;
+        opacity: 0;
+    }
+}
+
+.coffee-medium__smoke-one {
+    opacity: 0;
+    bottom: 30px;
+    left: 72px;
+    animation: smokeOne 3s 4s linear infinite;
+}
+
+.coffee-medium__smoke-two {
+    opacity: 0;
+    bottom: 50px;
+    left: 85px;
+    animation: smokeTwo 3s 5s linear infinite;
+}
+
+.coffee-medium__smoke-three {
+    opacity: 0;
+    bottom: 45px;
+    right: 85px;
+    animation: smokeTwo 3s 6s linear infinite;
+}
+
+.coffee-medium__smoke-for {
+    opacity: 0;
+    bottom: 30px;
+    right: 72px;
+    animation: smokeOne 3s 5s linear infinite;
+}
+
+.coffee-footer {
+    width: 88%;  
+    height: 4px;  
+    position: absolute;
+    bottom: -20px;  
+    right: 5%;  
+    background-color: #41bdad;
+    border-radius: 10px;
+  }
+  
+  .coffee-footer::after {
+    content: "";
+    width: 110%;  
+    height: 20px;  
+    position: absolute;
+    bottom: -20px;  
+    left: -6%;
+    background-color: #000;
+  }
+
+
+/* ------------------------------ Kahve Makinası Bitiş --------------------------------- */
+
+
+/* ------------------------------ Sosyal Medya Linkleri Başlangıç --------------------------------- */
+
+
+  .cardos {
+    width: fit-content;
+    height: fit-content;
+    background-color: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 15px;
+    gap: 20px;
+    position: absolute;
+    left: 0%;
+    bottom: 35px;
+  }
+  
+  /* for all social containers*/
+  .socialContainer {
+    width: 52px;
+    height: 52px;
+    background-color: rgb(65, 29, 131);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    transition-duration: 0.3s;
+    border-radius: 30px;
+  }
+  /* instagram*/
+  .containerOne:hover {
+    background-color: #d62976;
+    transition-duration: 0.3s;
+    transform: scale(1.2);
+  }
+  /* twitter*/
+  .containerTwo:hover {
+    background-color: #00acee;
+    transition-duration: 0.3s;
+    transform: scale(1.2);
+  }
+  /* linkedin*/
+  .containerThree:hover {
+    background-color: #0072b1;
+    transition-duration: 0.3s;
+    transform: scale(1.2);
+  }
+  /* Whatsapp*/
+  .containerFour:hover {
+    background-color: #128c7e;
+    transition-duration: 0.3s;
+    transform: scale(1.2);
+  }
+  
+  .socialContainer:active {
+    transform: scale(0.9);
+    transition-duration: 0.3s;
+  }
+  
+  .socialSvg {
+    width: 17px;
+  }
+  
+  .socialSvg path {
+    fill: rgb(255, 255, 255);
+  }
+  
+  .socialContainer:hover .socialSvg {
+    animation: slide-in-top 0.3s both;
+  }
+  
+  @keyframes slide-in-top {
+    0% {
+      transform: translateY(-50px);
+      opacity: 0;
+    }
+  
+    100% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  /* ------------------------------ Sosyal Medya Linkleri Bitiş --------------------------------- */
+
+
+  /* ------------------------------ Açılan Menü Başlangıç --------------------------------- */
+  
+
+  :root {
+    --gradient: conic-gradient(
+      from 240deg at 50% 50%,
+      #00ffc3,
+      #00fad9,
+      #00f4f0,
+      #00eeff,
+      #00e6ff,
+      #00dcff,
+      #00d2ff,
+      #00c5ff,
+      #00b8ff,
+      #6da8ff,
+      #9f97ff,
+      #c285ff
+    );
+  }
+  
+  *
+  , *::before
+  , *::after {
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+  }
+  
+  input {
+    display: none;
+  }
+  
+  #welcomeMessage {
+    font-size: 150%;
+  }
+  
+  #welcomeMessage
+  , #welcomeMessage
+    figcaption
+  , #welcomeMessage
+    figcaption
+    h1
+  , #welcomeMessage
+    figcaption
+    h1
+    b {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    margin: 0;
+  }
+  
+  #welcomeMessage
+  figcaption {
+    width: auto;
+    z-index: 1;
+  }
+  
+  #welcomeMessage
+  figcaption::before
+  , #welcomeMessage
+    figcaption::after {
+      position: absolute;
+      background: #222;
+      width: 0%;
+      height: 0%;
+      content: "";
+      z-index: -1;
+  }
+  
+  #welcomeMessage
+  figcaption::after {
+    background: var(--gradient);
+    width: calc(0% + 0);
+    height: calc(0% + 0);
+    z-index: -2;
+  }
+  
+  #welcomeMessage
+  figcaption
+  h1 {
+    text-transform: lowercase;
+    background: #555;
+    box-shadow: rgba(0, 0, 0, 0.19) 0px 0.625em 1.25em, rgba(0, 0, 0, 0.23) 0px 0.375em 0.375em;
+    transition: all 0.1s ease-in-out;
+  }
+  
+  #welcomeMessage
+  figcaption
+  h1:active {
+    transform: scale(0.93);
+    transition: all 0.05s ease-in-out;
+  }
+  
+  #welcomeMessage
+  figcaption
+  h1::before
+  , #welcomeMessage
+    figcaption
+    h1::after {
+      position: absolute;
+      white-space: nowrap;
+      font-size: 0.7em;
+      font-weight: 200;
+      transition: all 0.7s ease-in-out;
+  }
+  
+  #welcomeMessage
+  figcaption
+  h1
+  label {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 999;
+  }
+  
+  #welcomeMessage
+  figcaption
+  h1
+  label:nth-child(2) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 1em;
+    height: 1em;
+    right: 0;
+    top: -2.4em;
+    background: transparent;
+    color: #000000;
+    outline: 1px solid #000000;
+    padding: 5px;
+    opacity: 0;
+    z-index: 998;
+  }
+  
+  #welcomeMessage
+  figcaption
+  h1
+  label:hover {
+    cursor: pointer;
+  }
+  
+  #welcomeMessage
+  figcaption
+  h1
+  b {
+    width: 2em;
+    height: 2em;
+    background: #3a3939; /* Aha da Bu Arkaplandır*/
+    user-select: none;
+  }
+  
+  #welcomeMessage
+  figcaption
+  h1
+  b
+  a {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    z-index: 1;
+    transition: all 0.35s ease-in-out;
+  }
+  
+  #welcomeMessage
+  figcaption
+  h1
+  b
+  a:focus::before {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: #3a3939; /* Aha Bu da tıklandıktan sonra Arkaplandır */
+    border-radius: 0.3em;
+    content:"";
+    z-index: -1;
+  }
+  
+  #welcomeMessage
+  figcaption
+  h1
+  b
+  a:focus::after {
+    position: absolute;
+    width: calc(100% + 0.05em);
+    height: calc(100% + 0.05em);
+    background: var(--gradient);
+    border-radius: 0.3em;
+    content:"";
+    z-index: -2;
+    animation: spinny 5s linear infinite;
+  }
+  
+  #welcomeMessage
+  figcaption
+  h1
+  b
+  a:active::after {
+    filter: blur(5px);
+  }
+  
+  @keyframes spinny {
+    0% {
+      transform: rotateZ(0deg);
+      border-radius: 0.3em;
+    }
+    50% {
+      border-radius: 1em;
+    }
+    100% {
+      transform: rotateZ(360deg);
+      border-radius: 0.3em;
+    }
+  }
+  
+  #welcomeMessage
+  figcaption
+  h1
+  b
+  a
+  svg {
+    position: relative;
+    width: 55%;
+    height: auto;
+    fill: url(#svgGradient);
+    filter: grayscale(100%) brightness(1.2);
+    transform: rotateY(-180deg);
+    transition: all 200ms linear;
+  }
+  
+  #welcomeMessage
+  figcaption
+  h1
+  b
+  a:hover
+  svg {
+    filter: grayscale(0%) brightness(1);
+    transition: all 200ms ease-in-out;
+  }
+  
+  #welcomeMessage
+  figcaption
+  h1
+  b
+  a:focus
+  svg {
+    filter: grayscale(0%) brightness(1);
+    transform: rotateY(-180deg) scale(0.9);
+    transition: all 70ms linear;
+  }
+  
+  #toggleOpen:checked
+    ~ #welcomeMessage {
+        font-size: 80%;    
+  }
+  
+  #toggleOpen:checked
+    ~ #welcomeMessage
+    figcaption::before {
+      width: calc(100% + 4em); 
+      height: calc(95% + 4em);
+      border-radius: 0.7em;
+      transition: all 0.7s ease-in-out;
+  }
+  
+  #toggleOpen:checked
+    ~ #welcomeMessage
+    figcaption::after {
+      width: calc(80% + 3em);
+      height: calc(80% + 3em);
+      border-radius: 1em;
+      transition: all 0.7s ease-in-out;
+  }
+  
+  #toggleClose:checked
+    ~ #welcomeMessage
+    figcaption::before
+    , #toggleClose:checked
+      ~ #welcomeMessage
+      figcaption::after {
+        transition: all 0.7s ease-in-out;
+  }
+  
+  #toggleOpen:checked
+    ~ #welcomeMessage
+    figcaption
+    h1 {
+      background: transparent;
+      box-shadow: none;
+  }
+  
+  #toggleOpen:checked
+    ~ #welcomeMessage
+    figcaption
+    h1:active {
+      transform: none;
+  }
+  
+  #toggleClose:checked
+    ~ #welcomeMessage
+    figcaption
+    h1 {
+      background: transparent;
+      transition: all 0.05s ease-in-out;
+  }
+  
+  #toggleOpen:checked
+    ~ #welcomeMessage
+    figcaption
+    h1::before {
+      opacity: 1;
+      transition: all 0.7s ease-in-out;
+  }
+  
+  #toggleOpen:checked
+    ~ #welcomeMessage
+    figcaption
+    h1::after {
+      opacity: 0;
+      transition: all 0.7s ease-in-out;
+  }
+  
+  #toggleOpen:checked
+    ~ #welcomeMessage
+    figcaption
+    h1
+    label:first-of-type {
+      display: none;
+  }
+  
+  #toggleOpen:checked
+    ~ #welcomeMessage
+    figcaption
+    h1
+    label:last-of-type {
+      z-index: 999;
+      opacity: 1;
+      transition: all 0.7s ease-in-out;
+  }
+  
+  #toggleOpen:checked
+    ~ #welcomeMessage
+    figcaption
+    h1
+    b {
+      color:transparent;  /*Dönüştükten Sonra Yazı Rengi */
+      border-radius: 0.3em;
+      box-shadow: rgba(0, 0, 0, 0.19) 0px 0.625em 1.25em, rgba(0, 0, 0, 0.23) 0px 0.375em 0.375em;
+      transition: all 0.35s ease-in-out;
+  }
+  
+  #toggleClose:checked
+    ~ #welcomeMessage
+    figcaption
+    h1
+    b {
+      transition: all 0.35s ease-in-out;
+      transition-delay: 0.35s;
+      animation: welcomeClose 0.7s ease-in-out 1;
+      animation-fill-mode: forwards;
+  }
+  
+  #toggleOpen:checked
+    ~ #welcomeMessage
+    figcaption
+    h1
+    b:not(:first-of-type, :last-of-type) {
+      animation: welcome 0.7s ease-in-out 1;
+      animation-fill-mode: forwards;
+  }
+  
+  #toggleOpen:checked
+    ~ #welcomeMessage
+    figcaption
+    h1
+    b:first-of-type {
+      animation: welcomeFirst 0.7s ease-in-out 1;
+      animation-fill-mode: forwards;
+  }
+  
+  #toggleOpen:checked
+    ~ #welcomeMessage
+    figcaption
+    h1
+    b:last-of-type {
+      animation: welcomeLast 0.7s ease-in-out 1;
+      animation-fill-mode: forwards;
+  }
+  
+  #toggleClose:checked
+    ~ #welcomeMessage
+    figcaption
+    h1
+    b:first-of-type {
+      animation: welcomeCloseFirst 0.7s ease-in-out 1;
+      animation-fill-mode: forwards;
+  }
+  
+  #toggleClose:checked
+    ~ #welcomeMessage
+    figcaption
+    h1
+    b:last-of-type {
+      animation: welcomeCloseLast 0.7s ease-in-out 1;
+      animation-fill-mode: forwards;
+  }
+  
+  #toggleClose:checked
+    ~ #welcomeMessage
+    figcaption
+    h1
+    b::after {
+      opacity: 0;
+      transition: all 0.35s ease-in-out;
+  }
+  
+  #toggleOpen:checked
+    ~ #welcomeMessage
+    figcaption
+    h1
+    b
+    a {
+      opacity: 1;
+      transition: all 0.35s ease-in-out;
+      transition-delay: 0.35s;
+  }
+  
+  @keyframes welcome {
+    0% {
+      margin: 0 0;
+      transform: rotateY(0deg);
+      width: 2em;
+      height: 2em;
+    }
+    20% {
+      transform: rotateY(0deg);
+      width: 2em;
+      height: 2em;
+    }
+    80% {
+      transform: rotateY(180deg);
+      width: 3em;
+      height: 3em;
+    }
+    100% {
+      margin: 0 1.5em;
+      transform: rotateY(180deg);
+      width: 3em;
+      height: 3em;
+    }
+  }
+  
+  @keyframes welcomeFirst {
+    0% {
+      margin: 0 0;
+      transform: rotateY(0deg);
+      width: 2em;
+      height: 2em;
+    }
+    20% {
+      transform: rotateY(0deg);
+      width: 2em;
+      height: 2em;
+    }
+    80% {
+      transform: rotateY(180deg);
+      width: 3em;
+      height: 3em;
+    }
+    100% {
+      margin: 0 1.5em 0 0;
+      transform: rotateY(180deg);
+      width: 3em;
+      height: 3em;
+    }
+  }
+  
+  @keyframes welcomeLast {
+    0% {
+      margin: 0 0;
+      transform: rotateY(0deg);
+      width: 2em;
+      height: 2em;
+    }
+    20% {
+      transform: rotateY(0deg);
+      width: 2em;
+      height: 2em;
+    }
+    80% {
+      transform: rotateY(180deg);
+      width: 3em;
+      height: 3em;
+    }
+    100% {
+      margin: 0 0 0 1.5em;
+      transform: rotateY(180deg);
+      width: 3em;
+      height: 3em;
+    }
+  }
+  
+  @keyframes welcomeClose {
+    0% {
+      margin: 0 1.5em;
+      transform: rotateY(180deg);
+      width: 3em;
+      height: 3em;
+    }
+    20% {
+      transform: rotateY(180deg);
+      width: 3em;
+      height: 3em;
+    }
+    80% {
+      transform: rotateY(0deg);
+      width: 2em;
+      height: 2em;
+    }
+    100% {
+      margin: 0 0;
+      transform: rotateY(0deg);
+      width: 2em;
+      height: 2em;
+    }
+  }
+  
+  @keyframes welcomeCloseFirst {
+    0% {
+      margin: 0 1.5em 0 0;
+      transform: rotateY(180deg);
+      width: 3em;
+      height: 3em;
+    }
+    20% {
+      transform: rotateY(180deg);
+      width: 3em;
+      height: 3em;
+    }
+    80% {
+      transform: rotateY(0deg);
+      width: 2em;
+      height: 2em;
+    }
+    100% {
+      margin: 0 0;
+      transform: rotateY(0deg);
+      width: 2em;
+      height: 2em;
+    }
+  }
+  
+  @keyframes welcomeCloseLast {
+    0% {
+      margin: 0 0 0 1.5em;
+      transform: rotateY(180deg);
+      width: 3em;
+      height: 3em;
+    }
+    20% {
+      transform: rotateY(180deg);
+      width: 3em;
+      height: 3em;
+    }
+    80% {
+      transform: rotateY(0deg);
+      width: 2em;
+      height: 2em;
+    }
+    100% {
+      margin: 0 0;
+      transform: rotateY(0deg);
+      width: 2em;
+      height: 2em;
+    }
+  }
+  
+  @media (max-width: 1270px) {
+    #toggleOpen:checked
+      ~ #welcomeMessage {
+          font-size: 80%;
+    }
+  }
+  
+  @media (max-width: 1000px) { 
+    #toggleOpen:checked
+      ~ #welcomeMessage {
+          font-size: 60%;
+    } 
+  }
+  
+  @media (max-width: 800px) {
+    body {
+      height: auto;
+      min-height: 100vh;
+      overflow-x: hidden;
+      overflow-y: auto;
+      align-items: flex-start;
+    }
+    
+    #welcomeMessage {
+      margin-top: 10em;
+    }
+    
+    #toggleOpen:checked
+      ~ #welcomeMessage {
+          margin-top: 8em;
+          font-size: 100%;
+    }
+    
+    #toggleOpen:checked
+      ~ #welcomeMessage
+      figcaption
+      h1 {
+        flex-direction: column;
+    }
+    
+    #welcomeMessage figcaption h1::before {
+      content: "Close";
+    }
+    
+    @keyframes welcome {
+      0% {
+        margin: 0 0;
+        transform: rotateY(0deg);
+        width: 2em;
+        height: 2em;
+      }
+      20% {
+        transform: rotateY(0deg);
+        width: 2em;
+        height: 2em;
+      }
+      80% {
+        transform: rotateY(180deg);
+        width: 3em;
+        height: 3em;
+      }
+      100% {
+        margin: 1em 0;
+        transform: rotateY(180deg);
+        width: 3em;
+        height: 3em;
+      }
+    }
+  
+    @keyframes welcomeFirst {
+      0% {
+        margin: 0 0;
+        transform: rotateY(0deg);
+        width: 2em;
+        height: 2em;
+      }
+      20% {
+        transform: rotateY(0deg);
+        width: 2em;
+        height: 2em;
+      }
+      80% {
+        transform: rotateY(180deg);
+        width: 3em;
+        height: 3em;
+      }
+      100% {
+        margin: 0 0 1em 0;
+        transform: rotateY(180deg);
+        width: 3em;
+        height: 3em;
+      }
+    }
+  
+    @keyframes welcomeLast {
+      0% {
+        margin: 0 0;
+        transform: rotateY(0deg);
+        width: 2em;
+        height: 2em;
+      }
+      20% {
+        transform: rotateY(0deg);
+        width: 2em;
+        height: 2em;
+      }
+      80% {
+        transform: rotateY(180deg);
+        width: 3em;
+        height: 3em;
+      }
+      100% {
+        margin: 1em 0 0 0;
+        transform: rotateY(180deg);
+        width: 3em;
+        height: 3em;
+      }
+    }
+  
+    @keyframes welcomeClose {
+      0% {
+        margin: 1em 0em;
+        transform: rotateY(180deg);
+        width: 3em;
+        height: 3em;
+      }
+      20% {
+        transform: rotateY(180deg);
+        width: 3em;
+        height: 3em;
+      }
+      80% {
+        transform: rotateY(0deg);
+        width: 2em;
+        height: 2em;
+      }
+      100% {
+        margin: 0 0;
+        transform: rotateY(0deg);
+        width: 2em;
+        height: 2em;
+      }
+    }
+  
+    @keyframes welcomeCloseFirst {
+      0% {
+        margin: 0 0 1em 0 !important;
+        transform: rotateY(180deg);
+        width: 3em;
+        height: 3em;
+      }
+      20% {
+        transform: rotateY(180deg);
+        width: 3em;
+        height: 3em;
+      }
+      80% {
+        transform: rotateY(0deg);
+        width: 2em;
+        height: 2em;
+      }
+      100% {
+        margin: 0 0;
+        transform: rotateY(0deg);
+        width: 2em;
+        height: 2em;
+      }
+    }
+  
+    @keyframes welcomeCloseLast {
+      0% {
+        margin: 1em 0 0 0 !important;
+        transform: rotateY(180deg);
+        width: 3em;
+        height: 3em;
+      }
+      20% {
+        transform: rotateY(180deg);
+        width: 3em;
+        height: 3em;
+      }
+      80% {
+        transform: rotateY(0deg);
+        width: 2em;
+        height: 2em;
+      }
+      100% {
+        margin: 0 0;
+        transform: rotateY(0deg);
+        width: 2em;
+        height: 2em;
+      }
+    }
+  }
+  
+  @media (max-width: 650px) { 
+    #welcomeMessage {
+      font-size: 100%;
+    }
+  }
+  
+  @media (max-width: 500px) { 
+    #welcomeMessage {
+      font-size: 80%;
+    }
+    
+    #toggleOpen:checked 
+      ~ #welcomeMessage {
+          font-size: 100%;
+    }
+  }
+  
+  @media (max-width: 400px) {
+    #welcomeMessage {
+      font-size: 65%;
+    }
+  }
+
+  /* ------------------------------ Açılan Menü Bitiş --------------------------------- */
+
+
+  /* ------------------------------ Kayan Menü Başlangıç --------------------------------- */
+  
+
+ 
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+  margin: 0;
+  padding: 0;
+}
+
+.thumbnails {
+  display: flex;
+  flex-direction: column;
+  line-height: 0;
+  position: relative;
+}
+
+.thumbnails li {
+  flex: auto;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  z-index: 4;
+}
+
+.thumbnails li:hover {
+  transform: scale(1.05);
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.thumbnails a {
+  display: block;
+}
+
+.thumbnails img {
+  width: 28vmin;
+  height: 17vmin;
+  object-fit: center;
+  object-position: cover;
+}
+
+.slides {
+  overflow: hidden;
+  width: 100vmin;
+  height: 85vmin;
+  position: relative;
+
+}
+
+.slides li {
+  width: 75vmin;
+  height: 100vmin;
+  position: absolute;
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+}
+
+
+.slides li.active {
+  opacity: 1;
+  z-index: 3;
+}
+
+
+.slides li.animate {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+
+/* ------------------------------ Kayan Menü Bitiş --------------------------------- */
+
+
+video {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Videonun düzgün yerleşmesi için */
+  z-index: -1;
+}
