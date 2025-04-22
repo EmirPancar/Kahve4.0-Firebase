@@ -1,0 +1,298 @@
+
+/* ------------------------------ Bilgi Kartları Başlangıç --------------------------------- */
+
+.Acard,
+.Ccard,
+.Bcard {
+    position: relative;
+    width: 220px;
+    height: 320px;
+    background-color:midnightblue;
+    border-radius: 15px;
+    cursor: pointer;
+    overflow: hidden;
+  }
+
+  .Bcard{
+    margin-left: 11.25%;
+  }
+
+  .Ccard{
+    margin-left: 5.3333%;
+  }
+
+  .Acard{
+    margin-left: 21.11%;
+  }
+  
+  .Acard img,
+  .Ccard img,
+  .Bcard img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: opacity 0.8s ease;
+  }
+  
+  .Acard .content,
+  .Ccard .content,
+  .Bcard .content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: white;
+    opacity: 0;
+    transition: opacity 0.8s ease;
+    z-index: 3;
+  }
+  
+  .Acard .content h1,
+  .Ccard .content h1,
+  .Bcard .content h1 {
+    margin: 0;
+    font-size: 24px;
+  }
+  
+  .Acard .content p,
+  .Ccard .content p,
+  .Bcard .content p {
+    margin: 10px 0 0;
+    font-size: 16px;
+    width: 180px;
+  }
+  
+  .Acard:hover img, 
+  .Ccard:hover img, 
+  .Bcard:hover img {
+    opacity: 1;
+  }
+  
+  .Acard:hover .content,
+  .Ccard:hover .content,
+  .Bcard:hover .content {
+    opacity: 1;
+  }
+  
+
+  .Acard::before,
+  .Acard::after,
+  .Ccard::before,
+  .Ccard::after,
+  .Bcard::before,
+  .Bcard::after {
+    position: absolute;
+    content: "";
+    width: 15%;
+    height: 15%;
+    background-color:black;
+    transition: all 0.8s;
+    z-index: 2;
+    opacity: 0.4;
+  }
+  
+  .Acard::before,
+  .Ccard::before,
+  .Bcard::before {
+    top: 0;
+    right: 0;
+    border-radius: 0 15px 0 100%;
+    
+  }
+  
+  .Acard::after,
+  .Ccard::after,
+  .Bcard::after {
+    bottom: 0;
+    left: 0;
+    border-radius: 0 100% 0 15px;
+    
+  }
+
+  .Acard:hover::before,
+  .Acard:hover::after,
+  .Ccard:hover::before,
+  .Ccard:hover::after,
+  .Bcard:hover::before,
+  .Bcard:hover::after {
+    width: 100%;
+    height: 100%;
+    border-radius: 15px;
+    opacity: 0.4; 
+  } 
+
+
+  /* ------------------------------ Bilgi Kartları Bitiş --------------------------------- */
+
+  /* ------------------------------ Sayfa Düzenleyiciler Başlangıç --------------------------------- */
+
+  .Baslik{
+
+    width: 1200px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+
+    font-size: 50px;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+
+    margin-top: 10px;
+    margin-bottom: 30px;
+
+    color: rgb(162, 154, 154);
+
+  }
+
+
+  .BilgiSatiri{
+
+    width:1200px;
+   /* background-color: aqua; */
+   
+    display: flex;
+    flex-wrap: wrap;
+
+
+  }
+  .AFakeCard, /* 2 */
+  .CFakeCard, /* 4 */
+  .FakeCard{  /* 3 */
+
+    width: 220px;
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    
+   /* background-color: yellow; */
+
+    font-size: 28px;
+    color: #8e745f;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    
+}
+
+.FakeCard{
+  margin-left: 11.25%;
+}
+
+.CFakeCard{
+  margin-left: 5.3333%;
+}
+
+.AFakeCard{
+  margin-left: 21.1111%;
+}
+
+.SatirSonu,
+.SatirArasi{
+
+    Width: 1200px;
+   /* background-color: black; */
+
+    display: flex;
+    flex-wrap: wrap;
+
+    margin-top: 7px;
+   
+}
+
+.SatirArasi{
+  margin-bottom: 50px;
+}
+
+.SatirSonu{
+  margin-bottom: 25px;
+}
+
+/* ------------------------------ Sayfa Düzenleyiciler Bitiş --------------------------------- */
+
+/* ------------------------------ Alt Butonlar Başlangıç --------------------------------- */
+
+a{
+  text-decoration: none;
+}
+.container-eg-btn-2 {
+  font-family: sans-serif;
+  display: flex;
+  flex-wrap: wrap;
+  padding: .5em;
+  line-height: normal;
+  width: 1200px;
+}
+.container-eg-btn-2 .button {
+  color: #fff2e5;
+  background: #c7a17a;
+  padding: 12px 15px;
+  border: 4px solid #a0785a;
+  text-align: center;
+  text-transform: uppercase;
+  position: relative; 
+  overflow:hidden; 
+  transition: .3s;
+  z-index: 1;
+  width: 180px;
+  margin-left: 5%;
+}
+
+.container-eg-btn-2 .button:hover {
+  cursor: pointer;
+  color: #f3d4b5;
+}
+
+.container-eg-btn-2 .button-6:before {
+  position: absolute;
+  transition: .3s;
+  content: '';
+  width: 0;
+  bottom: 0;
+  background: #8a5a3c;
+  border-color: #6a3f2b;
+  height: 120%;
+  left: -10%;
+  transform: skewX(20deg);
+  z-index: -1;
+}
+
+.container-eg-btn-2 .button-6:hover:before {
+  width: 62%;
+}
+
+.container-eg-btn-2 .button-6:after {
+  position: absolute;
+  transition: .3s;
+  content: '';
+  width: 0;
+  right: 50%;
+  bottom: 0;
+  height: 4px;
+  background: #8a5a3c;
+  border-color: #6a3f2b;
+}
+
+.container-eg-btn-2 .button-6:after {
+  height: 120%;
+  right: -10%;
+  transform: skewX(20deg);
+  z-index: -1;
+}
+
+.container-eg-btn-2 .button-6:hover:after {
+  width: 62%;
+}
+
+/* ------------------------------ Alt Butonlar Bitiş --------------------------------- */
+
+video {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Videonun düzgün yerleşmesi için */
+  z-index: -1;
+}
