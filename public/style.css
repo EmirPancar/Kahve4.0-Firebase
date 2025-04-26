@@ -1,4 +1,3 @@
-
 body,html{
  
     display: flex;
@@ -46,7 +45,7 @@ body,html{
 
     display: flex;
     justify-content: center;
-    align-items: center; 
+    align-items: center;   
 
 
 }
@@ -405,18 +404,6 @@ body,html{
     animation: liquid 4s 4s linear infinite;
 }
 
- /*.Sivi{
-
-    width: 5px;
-    height: 45px;
-    opacity: 0;
-    position: absolute;
-    top: 30px;
-    left: calc(50% - 2.5px);
-    background-color: #74372b;
-    animation: liquid 6s 1s linear infinite;
-
-} */
 
 .coffee-medium__smoke {
     width: 6px;
@@ -685,10 +672,45 @@ body,html{
   #welcomeMessage
   figcaption
   h1 {
-    text-transform: lowercase;
-    background: #555;
-    box-shadow: rgba(0, 0, 0, 0.19) 0px 0.625em 1.25em, rgba(0, 0, 0, 0.23) 0px 0.375em 0.375em;
-    transition: all 0.1s ease-in-out;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+  
+  #welcomeMessage
+  figcaption
+  h1 b {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 40px;
+    height: 40px;
+    margin: 0;
+    padding: 0;
+    transition: all 0.3s ease;
+  }
+  
+  #welcomeMessage
+  figcaption
+  h1 b a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+  }
+  
+  #welcomeMessage
+  figcaption
+  h1 b a svg {
+    width: 24px;
+    height: 24px;
   }
   
   #welcomeMessage
@@ -1208,178 +1230,111 @@ body,html{
       min-height: 100vh;
       overflow-x: hidden;
       overflow-y: auto;
-      align-items: flex-start;
+      align-items: flex-start;  
     }
     
     #welcomeMessage {
-      margin-top: 10em;
+      margin-top: 5em;
+      margin-bottom: 2em;
+      transform: none !important;
     }
     
-    #toggleOpen:checked
-      ~ #welcomeMessage {
-          margin-top: 8em;
-          font-size: 100%;
+    #toggleOpen:checked ~ #welcomeMessage {
+      margin-top: 4em;
+      transform: none !important;
     }
     
-    #toggleOpen:checked
-      ~ #welcomeMessage
-      figcaption
-      h1 {
-        flex-direction: column;
+    #toggleOpen:checked ~ #welcomeMessage figcaption {
+      width: 85%;
+      margin: 0 auto;
+      padding: 5px;
+      height: auto;
     }
-    
-    #welcomeMessage figcaption h1::before {
-      content: "Close";
+
+    #toggleOpen:checked ~ #welcomeMessage figcaption h1 {
+      flex-direction: row;
+      flex-wrap: nowrap;
+      justify-content: center;
+      align-items: center;
+      gap: 4px;
+      padding: 4px;
+      font-size: 1.5em;
     }
-    
-    @keyframes welcome {
-      0% {
-        margin: 0 0;
-        transform: rotateY(0deg);
-        width: 2em;
-        height: 2em;
-      }
-      20% {
-        transform: rotateY(0deg);
-        width: 2em;
-        height: 2em;
-      }
-      80% {
-        transform: rotateY(180deg);
-        width: 3em;
-        height: 3em;
-      }
-      100% {
-        margin: 1em 0;
-        transform: rotateY(180deg);
-        width: 3em;
-        height: 3em;
-      }
+
+    #toggleOpen:checked ~ #welcomeMessage figcaption h1 b {
+      min-width: 48px;
+      height: 48px;
+      margin: 0;
     }
-  
-    @keyframes welcomeFirst {
-      0% {
-        margin: 0 0;
-        transform: rotateY(0deg);
-        width: 2em;
-        height: 2em;
-      }
-      20% {
-        transform: rotateY(0deg);
-        width: 2em;
-        height: 2em;
-      }
-      80% {
-        transform: rotateY(180deg);
-        width: 3em;
-        height: 3em;
-      }
-      100% {
-        margin: 0 0 1em 0;
-        transform: rotateY(180deg);
-        width: 3em;
-        height: 3em;
-      }
+
+    #toggleOpen:checked ~ #welcomeMessage figcaption h1 b a svg {
+      width: 18px;
+      height: 18px;
     }
-  
-    @keyframes welcomeLast {
-      0% {
-        margin: 0 0;
-        transform: rotateY(0deg);
-        width: 2em;
-        height: 2em;
-      }
-      20% {
-        transform: rotateY(0deg);
-        width: 2em;
-        height: 2em;
-      }
-      80% {
-        transform: rotateY(180deg);
-        width: 3em;
-        height: 3em;
-      }
-      100% {
-        margin: 1em 0 0 0;
-        transform: rotateY(180deg);
-        width: 3em;
-        height: 3em;
-      }
+
+    #welcomeMessage
+  figcaption
+  h1
+  label:nth-child(2) {
+    top: -3.4em;
+  }
+
+    .Container {
+      width: 100%;
+      max-width: 100%;
+      padding: 0 10px;
     }
-  
-    @keyframes welcomeClose {
-      0% {
-        margin: 1em 0em;
-        transform: rotateY(180deg);
-        width: 3em;
-        height: 3em;
-      }
-      20% {
-        transform: rotateY(180deg);
-        width: 3em;
-        height: 3em;
-      }
-      80% {
-        transform: rotateY(0deg);
-        width: 2em;
-        height: 2em;
-      }
-      100% {
-        margin: 0 0;
-        transform: rotateY(0deg);
-        width: 2em;
-        height: 2em;
-      }
+
+    .Header {
+      width: 100%;
+      max-width: 100%;
+      margin: 10px 0;
+      padding: 0 10px;
     }
-  
-    @keyframes welcomeCloseFirst {
-      0% {
-        margin: 0 0 1em 0 !important;
-        transform: rotateY(180deg);
-        width: 3em;
-        height: 3em;
-      }
-      20% {
-        transform: rotateY(180deg);
-        width: 3em;
-        height: 3em;
-      }
-      80% {
-        transform: rotateY(0deg);
-        width: 2em;
-        height: 2em;
-      }
-      100% {
-        margin: 0 0;
-        transform: rotateY(0deg);
-        width: 2em;
-        height: 2em;
-      }
+
+    .Body0 {
+      width: 100%;
+      max-width: 100%;
+      margin: 10px 0;
+      padding: 0 10px;
+      left: 0;
     }
-  
-    @keyframes welcomeCloseLast {
-      0% {
-        margin: 1em 0 0 0 !important;
-        transform: rotateY(180deg);
-        width: 3em;
-        height: 3em;
-      }
-      20% {
-        transform: rotateY(180deg);
-        width: 3em;
-        height: 3em;
-      }
-      80% {
-        transform: rotateY(0deg);
-        width: 2em;
-        height: 2em;
-      }
-      100% {
-        margin: 0 0;
-        transform: rotateY(0deg);
-        width: 2em;
-        height: 2em;
-      }
+
+    .slides {
+      width: 100%;
+      height: auto;
+      max-height: 60vh;
+    }
+
+    .slides li {
+      width: 100%;
+      height: auto;
+      max-height: 60vh;
+    }
+
+    .slides li img {
+      width: 100%;
+      height: auto;
+      object-fit: contain;
+    }
+
+    .thumbnails {
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .thumbnails li {
+      width: 30%;
+      max-width: 150px;
+    }
+
+    .thumbnails img {
+      width: 100%;
+      height: auto;
+      object-fit: cover;
     }
   }
   
@@ -1403,6 +1358,48 @@ body,html{
   @media (max-width: 400px) {
     #welcomeMessage {
       font-size: 65%;
+    }
+  }
+
+  @media (max-width: 480px) {
+    #welcomeMessage {
+      margin-top: 4em;
+    }
+    
+    #toggleOpen:checked ~ #welcomeMessage {
+      margin-top: 3em;
+    }
+
+    #toggleOpen:checked ~ #welcomeMessage figcaption {
+      width: 90%;
+      margin: 0 auto;
+      padding: 4px;
+      height: 1px;
+    }
+
+    #toggleOpen:checked ~ #welcomeMessage figcaption h1 {
+      gap: 3px;
+      padding: 3px;
+      font-size: 0.75em;
+    }
+
+    #toggleOpen:checked ~ #welcomeMessage figcaption h1 b {
+      min-width: 28px;
+      height: 28px;
+    }
+
+    #toggleOpen:checked ~ #welcomeMessage figcaption h1 b a svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    .thumbnails li {
+      width: 45%;
+      max-width: 120px;
+    }
+
+    .slides li {
+      max-height: 50vh;
     }
   }
 
