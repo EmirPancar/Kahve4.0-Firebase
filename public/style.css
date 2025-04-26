@@ -1272,7 +1272,7 @@ body,html{
       height: 18px;
     }
 
-    #welcomeMessage
+  #welcomeMessage
   figcaption
   h1
   label:nth-child(2) {
@@ -1338,68 +1338,188 @@ body,html{
     }
   }
   
-  @media (max-width: 650px) { 
+  @media (max-width: 650px) {
     #welcomeMessage {
-      font-size: 100%;
-    }
-  }
-  
-  @media (max-width: 500px) { 
-    #welcomeMessage {
-      font-size: 80%;
-    }
-    
-    #toggleOpen:checked 
-      ~ #welcomeMessage {
-          font-size: 100%;
-    }
-  }
-  
-  @media (max-width: 400px) {
-    #welcomeMessage {
-      font-size: 65%;
-    }
-  }
-
-  @media (max-width: 480px) {
-    #welcomeMessage {
-      margin-top: 4em;
+      font-size: 40%;
+      margin-top: 1.5em;
     }
     
     #toggleOpen:checked ~ #welcomeMessage {
-      margin-top: 3em;
+      font-size: 50%;
+      margin-top: 1em;
     }
 
     #toggleOpen:checked ~ #welcomeMessage figcaption {
-      width: 90%;
+      width: 80%;
       margin: 0 auto;
-      padding: 4px;
-      height: 1px;
+      padding: 2px;
     }
 
     #toggleOpen:checked ~ #welcomeMessage figcaption h1 {
-      gap: 3px;
-      padding: 3px;
-      font-size: 0.75em;
+      gap: 2px;
+      padding: 2px;
+      font-size: 0.6em;
     }
 
     #toggleOpen:checked ~ #welcomeMessage figcaption h1 b {
-      min-width: 28px;
-      height: 28px;
+      min-width: 24px;
+      height: 24px;
+      margin: 1px;
     }
 
     #toggleOpen:checked ~ #welcomeMessage figcaption h1 b a svg {
-      width: 14px;
-      height: 14px;
+      width: 12px;
+      height: 12px;
+    }
+  }
+  
+  @media (max-width: 500px) {
+    #welcomeMessage {
+      font-size: 30%;
+      margin-top: 1.2em;
+    }
+    
+    #toggleOpen:checked ~ #welcomeMessage {
+      font-size: 40%;
+      margin-top: 0.8em;
     }
 
-    .thumbnails li {
-      width: 45%;
-      max-width: 120px;
+    #toggleOpen:checked ~ #welcomeMessage figcaption {
+      width: 75%;
+      margin: 0 auto;
+      padding: 1.5px;
     }
 
-    .slides li {
-      max-height: 50vh;
+    #toggleOpen:checked ~ #welcomeMessage figcaption h1 {
+      gap: 1.5px;
+      padding: 1.5px;
+      font-size: 0.5em;
+    }
+
+    #toggleOpen:checked ~ #welcomeMessage figcaption h1 b {
+      min-width: 20px;
+      height: 20px;
+      margin: 0.75px;
+    }
+
+    #toggleOpen:checked ~ #welcomeMessage figcaption h1 b a svg {
+      width: 10px;
+      height: 10px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    #welcomeMessage {
+      font-size: 65%;
+      margin-top: 1em;
+    }
+    
+    #toggleOpen:checked ~ #welcomeMessage {
+      font-size: 65%;
+      margin-top: 0.6em;
+    }
+
+    #toggleOpen:checked ~ #welcomeMessage figcaption {
+      width: 92%;
+      margin: 0 auto;
+      padding: 1px;
+    }
+
+    #toggleOpen:checked ~ #welcomeMessage figcaption h1 {
+      gap: 1px;
+      padding: 1px;
+      font-size: 0.9em;
+    }
+
+    #toggleOpen:checked ~ #welcomeMessage figcaption h1 b {
+      min-width: 32px;
+      height: 32px;
+      margin: 0.2px;
+    }
+
+    #toggleOpen:checked ~ #welcomeMessage figcaption h1 b a svg {
+      width: 12px;
+      height: 12px;
+    }
+
+  #welcomeMessage
+  figcaption
+  h1
+  label:nth-child(2) {
+    top: -4.4em;
+  }
+
+  }
+
+
+
+  @media (max-width: 400px) {
+    #welcomeMessage {
+      font-size: 60%;
+      margin-top: 0.6em;
+    }
+    
+    #toggleOpen:checked ~ #welcomeMessage {
+      font-size: 65%;
+      margin-top: 0.3em;
+    }
+
+    #toggleOpen:checked ~ #welcomeMessage figcaption {
+      width: 84%;
+      margin: 0 auto;
+      padding: 0.25px;
+    }
+
+    #toggleOpen:checked ~ #welcomeMessage figcaption h1 {
+      gap: 0.2px;
+      padding: 0.2px;
+      font-size: 0.9em;
+    }
+
+    #toggleOpen:checked ~ #welcomeMessage figcaption h1 b {
+      min-width: 22px;
+      height: 22px;
+      margin: 0.1px;
+    }
+
+    #toggleOpen:checked ~ #welcomeMessage figcaption h1 b a svg {
+      width: 12px;
+      height: 12px;
+    }
+  }
+
+  @media (max-width: 350px) {
+    #welcomeMessage {
+      font-size: 50%;
+      margin-top: 0.6em;
+    }
+    
+    #toggleOpen:checked ~ #welcomeMessage {
+      font-size: 55%;
+      margin-top: 0.3em;
+    }
+
+    #toggleOpen:checked ~ #welcomeMessage figcaption {
+      width: 84%;
+      margin: 0 auto;
+      padding: 0.25px;
+    }
+
+    #toggleOpen:checked ~ #welcomeMessage figcaption h1 {
+      gap: 0.2px;
+      padding: 0.2px;
+      font-size: 0.9em;
+    }
+
+    #toggleOpen:checked ~ #welcomeMessage figcaption h1 b {
+      min-width: 18px;
+      height: 18px;
+      margin: 0.1px;
+    }
+
+    #toggleOpen:checked ~ #welcomeMessage figcaption h1 b a svg {
+      width: 12px;
+      height: 12px;
     }
   }
 
