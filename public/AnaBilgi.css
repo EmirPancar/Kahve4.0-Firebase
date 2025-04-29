@@ -15,6 +15,10 @@ html {
 	line-height: 18pt;
 	font-weight: 400;
 	color: white;
+	width: 100vw;
+	height: 100vh;
+	overflow: hidden;
+	position: fixed;
 }
 
 body {
@@ -27,6 +31,7 @@ body {
 	overflow: hidden;
 	background: black;
 	margin: 0;
+	position: fixed;
 }
 
 #nav-toggle,
@@ -144,15 +149,15 @@ body {
 }
 
 .nav-toggle > figure:nth-child(2) {
-	background: red;
+	background: #A1887F;
 }
 
 .nav-toggle > figure:nth-child(3) {
-	background: yellow;
+	background: #D7CCC8;
 }
 
 .nav-toggle > figure:nth-child(4) {
-	background: mediumspringgreen;
+	background: #4E342E;
 }
 
 .nav-toggle > label,
@@ -257,18 +262,18 @@ nav {
 	height: 100%;
 	background: linear-gradient(
 		120deg,
-		#ff0000,
-		#f84600,
-		#ee6600,
-		#e27f00,
-		#d49400,
-		#c4a700,
-		#b3b700,
-		#a0c700,
-		#8bd528,
-		#72e251,
-		#51ef76,
-		#00fa9a
+		#4E342E,
+		#A1887F,
+		#D7CCC8,
+		#6D4C41,
+		#8D6E63,
+		#BCAAA4,
+		#FFE0B2,
+		#C5A491,
+		#795548,
+		#A9746E,
+		#9E9D89,
+		#3E2723
 	);
 	z-index: 3;
 }
@@ -463,3 +468,91 @@ nav > ul > li:nth-child(5) {
 		bottom: 0% !important;
 	}
 }
+
+/* Responsive Design */
+@media (max-width: 1270px) {
+  body, html {
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    position: fixed;
+  }
+
+  .logo-draw {
+    width: 50%;
+    transform: translateX(-5%);
+  }
+}
+
+@media (max-width: 800px) {
+  body, html {
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    position: fixed;
+  }
+
+  .logo-draw {
+    width: 70%;
+    transform: translateX(-6%);
+  }
+}
+
+@media (max-width: 650px) {
+  body, html {
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    position: fixed;
+  }
+
+  .logo-draw {
+    width: 80%;
+    transform: translateX(-8%);
+  }
+}
+
+@media (max-width: 480px) {
+  body, html {
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    position: fixed;
+  }
+
+  .logo-draw {
+    width: 90%;
+    transform: translateX(-6%);
+  }
+
+}
+
+@media (max-width: 400px) {
+  body, html {
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    position: fixed;
+  }
+
+  .logo-draw {
+    width: 95%;
+    transform: translateX(-7%);
+  }
+}
+
+@media (max-width: 350px) {
+  body, html {
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    position: fixed;
+  }
+
+  .logo-draw {
+    width: 100%;
+    transform: translateX(-7%);
+  }
+}
+
+
