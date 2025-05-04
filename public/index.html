@@ -137,7 +137,17 @@
         </div>
     </div> 
     
+    <div class="text-container">
+      <p class="question-text">Bugün ne içsem?</p>
+      <p class="answer-text"></p>
+    </div>
 
+<div class="Btn-center">
+    <button class="btn-class-name" id="drink-button">
+      <span class="back"></span>
+      <span class="front"></span>
+    </button>
+</div>
     <div class="Footer"> 
       <div class="cardos">
         <a class="socialContainer containerOne" href="#">
@@ -232,6 +242,51 @@
 
   // Initialize slider
   updateSlider();
+
+  // Drink suggestion functionality
+  const drinkButton = document.getElementById('drink-button');
+  const questionText = document.querySelector('.question-text');
+  const answerText = document.querySelector('.answer-text');
+  let isButtonDisabled = false;
+
+  const drinkSuggestions = [
+    "Espresso",
+    "Cappuccino",
+    "Latte",
+    "Mocha",
+    "Americano",
+    "Macchiato",
+    "Cold Brew",
+    "Iced Coffee"
+  ];
+
+  drinkButton.addEventListener('click', () => {
+    if (isButtonDisabled) return;
+
+    // Disable button
+    isButtonDisabled = true;
+    drinkButton.style.opacity = '0.5';
+    drinkButton.style.cursor = 'not-allowed';
+
+    // Fade out question
+    questionText.classList.add('hide');
+
+    // After question fades out, show random answer
+    setTimeout(() => {
+      const randomDrink = drinkSuggestions[Math.floor(Math.random() * drinkSuggestions.length)];
+      answerText.textContent = randomDrink;
+      answerText.classList.add('show');
+    }, 300);
+
+    // Re-enable button after 3 seconds
+   /* setTimeout(() => {
+      isButtonDisabled = false;
+      drinkButton.style.opacity = '1';
+      drinkButton.style.cursor = 'pointer';
+      answerText.classList.remove('show');
+      questionText.classList.remove('hide');
+    }, 3000);*/
+  });  
 </script>
 </body>
 </html>
