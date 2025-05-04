@@ -8,6 +8,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <title>Kahve</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style2.css">
     <style>
       body,html{
         background-image: none;
@@ -111,6 +112,30 @@
           </h1>
         </figcaption>
       </figure>
+
+     <div class="Slider">
+        <div class="slider-container">
+            <div class="slider-track">
+                <div class="slider-item" data-index="0">
+                    <img src="Gorsel/ÇB-21.jpeg" alt="Slider Image 1">
+                </div>
+                <div class="slider-item" data-index="1">
+                    <img src="Gorsel/3Kahve-21.jpeg" alt="Slider Image 2">
+                </div>
+                <div class="slider-item" data-index="2">
+                    <img src="Gorsel/KB-21S.jpeg" alt="Slider Image 3">
+                </div>
+                <div class="slider-item" data-index="3">
+                    <img src="Gorsel/WD-21.jpeg" alt="Slider Image 4">
+                </div>
+                <div class="slider-item" data-index="4">
+                    <img src="Gorsel/KB-21B.jpeg" alt="Slider Image 5">
+                </div>
+            </div>
+            <button class="slider-nav prev">❮</button>
+            <button class="slider-nav next">❯</button>
+        </div>
+    </div> 
     
 
     <div class="Footer"> 
@@ -165,6 +190,48 @@
       
       lastScrollY = scrollY;
   });
+
+  // Slider functionality
+  const sliderItems = document.querySelectorAll('.slider-item');
+  const prevButton = document.querySelector('.slider-nav.prev');
+  const nextButton = document.querySelector('.slider-nav.next');
+  let currentIndex = 0;
+
+  function updateSlider() {
+    sliderItems.forEach((item, index) => {
+      // Remove all classes first
+      item.classList.remove('active', 'prev', 'next', 'hidden');
+      
+      // Calculate relative positions
+      const diff = (index - currentIndex + sliderItems.length) % sliderItems.length;
+      
+      if (diff === 0) {
+        item.classList.add('active');
+      } else if (diff === 1 || diff === -4) {
+        item.classList.add('next');
+      } else if (diff === -1 || diff === 4) {
+        item.classList.add('prev');
+      } else {
+        item.classList.add('hidden');
+      }
+    });
+  }
+
+  function handlePrev() {
+    currentIndex = (currentIndex - 1 + sliderItems.length) % sliderItems.length;
+    updateSlider();
+  }
+
+  function handleNext() {
+    currentIndex = (currentIndex + 1) % sliderItems.length;
+    updateSlider();
+  }
+
+  prevButton.addEventListener('click', handlePrev);
+  nextButton.addEventListener('click', handleNext);
+
+  // Initialize slider
+  updateSlider();
 </script>
 </body>
 </html>
