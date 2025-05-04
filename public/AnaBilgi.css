@@ -149,15 +149,15 @@ body {
 }
 
 .nav-toggle > figure:nth-child(2) {
-	background: #A1887F;
+	background: #D8A47F;
 }
 
 .nav-toggle > figure:nth-child(3) {
-	background: #D7CCC8;
+	background: #F5F1EA;
 }
 
 .nav-toggle > figure:nth-child(4) {
-	background: #4E342E;
+	background: #4B2E2B;
 }
 
 .nav-toggle > label,
