@@ -197,7 +197,7 @@
     padding: 10px 20px;
     /*background: linear-gradient(45deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));*/
     border-radius: 15px;
-    backdrop-filter: blur(5px);
+    /*backdrop-filter: blur(5px);*/
 }
 
 .answer-text {
@@ -218,7 +218,7 @@
     padding: 10px 20px;
    /* background: linear-gradient(45deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));*/
     border-radius: 15px;
-    backdrop-filter: blur(5px);
+    /*backdrop-filter: blur(5px);*/
 }
 
 .answer-text.show {
@@ -250,7 +250,7 @@
     cursor: pointer;
     user-select: none;
     touch-action: manipulation;
-    outline: 10px solid rgb(var(--primary), .5);
+    outline: 10px solid rgb(120, 120, 120);
     border-radius: 100%;
     position: relative;
     display: block;

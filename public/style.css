@@ -289,6 +289,10 @@ body,html{
 
 /* ------------------------------ Açılan Menü Başlangıç --------------------------------- */
   
+.kahdiv{
+  width: 100%;
+  height:96px;
+}
 
   :root {
     --gradient: conic-gradient(
