@@ -223,6 +223,8 @@ a{
   padding: .5em;
   line-height: normal;
   width: 1200px;
+  justify-content: center;
+  gap: 20px;
 }
 .container-eg-btn-2 .button {
   color: #fff2e5;
@@ -236,7 +238,8 @@ a{
   transition: .3s;
   z-index: 1;
   width: 180px;
-  margin-left: 5%;
+  margin-left: 2.5%;
+  margin-right: 2.5%;
 }
 
 .container-eg-btn-2 .button:hover {
