@@ -155,21 +155,30 @@
             db.ref('2/data').orderByChild('category').equalTo('Soğuk').once('value').then(snapshot => {
                 const cards = snapshot.val();
                 if (cards) {
+                    const cardArray = Object.values(cards);
                     let html = '';
-                    Object.values(cards).forEach(card => {
-                        html += `
-                            <div class="Bcard">
-                                <img src="${card.image_url}" alt="${card.name}">
-                                <div class="content">
-                                    <h1>${card.name}</h1>
-                                    <p>${card.description}</p>
+                    // Group cards into sets of 3
+                    for (let i = 0; i < cardArray.length; i += 3) {
+                        html += '<div class="BilgiSatiri">';
+                        // Add up to 3 cards
+                        for (let j = 0; j < 3 && i + j < cardArray.length; j++) {
+                            const card = cardArray[i + j];
+                            html += `
+                                <div class="card-container">
+                                    <div class="Bcard">
+                                        <img src="${card.image_url}" alt="${card.name}">
+                                        <div class="content">
+                                            <h1>${card.name}</h1>
+                                            <p>${card.description}</p>
+                                        </div>
+                                    </div>
+                                    <div class="FakeCard">${card.name}</div>
                                 </div>
-                            </div>
-                        `;
-                    });
+                            `;
+                        }
+                        html += '</div>';
+                    }
                     document.getElementById('soguk-cards').innerHTML = html;
-                    document.getElementById('soguk-fake-cards').innerHTML = Object.values(cards)
-                        .map(card => `<div class="FakeCard">${card.name}</div>`).join('');
                 }
             });
 
@@ -177,21 +186,30 @@
             db.ref('2/data').orderByChild('category').equalTo('Sıcak').once('value').then(snapshot => {
                 const cards = snapshot.val();
                 if (cards) {
+                    const cardArray = Object.values(cards);
                     let html = '';
-                    Object.values(cards).forEach(card => {
-                        html += `
-                            <div class="Bcard">
-                                <img src="${card.image_url}" alt="${card.name}">
-                                <div class="content">
-                                    <h1>${card.name}</h1>
-                                    <p>${card.description}</p>
+                    // Group cards into sets of 3
+                    for (let i = 0; i < cardArray.length; i += 3) {
+                        html += '<div class="BilgiSatiri">';
+                        // Add up to 3 cards
+                        for (let j = 0; j < 3 && i + j < cardArray.length; j++) {
+                            const card = cardArray[i + j];
+                            html += `
+                                <div class="card-container">
+                                    <div class="Bcard">
+                                        <img src="${card.image_url}" alt="${card.name}">
+                                        <div class="content">
+                                            <h1>${card.name}</h1>
+                                            <p>${card.description}</p>
+                                        </div>
+                                    </div>
+                                    <div class="FakeCard">${card.name}</div>
                                 </div>
-                            </div>
-                        `;
-                    });
+                            `;
+                        }
+                        html += '</div>';
+                    }
                     document.getElementById('sicak-cards').innerHTML = html;
-                    document.getElementById('sicak-fake-cards').innerHTML = Object.values(cards)
-                        .map(card => `<div class="FakeCard">${card.name}</div>`).join('');
                 }
             });
         });

@@ -1,5 +1,19 @@
-
 /* ------------------------------ Bilgi Kartları Başlangıç --------------------------------- */
+
+.card-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 80px;  /* Increased spacing between cards from 30px to 50px */
+}
+
+.BilgiSatiri {
+    width: 1200px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 30px;
+}
 
 .Acard,
 .Ccard,
@@ -7,36 +21,36 @@
     position: relative;
     width: 220px;
     height: 320px;
-    background-color:midnightblue;
+    background-color: midnightblue;
     border-radius: 15px;
     cursor: pointer;
     overflow: hidden;
-  }
+}
 
-  .Bcard{
-    margin-left: 11.25%;
-  }
+.Bcard {
+    margin: 0;
+}
 
-  .Ccard{
+.Ccard{
     margin-left: 5.3333%;
-  }
+}
 
-  .Acard{
+.Acard{
     margin-left: 21.11%;
-  }
+}
   
-  .Acard img,
-  .Ccard img,
-  .Bcard img {
+.Acard img,
+.Ccard img,
+.Bcard img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     transition: opacity 0.8s ease;
-  }
+}
   
-  .Acard .content,
-  .Ccard .content,
-  .Bcard .content {
+.Acard .content,
+.Ccard .content,
+.Bcard .content {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -46,42 +60,42 @@
     opacity: 0;
     transition: opacity 0.8s ease;
     z-index: 3;
-  }
+}
   
-  .Acard .content h1,
-  .Ccard .content h1,
-  .Bcard .content h1 {
+.Acard .content h1,
+.Ccard .content h1,
+.Bcard .content h1 {
     margin: 0;
     font-size: 24px;
-  }
+}
   
-  .Acard .content p,
-  .Ccard .content p,
-  .Bcard .content p {
+.Acard .content p,
+.Ccard .content p,
+.Bcard .content p {
     margin: 10px 0 0;
     font-size: 16px;
     width: 180px;
-  }
+}
   
-  .Acard:hover img, 
-  .Ccard:hover img, 
-  .Bcard:hover img {
+.Acard:hover img, 
+.Ccard:hover img, 
+.Bcard:hover img {
     opacity: 1;
-  }
+}
   
-  .Acard:hover .content,
-  .Ccard:hover .content,
-  .Bcard:hover .content {
+.Acard:hover .content,
+.Ccard:hover .content,
+.Bcard:hover .content {
     opacity: 1;
-  }
+}
   
 
-  .Acard::before,
-  .Acard::after,
-  .Ccard::before,
-  .Ccard::after,
-  .Bcard::before,
-  .Bcard::after {
+.Acard::before,
+.Acard::after,
+.Ccard::before,
+.Ccard::after,
+.Bcard::before,
+.Bcard::after {
     position: absolute;
     content: "";
     width: 15%;
@@ -90,44 +104,44 @@
     transition: all 0.8s;
     z-index: 2;
     opacity: 0.4;
-  }
+}
   
-  .Acard::before,
-  .Ccard::before,
-  .Bcard::before {
+.Acard::before,
+.Ccard::before,
+.Bcard::before {
     top: 0;
     right: 0;
     border-radius: 0 15px 0 100%;
     
-  }
+}
   
-  .Acard::after,
-  .Ccard::after,
-  .Bcard::after {
+.Acard::after,
+.Ccard::after,
+.Bcard::after {
     bottom: 0;
     left: 0;
     border-radius: 0 100% 0 15px;
     
-  }
+}
 
-  .Acard:hover::before,
-  .Acard:hover::after,
-  .Ccard:hover::before,
-  .Ccard:hover::after,
-  .Bcard:hover::before,
-  .Bcard:hover::after {
+.Acard:hover::before,
+.Acard:hover::after,
+.Ccard:hover::before,
+.Ccard:hover::after,
+.Bcard:hover::before,
+.Bcard:hover::after {
     width: 100%;
     height: 100%;
     border-radius: 15px;
     opacity: 0.4; 
-  } 
+} 
 
 
-  /* ------------------------------ Bilgi Kartları Bitiş --------------------------------- */
+/* ------------------------------ Bilgi Kartları Bitiş --------------------------------- */
 
-  /* ------------------------------ Sayfa Düzenleyiciler Başlangıç --------------------------------- */
+/* ------------------------------ Sayfa Düzenleyiciler Başlangıç --------------------------------- */
 
-  .Baslik{
+.Baslik{
 
     width: 1200px;
 
@@ -144,22 +158,12 @@
 
     color: rgb(162, 154, 154);
 
-  }
+}
 
 
-  .BilgiSatiri{
-
-    width:1200px;
-   /* background-color: aqua; */
-   
-    display: flex;
-    flex-wrap: wrap;
-
-
-  }
-  .AFakeCard, /* 2 */
-  .CFakeCard, /* 4 */
-  .FakeCard{  /* 3 */
+.AFakeCard, /* 2 */
+.CFakeCard, /* 4 */
+.FakeCard{  /* 3 */
 
     width: 220px;
     
@@ -176,8 +180,18 @@
     
 }
 
-.FakeCard{
-  margin-left: 11.25%;
+.FakeCard {
+    width: 220px;  /* Match card width */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    margin-top: 15px;  /* Space between card and name */
+    font-size: 28px;
+    color: #8e745f;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    padding: 0 10px;  /* Add some padding for text */
+    box-sizing: border-box;  /* Include padding in width calculation */
 }
 
 .CFakeCard{

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Soğuk Kahveler</title>
+    <title>Sıcak Çaylar</title>
     <link rel="stylesheet" href="style.css"> 
     <link rel="stylesheet" href="BilgiStyle.css"> 
 
@@ -24,7 +24,7 @@
 </head>
 <body>
     <video id="background-video" muted>
-        <source src="Gorsel/Coffe Beans Slowmotion (online-video-cutter.com).mp4" type="video/mp4">
+        <source src="Gorsel/Green Leaves Falling Black Screen video loops (online-video-cutter.com).mp4" type="video/mp4">
     </video>
 
     <div class="Container">
@@ -117,27 +117,23 @@
             </figure>
            </div>
 
-        <div class="Baslik">BREW ÇEŞİTLERİ</div>
-        <div id="brew-cards" class="BilgiSatiri"></div>
-        <div id="brew-fake-cards" class="SatirArasi"></div>
+        <div class="Baslik">KLASİK ÇAY ÇEŞİTLERİ</div>
+        <div id="klasik-cards" class="BilgiSatiri"></div>
+        <div id="klasik-fake-cards" class="SatirArasi"></div>
 
-        <div class="Baslik">BUZLU KAHVE ÇEŞİTLERİ</div>
-        <div id="buzlu-cards" class="BilgiSatiri"></div>
-        <div id="buzlu-fake-cards" class="SatirArasi"></div>
+        <div class="Baslik">BİTKİ ÇAYI ÇEŞİTLERİ</div>
+        <div id="bitki-cards" class="BilgiSatiri"></div>
+        <div id="bitki-fake-cards" class="SatirArasi"></div>
 
-        <div class="Baslik">KÖPÜKLÜ KAHVE ÇEŞİTLERİ</div>
-        <div id="kopuklu-cards" class="BilgiSatiri"></div>
-        <div id="kopuklu-fake-cards" class="SatirArasi"></div>
-
-        <div class="Baslik">DİĞER ÇEŞİTLER</div>
-        <div id="diger-cards" class="BilgiSatiri"></div>
-        <div id="diger-fake-cards" class="SatirArasi"></div>
+        <div class="Baslik">AROMALI ÇAY ÇEŞİTLERİ</div>
+        <div id="aromalı-cards" class="BilgiSatiri"></div>
+        <div id="aromalı-fake-cards" class="SatirArasi"></div>
 
         <div class="SatirSonu">
             <div class="container-eg-btn-2">
+                <a class="button button-6" href="SogukKahve.html">Soğuk Kahve</a>
                 <a class="button button-6" href="SogukCay.html">Soğuk Çay</a>
                 <a class="button button-6" href="Diger.html">Diğer</a>
-                <a class="button button-6" href="SicakCay.html">Sıcak Çay</a>
                 <a class="button button-6" href="SicakKahve.html">Sıcak Kahve</a>
             </div>
         </div>
@@ -159,8 +155,8 @@
 
         // Fetch and display cards for each category
         document.addEventListener('DOMContentLoaded', function() {
-            // Fetch Brew cards
-            db.ref('2/data').orderByChild('category').equalTo('Brew').once('value').then(snapshot => {
+            // Fetch Klasik cards
+            db.ref('2/data').orderByChild('category').equalTo('Klasik').once('value').then(snapshot => {
                 const cards = snapshot.val();
                 if (cards) {
                     const cardArray = Object.values(cards);
@@ -186,12 +182,12 @@
                         }
                         html += '</div>';
                     }
-                    document.getElementById('brew-cards').innerHTML = html;
+                    document.getElementById('klasik-cards').innerHTML = html;
                 }
             });
 
-            // Fetch Buzlu cards
-            db.ref('2/data').orderByChild('category').equalTo('Buzlu').once('value').then(snapshot => {
+            // Fetch Bitki cards
+            db.ref('2/data').orderByChild('category').equalTo('Bitki').once('value').then(snapshot => {
                 const cards = snapshot.val();
                 if (cards) {
                     const cardArray = Object.values(cards);
@@ -217,12 +213,12 @@
                         }
                         html += '</div>';
                     }
-                    document.getElementById('buzlu-cards').innerHTML = html;
+                    document.getElementById('bitki-cards').innerHTML = html;
                 }
             });
 
-            // Fetch Köpüklü cards
-            db.ref('2/data').orderByChild('category').equalTo('Köpüklü').once('value').then(snapshot => {
+            // Fetch Aromalı cards
+            db.ref('2/data').orderByChild('category').equalTo('Aromalı').once('value').then(snapshot => {
                 const cards = snapshot.val();
                 if (cards) {
                     const cardArray = Object.values(cards);
@@ -248,38 +244,7 @@
                         }
                         html += '</div>';
                     }
-                    document.getElementById('kopuklu-cards').innerHTML = html;
-                }
-            });
-
-            // Fetch Diğer cards
-            db.ref('2/data').orderByChild('category').equalTo('Soğuk Diğer').once('value').then(snapshot => {
-                const cards = snapshot.val();
-                if (cards) {
-                    const cardArray = Object.values(cards);
-                    let html = '';
-                    // Group cards into sets of 3
-                    for (let i = 0; i < cardArray.length; i += 3) {
-                        html += '<div class="BilgiSatiri">';
-                        // Add up to 3 cards
-                        for (let j = 0; j < 3 && i + j < cardArray.length; j++) {
-                            const card = cardArray[i + j];
-                            html += `
-                                <div class="card-container">
-                                    <div class="Bcard">
-                                        <img src="${card.image_url}" alt="${card.name}">
-                                        <div class="content">
-                                            <h1>${card.name}</h1>
-                                            <p>${card.description}</p>
-                                        </div>
-                                    </div>
-                                    <div class="FakeCard">${card.name}</div>
-                                </div>
-                            `;
-                        }
-                        html += '</div>';
-                    }
-                    document.getElementById('diger-cards').innerHTML = html;
+                    document.getElementById('aromalı-cards').innerHTML = html;
                 }
             });
         });
