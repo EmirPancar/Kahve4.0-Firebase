@@ -16,6 +16,44 @@
       .Container{
         background-color: rgba(52, 49, 49, 0.6); 
       }
+      .music-control {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: rgba(255, 255, 255, 0.2);
+        border: none;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        z-index: 1000;
+        transition: all 0.3s ease;
+      }
+
+      .music-control:hover {
+        background: rgba(255, 255, 255, 0.3);
+        transform: scale(1.1);
+      }
+
+      .music-control.playing {
+        animation: pulse 2s infinite;
+      }
+
+      @keyframes pulse {
+        0% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.1);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
      </style>
 </head>
 <body>
@@ -23,6 +61,11 @@
   <video id="background-video" muted>
     <source src="Gorsel/Coffe_Ana _Geri.mp4" type="video/mp4">
   </video>
+
+  <!-- Add audio element -->
+  <audio id="backgroundMusic" loop>
+    <source src="Gorsel/indexBgMusic.mp3" type="audio/mp3">
+  </audio>
 
 <div class="Container"> 
      <div class="kahdiv">
@@ -187,7 +230,32 @@
     </div>
 </div>
 
+<!-- Add music control button -->
+<button id="musicControl" class="music-control" title="Müzik Kontrolü">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M9 18V5l12-2v13"></path>
+        <circle cx="6" cy="18" r="3"></circle>
+        <circle cx="18" cy="16" r="3"></circle>
+    </svg>
+</button>
+
 <script>
+  // Background music functionality
+  const backgroundMusic = document.getElementById('backgroundMusic');
+  const musicControl = document.getElementById('musicControl');
+  let isPlaying = false;
+  
+  musicControl.addEventListener('click', () => {
+    if (isPlaying) {
+      backgroundMusic.pause();
+      musicControl.classList.remove('playing');
+    } else {
+      backgroundMusic.play();
+      musicControl.classList.add('playing');
+    }
+    isPlaying = !isPlaying;
+  });
+
   const video = document.getElementById('background-video');
   let lastScrollY = window.scrollY;
 
