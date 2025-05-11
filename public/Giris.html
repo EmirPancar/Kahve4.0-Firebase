@@ -116,7 +116,6 @@
         // Firebase'i başlat
         const auth = firebase.auth();
         const database = firebase.database();
-        const YONETICI_SIFRESI = "AdminEmo123"; // Buradan yönetici şifresini değiştirebilirsiniz
 
         // Sayfa ilk açıldığında her şeyi gizle, sadece spinner görünsün
         document.getElementById('loginForm').classList.add('hidden');
@@ -162,15 +161,24 @@
             const role = document.getElementById('userRole').value;
             const managerPassword = document.getElementById('managerPassword').value;
 
-            // Eğer rol admin veya employee ise yönetici şifresi kontrolü
-            if ((role === 'admin' || role === 'employee') && managerPassword !== YONETICI_SIFRESI) {
-                alert('Yönetici şifresi yanlış!');
-                return;
+            // Eğer rol admin veya employee ise yönetici şifresi kontrolü (backend API ile)
+            if (role === 'admin' || role === 'employee') {
+                try {
+                    const response = await fetch('http://localhost:3001/api/check-manager-password', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ password: managerPassword })
+                    });
+                    const data = await response.json();
+                    if (!data.valid) {
+                        alert('Yönetici şifresi yanlış!');
+                        return;
+                    }
+                } catch (err) {
+                    alert('Yönetici şifresi doğrulanamadı. Lütfen daha sonra tekrar deneyin.');
+                    return;
+                }
             }
-
-            // Oluşturulma tarihi ve saati (okunabilir formatta)
-            const now = new Date();
-            const createdAtReadable = now.toLocaleString('tr-TR', { hour12: false });
 
             // Kullanıcı adı benzersiz mi kontrolü
             const usernamesRef = database.ref('users');
@@ -186,6 +194,10 @@
                 alert('Bu kullanıcı adı zaten kullanılıyor. Lütfen başka bir kullanıcı adı seçin.');
                 return;
             }
+
+            // Oluşturulma tarihi ve saati (okunabilir formatta)
+            const now = new Date();
+            const createdAtReadable = now.toLocaleString('tr-TR', { hour12: false });
 
             try {
                 const userCredential = await auth.createUserWithEmailAndPassword(email, password);
