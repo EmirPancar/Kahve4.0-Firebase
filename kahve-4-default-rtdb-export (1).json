@@ -1,0 +1,551 @@
+[
+  {
+    "comment": "Export to JSON plugin for PHPMyAdmin",
+    "type": "header",
+    "version": "5.2.1"
+  },
+  {
+    "name": "kahhve",
+    "type": "database"
+  },
+  {
+    "data": [
+      {
+        "category": "Espresso",
+        "description": "İnce çekilmiş kahve çekirdeklerinin basınçlı suyla demlenmesiyle hazırlanan yoğun bir kahve.",
+        "fiyat": "100",
+        "id": "159",
+        "image_url": "Gorsel/Kahve-Gorselleri/Sıcak-Kahve/Espresso.jpeg",
+        "name": "Espresso",
+        "page": "Sıcak Kahve",
+        "stok": "195"
+      },
+      {
+        "category": "Espresso",
+        "description": "Espressoya sıcak su eklenerek yapılan, daha hafif içimli kahve.",
+        "fiyat": "125",
+        "id": "158",
+        "image_url": "Gorsel/Kahve-Gorselleri/Sıcak-Kahve/Americano.jpeg",
+        "name": "Americano",
+        "page": "Sıcak Kahve",
+        "stok": "150"
+      },
+      {
+        "category": "Espresso",
+        "description": "Espressoya bol miktarda sıcak süt ve az köpük eklenerek hazırlanan kahve.",
+        "fiyat": "150",
+        "id": "157",
+        "image_url": "Gorsel/Kahve-Gorselleri/Sıcak-Kahve/Latte.jpeg",
+        "name": "Latte",
+        "page": "Sıcak Kahve",
+        "stok": "180"
+      },
+      {
+        "category": "Espresso",
+        "description": "Eşit oranlarda espresso, sıcak süt ve süt köpüğünden oluşan kahve.",
+        "fiyat": "150",
+        "id": "160",
+        "image_url": "Gorsel/Kahve-Gorselleri/Sıcak-Kahve/Cappucino.jpeg",
+        "name": "Cappucino",
+        "page": "Sıcak Kahve",
+        "stok": "118"
+      },
+      {
+        "category": "Espresso",
+        "description": "Espresso üzerine az miktarda süt köpüğü eklenerek hazırlanan kahve.",
+        "fiyat": "150",
+        "id": "161",
+        "image_url": "Gorsel/Kahve-Gorselleri/Sıcak-Kahve/Macchiato.jpeg",
+        "name": "Macchiato",
+        "page": "Sıcak Kahve",
+        "stok": "141"
+      },
+      {
+        "category": "Espresso",
+        "description": "Espresso, süt ve çikolata şurubunun bir araya gelmesiyle hazırlanan kahve.",
+        "fiyat": "175",
+        "id": "162",
+        "image_url": "Gorsel/Kahve-Gorselleri/Sıcak-Kahve/Mocha.jpeg",
+        "name": "Mocha",
+        "page": "Sıcak Kahve",
+        "stok": "180"
+      },
+      {
+        "category": "Filtre",
+        "description": "Basınç kullanılarak kısa sürede demlenen, pürüzsüz bir kahve.",
+        "fiyat": "125",
+        "id": "163",
+        "image_url": "Gorsel/Kahve-Gorselleri/Sıcak-Kahve/Aeropress.jpeg",
+        "name": "Aeropress",
+        "page": "Sıcak Kahve",
+        "stok": "143"
+      },
+      {
+        "category": "Filtre",
+        "description": "French press cihazıyla manuel olarak demlenen yoğun aromalı kahve.",
+        "fiyat": "125",
+        "id": "164",
+        "image_url": "Gorsel/Kahve-Gorselleri/Sıcak-Kahve/French_Press.jpeg",
+        "name": "French Press",
+        "page": "Sıcak Kahve",
+        "stok": "190"
+      },
+      {
+        "category": "Filtre",
+        "description": "Kahve çekirdeklerinin sıcak suyla demlenmesiyle hazırlanan sade kahve",
+        "fiyat": "100",
+        "id": "168",
+        "image_url": "Gorsel/Kahve-Gorselleri/Sıcak-Kahve/Filtre_Kahve.jpeg",
+        "name": "Filtre Kahve",
+        "page": "Sıcak Kahve",
+        "stok": "151"
+      },
+      {
+        "category": "Sütlü",
+        "description": "Espresso, süt, çikolata ve nane aromasından oluşan aromatik kahve.",
+        "fiyat": "200",
+        "id": "169",
+        "image_url": "Gorsel/Kahve-Gorselleri/Sıcak-Kahve/Peppermint_Mocha.jpeg",
+        "name": "Peppermint Mocha",
+        "page": "Sıcak Kahve",
+        "stok": "149"
+      },
+      {
+        "category": "Sütlü",
+        "description": "Espresso, süt ve bitter çikolata karışımıyla hazırlanan zengin aromalı kahve.",
+        "fiyat": "200",
+        "id": "170",
+        "image_url": "Gorsel/Kahve-Gorselleri/Sıcak-Kahve/Dark_Mocha.jpeg",
+        "name": "Dark Mocha",
+        "page": "Sıcak Kahve",
+        "stok": "120"
+      },
+      {
+        "category": "Sütlü",
+        "description": "Espresso, süt ve beyaz çikolata karışımından oluşan tatlı kahve.",
+        "fiyat": "200",
+        "id": "171",
+        "image_url": "Gorsel/Kahve-Gorselleri/Sıcak-Kahve/White_Chocolate_Mocha.jpeg",
+        "name": "White Chocolate Mocha",
+        "page": "Sıcak Kahve",
+        "stok": "192"
+      },
+      {
+        "category": "Sütlü",
+        "description": "Espresso ve süt karışımına vanilya şurubu eklenerek yapılan tatlı kahve.",
+        "fiyat": "175",
+        "id": "172",
+        "image_url": "Gorsel/Kahve-Gorselleri/Sıcak-Kahve/Vanilla_Latte.jpeg",
+        "name": "Vanilla Latte",
+        "page": "Sıcak Kahve",
+        "stok": "174"
+      },
+      {
+        "category": "Sütlü",
+        "description": "Espresso ve süt karışımına karamel şurubu eklenerek hazırlanan kahve.",
+        "fiyat": "175",
+        "id": "173",
+        "image_url": "Gorsel/Kahve-Gorselleri/Sıcak-Kahve/Caramel_Latte.jpeg",
+        "name": "Caramel Latte",
+        "page": "Sıcak Kahve",
+        "stok": "149"
+      },
+      {
+        "category": "Sütlü",
+        "description": "Fındık aromasıyla zenginleştirilmiş espresso ve süt karışımı kahve.",
+        "fiyat": "175",
+        "id": "174",
+        "image_url": "Gorsel/Kahve-Gorselleri/Sıcak-Kahve/Hazelnut_Latte.jpeg",
+        "name": "Hazelnut Latte",
+        "page": "Sıcak Kahve",
+        "stok": "181"
+      },
+      {
+        "category": "Klasik",
+        "description": "Zencefil dilimleriyle demlenerek hazırlanan hafif baharatlı çay.",
+        "fiyat": "75",
+        "id": "175",
+        "image_url": "Gorsel/Kahve-Gorselleri/Sıcak-Cay/Zencefilli_Cay.jpeg",
+        "name": "Zencefilli Çay",
+        "page": "Sıcak Çay",
+        "stok": "146"
+      },
+      {
+        "category": "Klasik",
+        "description": "Çaya tarçın eklenerek hazırlanan aromatik içecek.",
+        "fiyat": "75",
+        "id": "176",
+        "image_url": "Gorsel/Kahve-Gorselleri/Sıcak-Cay/Tarcinli_Cay.jpeg",
+        "name": "Tarçınlı Çay",
+        "page": "Sıcak Çay",
+        "stok": "110"
+      },
+      {
+        "category": "Klasik",
+        "description": "Geleneksel şekilde demlenmiş, yoğun aromalı sıcak çay.",
+        "fiyat": "50",
+        "id": "177",
+        "image_url": "Gorsel/Kahve-Gorselleri/Sıcak-Cay/Siyah_Cay.jpeg",
+        "name": "Siyah Çay",
+        "page": "Sıcak Çay",
+        "stok": "196"
+      },
+      {
+        "category": "Bitki",
+        "description": "Kurutulmuş papatya çiçekleriyle hazırlanan, hafif aromalı bir bitki çayı.",
+        "fiyat": "100",
+        "id": "178",
+        "image_url": "Gorsel/Kahve-Gorselleri/Sıcak-Cay/Papatya_Cayi.jpeg",
+        "name": "Papatya Çayı",
+        "page": "Sıcak Çay",
+        "stok": "104"
+      },
+      {
+        "category": "Bitki",
+        "description": "Kuşburnu meyvesinin sıcak suda demlenmesiyle yapılan hafif ekşi çay.",
+        "fiyat": "100",
+        "id": "179",
+        "image_url": "Gorsel/Kahve-Gorselleri/Sıcak-Cay/Kusburnu.jpeg",
+        "name": "Kuşburnu",
+        "page": "Sıcak Çay",
+        "stok": "153"
+      },
+      {
+        "category": "Bitki",
+        "description": "Ihlamur yapraklarının sıcak suda demlenmesiyle yapılan doğal içecek.",
+        "fiyat": "100",
+        "id": "180",
+        "image_url": "Gorsel/Kahve-Gorselleri/Sıcak-Cay/Ihlamur.jpeg",
+        "name": "Ihlamur",
+        "page": "Sıcak Çay",
+        "stok": "156"
+      },
+      {
+        "category": "Aromalı",
+        "description": "Siyah çaya taze limon dilimlerinin eklenmesiyle yapılan sıcak içecek.",
+        "fiyat": "75",
+        "id": "181",
+        "image_url": "Gorsel/Kahve-Gorselleri/Sıcak-Cay/Limonlu_Cay.jpeg",
+        "name": "Limonlu Çay",
+        "page": "Sıcak Çay",
+        "stok": "179"
+      },
+      {
+        "category": "Aromalı",
+        "description": "Demlenmiş siyah çaya süt eklenerek yapılan hafif içecek.",
+        "fiyat": "100",
+        "id": "182",
+        "image_url": "Gorsel/Kahve-Gorselleri/Sıcak-Cay/Sutlu_Cay.jpeg",
+        "name": "Sütlü Çay",
+        "page": "Sıcak Çay",
+        "stok": "177"
+      },
+      {
+        "category": "Aromalı",
+        "description": "Elma aromalı poşet çay veya taze elmalarla hazırlanan sıcak içecek.",
+        "fiyat": "75",
+        "id": "183",
+        "image_url": "Gorsel/Kahve-Gorselleri/Sıcak-Cay/Elmali_Cay.jpeg",
+        "name": "Elma Çayı",
+        "page": "Sıcak Çay",
+        "stok": "192"
+      },
+      {
+        "category": "Soğuk",
+        "description": "Karbonatlı suyun sade ve ferahlatıcı bir içim sunan şekli.",
+        "fiyat": "40",
+        "id": "184",
+        "image_url": "Gorsel/Kahve-Gorselleri/Diger/Soda.jpeg",
+        "name": "Soda",
+        "page": "Diğer",
+        "stok": "196"
+      },
+      {
+        "category": "Soğuk",
+        "description": "Taze sıkılmış limon suyu, su ve şeker karışımından oluşan serinletici içecek.",
+        "fiyat": "125",
+        "id": "185",
+        "image_url": "Gorsel/Kahve-Gorselleri/Diger/Limonata.jpeg",
+        "name": "Limonata",
+        "page": "Diğer",
+        "stok": "178"
+      },
+      {
+        "category": "Soğuk",
+        "description": "Süt ve dondurmanın karıştırılarak yapılan, meyve veya çikolata aromalarıyla tatlandırılmış içecek.",
+        "fiyat": "175",
+        "id": "186",
+        "image_url": "Gorsel/Kahve-Gorselleri/Diger/Milkshake.jpeg",
+        "name": "Milkshake",
+        "page": "Diğer",
+        "stok": "97"
+      },
+      {
+        "category": "Sıcak",
+        "description": "Sıcak sütle karıştırılmış kakao ve çikolata karışımından oluşan tatlı içecek.",
+        "fiyat": "175",
+        "id": "187",
+        "image_url": "Gorsel/Kahve-Gorselleri/Diger/Sicak_Cikolata.jpeg",
+        "name": "Sıcak Çikolata",
+        "page": "Diğer",
+        "stok": "145"
+      },
+      {
+        "category": "Sıcak",
+        "description": "Beyaz çikolata ve sıcak sütle yapılan kremamsı içecek.",
+        "fiyat": "225",
+        "id": "188",
+        "image_url": "Gorsel/Kahve-Gorselleri/Diger/Beyaz_Sicak_Cikolata.jpeg",
+        "name": "Beyaz Sıcak Çikolata",
+        "page": "Diğer",
+        "stok": "86"
+      },
+      {
+        "category": "Sıcak",
+        "description": "Elma suyunun baharatlarla ısıtılarak hazırlanan aromatik hali.",
+        "fiyat": "100",
+        "id": "189",
+        "image_url": "Gorsel/Kahve-Gorselleri/Diger/Elma_Suyu.jpeg",
+        "name": "Sıcak Elma Suyu",
+        "page": "Diğer",
+        "stok": "119"
+      },
+      {
+        "category": "Soğuk Klasik",
+        "description": "Demlenmiş siyah çayın soğutulmuş hali.",
+        "fiyat": "75",
+        "id": "190",
+        "image_url": "Gorsel/Kahve-Gorselleri/Soguk-Cay/Soguk_Siyah_Cay.jpeg",
+        "name": "Siyah Soğuk Çay",
+        "page": "Soğuk Çay",
+        "stok": "195"
+      },
+      {
+        "category": "Soğuk Klasik",
+        "description": "Siyah çaya taze limon aroması eklenerek hazırlanan ferahlatıcı bir içecek.",
+        "fiyat": "90",
+        "id": "191",
+        "image_url": "Gorsel/Kahve-Gorselleri/Soguk-Cay/Limonlu_Soguk_Cay.jpeg",
+        "name": "Limonlu Soğuk Çay",
+        "page": "Soğuk Çay",
+        "stok": "154"
+      },
+      {
+        "category": "Soğuk Meyveli",
+        "description": "Siyah çaya şeftali aroması eklenerek yapılan meyveli bir içecek.",
+        "fiyat": "125",
+        "id": "192",
+        "image_url": "Gorsel/Kahve-Gorselleri/Soguk-Cay/Seftali_Cay.jpeg",
+        "name": "Şeftali Aromalı Soğuk Çay",
+        "page": "Soğuk Çay",
+        "stok": "132"
+      },
+      {
+        "category": "Soğuk Meyveli",
+        "description": "Siyah çaya tropikal mango aroması eklenerek yapılan meyveli bir içecek.\r\n\r\n",
+        "fiyat": "125",
+        "id": "193",
+        "image_url": "Gorsel/Kahve-Gorselleri/Soguk-Cay/Mango_Cay.jpeg",
+        "name": "Mango Aromalı Soğuk Çay",
+        "page": "Soğuk Çay",
+        "stok": "155"
+      },
+      {
+        "category": "Soğuk Meyveli",
+        "description": "Siyah çaya elma aroması eklenerek yapılan meyveli bir içecek.",
+        "fiyat": "125",
+        "id": "194",
+        "image_url": "Gorsel/Kahve-Gorselleri/Soguk-Cay/Elma-Cay.jpeg",
+        "name": "Elma Aromalı Soğuk Çay",
+        "page": "Soğuk Çay",
+        "stok": "110"
+      },
+      {
+        "category": "Soğuk Klasik",
+        "description": "Yeşil çayın demlenip soğutulmuş hali.",
+        "fiyat": "100",
+        "id": "195",
+        "image_url": "Gorsel/Kahve-Gorselleri/Soguk-Cay/Soguk_Yesil_Cay.jpeg",
+        "name": "Soğuk Yeşil Çay",
+        "page": "Soğuk Çay",
+        "stok": "153"
+      },
+      {
+        "category": "Soğuk Bitkisel",
+        "description": "Matcha tozunun suyla karıştırılarak hazırlanan soğuk çay versiyonu.",
+        "fiyat": "175",
+        "id": "196",
+        "image_url": "Gorsel/Kahve-Gorselleri/Soguk-Cay/Soguk_Matcha.jpeg",
+        "name": "Soğuk Matcha Çayı",
+        "page": "Soğuk Çay",
+        "stok": "82"
+      },
+      {
+        "category": "Soğuk Bitkisel",
+        "description": "Hibiskus bitkisinin suyla demlenip soğutularak yapılan hafif ekşimsi içecek.",
+        "fiyat": "150",
+        "id": "197",
+        "image_url": "Gorsel/Kahve-Gorselleri/Soguk-Cay/Iced_Hibiscus.jpeg",
+        "name": "Soğuk Hibiskus Çayı",
+        "page": "Soğuk Çay",
+        "stok": "181"
+      },
+      {
+        "category": "Soğuk Bitkisel",
+        "description": "Baharatlarla harmanlanmış çayın süt ve buzla karıştırılarak hazırlanan soğuk hali.\r\n\r\n",
+        "fiyat": "175",
+        "id": "198",
+        "image_url": "Gorsel/Kahve-Gorselleri/Soguk-Cay/Chai_Iced.jpeg",
+        "name": "Buzlu Chai Çayı",
+        "page": "Soğuk Çay",
+        "stok": "97"
+      },
+      {
+        "category": "Brew",
+        "description": "Soğuk suyla uzun süre demlenen, düşük asiditeli ve pürüzsüz içimli kahve.\n\n",
+        "fiyat": "175",
+        "id": "199",
+        "image_url": "Gorsel/Kahve-Gorselleri/Soguk-Kahve/Cold_Brew.jpeg",
+        "name": "Cold Brew",
+        "page": "Soğuk Kahve",
+        "stok": "137"
+      },
+      {
+        "category": "Brew",
+        "description": "Azot gazıyla zenginleştirilmiş, kremsi dokulu ve köpüklü cold brew kahve.\r\n\r\n",
+        "fiyat": "200",
+        "id": "200",
+        "image_url": "Gorsel/Kahve-Gorselleri/Soguk-Kahve/Nitro_Cold_Brew.jpeg",
+        "name": "Nitro Cold Brew",
+        "page": "Soğuk Kahve",
+        "stok": "150"
+      },
+      {
+        "category": "Brew",
+        "description": "Sütle Karıştırılmış, yumuşak içimli cold brew latte.\r\n\r\n",
+        "fiyat": "200",
+        "id": "201",
+        "image_url": "Gorsel/Kahve-Gorselleri/Soguk-Kahve/Cold_Brew_Latte.jpeg",
+        "name": "Cold Brew Latte",
+        "page": "Soğuk Kahve",
+        "stok": "128"
+      },
+      {
+        "category": "Buzlu",
+        "description": "Demlenmiş kahvenin buzla soğutulmuş hali.\r\n\r\n",
+        "fiyat": "125",
+        "id": "202",
+        "image_url": "Gorsel/Kahve-Gorselleri/Soguk-Kahve/Iced_Coffe.jpeg",
+        "name": "Iced Coffe",
+        "page": "Soğuk Kahve",
+        "stok": "187"
+      },
+      {
+        "category": "Buzlu",
+        "description": "Espresso'nun su ve buzla karıştırılmasıyla hazırlanan, hafif ve serinletici kahve.\r\n\r\n",
+        "fiyat": "150",
+        "id": "203",
+        "image_url": "Gorsel/Kahve-Gorselleri/Soguk-Kahve/Iced_Americano.jpeg",
+        "name": "Iced Americano",
+        "page": "Soğuk Kahve",
+        "stok": "152"
+      },
+      {
+        "category": "Buzlu",
+        "description": "Espresso ve buz üzerine soğuk süt eklenerek hazırlanan, yumuşak içimli kahve.\r\n\r\n",
+        "fiyat": "175",
+        "id": "204",
+        "image_url": "Gorsel/Kahve-Gorselleri/Soguk-Kahve/Iced_Latte.jpeg",
+        "name": "Iced Latte",
+        "page": "Soğuk Kahve",
+        "stok": "174"
+      },
+      {
+        "category": "Köpüklü",
+        "description": "Buz, kahve, süt ve isteğe bağlı tatlandırıcıların karıştırılmasıyla hazırlanan kremamsı, soğuk bir içecek. Çoğunlukla üzerine krema eklenir.\r\n\r\n",
+        "fiyat": "200",
+        "id": "205",
+        "image_url": "Gorsel/Kahve-Gorselleri/Soguk-Kahve/Frappucino.jpeg",
+        "name": "Frappucino",
+        "page": "Soğuk Kahve",
+        "stok": "93"
+      },
+      {
+        "category": "Köpüklü",
+        "description": "Bir top vanilyalı dondurmanın üzerine sıcak espresso dökülerek hazırlanan bir tatlı.\r\n\r\n",
+        "fiyat": "175",
+        "id": "206",
+        "image_url": "Gorsel/Kahve-Gorselleri/Soguk-Kahve/Affogato.jpg",
+        "name": "Affogato",
+        "page": "Soğuk Kahve",
+        "stok": "111"
+      },
+      {
+        "category": "Köpüklü",
+        "description": "Soğuk süt, kahve ve buzun köpürtülerek karıştırıldığı, genellikle şekerle tatlandırılan kahve.\r\n\r\n",
+        "fiyat": "200",
+        "id": "207",
+        "image_url": "Gorsel/Kahve-Gorselleri/Soguk-Kahve/Frappe.jpeg",
+        "name": "Frappe",
+        "page": "Soğuk Kahve",
+        "stok": "123"
+      },
+      {
+        "category": "Soğuk Diğer",
+        "description": "Espresso, beyaz çikolata sosu, süt ve buzla hazırlanan tatlı ve kremsi kahve.\r\n\r\n",
+        "fiyat": "225",
+        "id": "208",
+        "image_url": "Gorsel/Kahve-Gorselleri/Soguk-Kahve/Iced_White_Chocolate_Mocha.jpeg",
+        "name": "Iced White Chocolate Mocha",
+        "page": "Soğuk Kahve",
+        "stok": "120"
+      },
+      {
+        "category": "Soğuk Diğer",
+        "description": "Espresso, süt ve buzla hazırlanan latteye karamel şurubu eklenerek yapılan tatlı ve yumuşak içimli kahve.\r\n\r\n",
+        "fiyat": "200",
+        "id": "209",
+        "image_url": "Gorsel/Kahve-Gorselleri/Soguk-Kahve/Caramel_Iced_Latte.jpeg",
+        "name": "Iced Caramel Latte",
+        "page": "Soğuk Kahve",
+        "stok": "156"
+      },
+      {
+        "category": "Soğuk Diğer",
+        "description": "Espresso'nun tonik suyu ile karıştırılmasıyla hazırlanan, ferahlatıcı ve hafif acı kahve.\r\n\r\n",
+        "fiyat": "175",
+        "id": "210",
+        "image_url": "Gorsel/Kahve-Gorselleri/Soguk-Kahve/Espresso_Tonic.jpeg",
+        "name": "Espresso Tonic",
+        "page": "Soğuk Kahve",
+        "stok": "173"
+      }
+    ],
+    "database": "kahhve",
+    "name": "coffee_cards",
+    "type": "table"
+  },
+  {
+    "database": "kahhve",
+    "name": "masa",
+    "type": "table"
+  },
+  {
+    "database": "kahhve",
+    "name": "orders",
+    "type": "table"
+  },
+  {
+    "data": [
+      {
+        "name": "Kullanıcı Adı",
+        "email": "kullanici@email.com",
+        "role": "customer/employee/admin",
+        "createdAt": ""
+      }
+    ],
+    "database": "kahhve",
+    "name": "users",
+    "type": "table"
+  }
+]

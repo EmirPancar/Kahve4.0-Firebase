@@ -1,6 +1,6 @@
 // Initialize Firebase
 const firebaseConfig = {
-  apiKey: "AIzaSyCzOskUf-1C64jzKpN79CEpu_ILQZI726c",
+  apiKey: "AIzaSyCzOskUf-1C64jzKpN79CEpu_lLQZI726c",
   authDomain: "kahve-4.firebaseapp.com",
   databaseURL: "https://kahve-4-default-rtdb.europe-west1.firebasedatabase.app",
   projectId: "kahve-4",

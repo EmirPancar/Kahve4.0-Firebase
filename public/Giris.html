@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giriş ve Kayıt</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .auth-container {
+            max-width: 400px;
+            margin: 50px auto;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            border-radius: 8px;
+        }
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Yükleniyor Spinner -->
+        <div id="loadingSpinner" class="d-flex justify-content-center align-items-center" style="height: 100vh;">
+            <div class="spinner-border text-primary" role="status" style="width: 4rem; height: 4rem;">
+                <span class="visually-hidden">Yükleniyor...</span>
+            </div>
+        </div>
+        <div class="auth-container">
+            <!-- Giriş Formu -->
+            <div id="loginForm">
+                <h2 class="text-center mb-4">Giriş Yap</h2>
+                <form id="login">
+                    <div class="mb-3">
+                        <label for="loginEmail" class="form-label">Kullanıcı Adı veya E-posta</label>
+                        <input type="text" class="form-control" id="loginEmail" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="loginPassword" class="form-label">Şifre</label>
+                        <input type="password" class="form-control" id="loginPassword" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Giriş Yap</button>
+                </form>
+                <p class="text-center mt-3">
+                    Hesabınız yok mu? <a href="#" id="showRegister">Kayıt Ol</a>
+                </p>
+            </div>
+
+            <!-- Kayıt Formu -->
+            <div id="registerForm" class="hidden">
+                <h2 class="text-center mb-4">Kayıt Ol</h2>
+                <form id="register">
+                    <div class="mb-3">
+                        <label for="registerName" class="form-label">Ad Soyad</label>
+                        <input type="text" class="form-control" id="registerName" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="registerEmail" class="form-label">E-posta</label>
+                        <input type="email" class="form-control" id="registerEmail" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="registerPassword" class="form-label">Şifre</label>
+                        <input type="password" class="form-control" id="registerPassword" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="registerUsername" class="form-label">Kullanıcı Adı</label>
+                        <input type="text" class="form-control" id="registerUsername" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="userRole" class="form-label">Rol Seçin</label>
+                        <select class="form-select" id="userRole" required>
+                            <option value="customer">Müşteri</option>
+                            <option value="employee">Personel</option>
+                            <option value="admin">Admin</option>
+                        </select>
+                    </div>
+                    <div class="mb-3 hidden" id="managerPasswordDiv">
+                        <label for="managerPassword" class="form-label">Yönetici Şifresi</label>
+                        <input type="password" class="form-control" id="managerPassword" placeholder="Yönetici şifresini girin">
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Kayıt Ol</button>
+                </form>
+                <p class="text-center mt-3">
+                    Zaten hesabınız var mı? <a href="#" id="showLogin">Giriş Yap</a>
+                </p>
+            </div>
+        </div>
+
+        <!-- Paneller -->
+        <div id="customerPanel" class="hidden">
+            <h2 class="text-center">Müşteri Paneli</h2>
+            <p class="text-center">Hoş geldiniz, <span id="customerName"></span>!</p>
+            <div class="text-center"><button onclick="logout()" class="btn btn-danger">Çıkış Yap</button></div>
+        </div>
+
+        <div id="adminPanel" class="hidden">
+            <h2 class="text-center">Admin Paneli</h2>
+            <p class="text-center">Hoş geldiniz, <span id="adminName"></span>!</p>
+            <div class="text-center"><button onclick="logout()" class="btn btn-danger">Çıkış Yap</button></div>
+        </div>
+
+        <div id="employeePanel" class="hidden">
+            <h2 class="text-center">Personel Paneli</h2>
+            <p class="text-center">Hoş geldiniz, <span id="employeeName"></span>!</p>
+            <div class="text-center"><button onclick="logout()" class="btn btn-danger">Çıkış Yap</button></div>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+    <script src="db.js"></script>
+
+    <script>
+        // Firebase'i başlat
+        const auth = firebase.auth();
+        const database = firebase.database();
+        const YONETICI_SIFRESI = "AdminEmo123"; // Buradan yönetici şifresini değiştirebilirsiniz
+
+        // Sayfa ilk açıldığında her şeyi gizle, sadece spinner görünsün
+        document.getElementById('loginForm').classList.add('hidden');
+        document.getElementById('registerForm').classList.add('hidden');
+        document.getElementById('customerPanel').classList.add('hidden');
+        document.getElementById('adminPanel').classList.add('hidden');
+        document.getElementById('employeePanel').classList.add('hidden');
+        document.getElementById('loadingSpinner').classList.remove('hidden');
+
+        // Rol seçimine göre yönetici şifresi alanını göster/gizle
+        document.getElementById('userRole').addEventListener('change', function() {
+            const role = this.value;
+            const managerDiv = document.getElementById('managerPasswordDiv');
+            if (role === 'admin' || role === 'employee') {
+                managerDiv.classList.remove('hidden');
+                document.getElementById('managerPassword').setAttribute('required', 'required');
+            } else {
+                managerDiv.classList.add('hidden');
+                document.getElementById('managerPassword').removeAttribute('required');
+            }
+        });
+
+        // Form geçişleri
+        document.getElementById('showRegister').addEventListener('click', (e) => {
+            e.preventDefault();
+            document.getElementById('loginForm').classList.add('hidden');
+            document.getElementById('registerForm').classList.remove('hidden');
+        });
+
+        document.getElementById('showLogin').addEventListener('click', (e) => {
+            e.preventDefault();
+            document.getElementById('registerForm').classList.add('hidden');
+            document.getElementById('loginForm').classList.remove('hidden');
+        });
+
+        // Kayıt işlemi
+        document.getElementById('register').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const username = document.getElementById('registerUsername').value.trim();
+            const name = document.getElementById('registerName').value;
+            const email = document.getElementById('registerEmail').value;
+            const password = document.getElementById('registerPassword').value;
+            const role = document.getElementById('userRole').value;
+            const managerPassword = document.getElementById('managerPassword').value;
+
+            // Eğer rol admin veya employee ise yönetici şifresi kontrolü
+            if ((role === 'admin' || role === 'employee') && managerPassword !== YONETICI_SIFRESI) {
+                alert('Yönetici şifresi yanlış!');
+                return;
+            }
+
+            // Oluşturulma tarihi ve saati (okunabilir formatta)
+            const now = new Date();
+            const createdAtReadable = now.toLocaleString('tr-TR', { hour12: false });
+
+            // Kullanıcı adı benzersiz mi kontrolü
+            const usernamesRef = database.ref('users');
+            let usernameExists = false;
+            await usernamesRef.once('value', (snapshot) => {
+                snapshot.forEach(child => {
+                    if (child.val().username && child.val().username.toLowerCase() === username.toLowerCase()) {
+                        usernameExists = true;
+                    }
+                });
+            });
+            if (usernameExists) {
+                alert('Bu kullanıcı adı zaten kullanılıyor. Lütfen başka bir kullanıcı adı seçin.');
+                return;
+            }
+
+            try {
+                const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+                const user = userCredential.user;
+                
+                // Kullanıcı bilgilerini Realtime Database'e kaydet
+                await database.ref('users/' + user.uid).set({
+                    username: username,
+                    name: name,
+                    email: email,
+                    role: role,
+                    createdAt: createdAtReadable
+                });
+
+                alert('Kayıt başarılı!');
+                showPanel(role, name);
+            } catch (error) {
+                alert('Hata: ' + error.message);
+            }
+        });
+
+        // Giriş işlemi
+        document.getElementById('login').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const loginInput = document.getElementById('loginEmail').value.trim();
+            const password = document.getElementById('loginPassword').value;
+
+            // E-posta mı kullanıcı adı mı kontrolü
+            let emailToLogin = null;
+            if (loginInput.includes('@')) {
+                // E-posta ile giriş
+                emailToLogin = loginInput;
+            } else {
+                // Kullanıcı adı ile giriş
+                const usersRef = database.ref('users');
+                let foundEmail = null;
+                await usersRef.once('value', (snapshot) => {
+                    snapshot.forEach(child => {
+                        if (child.val().username && child.val().username.toLowerCase() === loginInput.toLowerCase()) {
+                            foundEmail = child.val().email;
+                        }
+                    });
+                });
+                if (!foundEmail) {
+                    alert('Hatalı e-posta veya şifre girdiniz.');
+                    return;
+                }
+                emailToLogin = foundEmail;
+            }
+            try {
+                const userCredential = await auth.signInWithEmailAndPassword(emailToLogin, password);
+                const user = userCredential.user;
+                // Kullanıcı bilgilerini Realtime Database'den al
+                const userRef = database.ref('users/' + user.uid);
+                userRef.once('value', (snapshot) => {
+                    const userData = snapshot.val();
+                    if (userData) {
+                        showPanel(userData.role, userData.name);
+                    }
+                });
+            } catch (error) {
+                alert('Hatalı e-posta veya şifre girdiniz.');
+            }
+        });
+
+        // Çıkış işlemi
+        function logout() {
+            auth.signOut().then(() => {
+                hideAllPanels();
+                document.getElementById('loginForm').classList.remove('hidden');
+            }).catch((error) => {
+                alert('Çıkış yapılırken hata oluştu: ' + error.message);
+            });
+        }
+
+        // Panel gösterme fonksiyonu
+        function showPanel(role, name) {
+            hideAllPanels();
+            document.getElementById('loginForm').classList.add('hidden');
+            document.getElementById('registerForm').classList.add('hidden');
+            document.getElementById(role + 'Panel').classList.remove('hidden');
+            document.getElementById(role + 'Name').textContent = name;
+        }
+
+        // Tüm panelleri gizle
+        function hideAllPanels() {
+            document.getElementById('customerPanel').classList.add('hidden');
+            document.getElementById('adminPanel').classList.add('hidden');
+            document.getElementById('employeePanel').classList.add('hidden');
+        }
+
+        // Auth state değişikliğini dinle
+        auth.onAuthStateChanged((user) => {
+            // Oturum kontrolü tamamlandı, spinnerı gizle
+            document.getElementById('loadingSpinner').classList.add('hidden');
+            if (user) {
+                const userRef = database.ref('users/' + user.uid);
+                userRef.once('value', (snapshot) => {
+                    const userData = snapshot.val();
+                    if (userData) {
+                        showPanel(userData.role, userData.name);
+                    }
+                });
+            } else {
+                hideAllPanels();
+                document.getElementById('loginForm').classList.remove('hidden');
+            }
+        });
+    </script>
+</body>
+</html>
