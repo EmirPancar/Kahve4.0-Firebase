@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Havai Fişek Gösterisi</title>
+    <script src="https://cdn.jsdelivr.net/npm/fireworks-js@2.x/dist/index.umd.js"></script>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #222;
+            overflow: hidden; /* Havai fişeklerin taşmasını engelle */
+        }
+
+        #fireworks-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            /* z-index: -1; */ /* Butonun arkasında kalması için */
+        }
+
+        button {
+            padding: 15px 30px;
+            font-size: 1.2em;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease;
+            position: relative; /* Ensure button is on top of fireworks */
+            z-index: 10; /* Ensure button is on top of fireworks */
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div id="fireworks-container"></div>
+    <p id="status" style="color: white; position: absolute; top: 20px; left: 50%; transform: translateX(-50%); z-index: 20;">Sesli komut bekleniyor...</p>
+    <button id="fisekButton">Havai Fişekleri Başlat!</button>
+
+    <script>
+        const fisekButton = document.getElementById('fisekButton');
+        const container = document.getElementById('fireworks-container');
+        const statusP = document.getElementById('status');
+        const fireworks = new Fireworks.default(container, {
+            rocketsPoint: {
+                min: 50,
+                max: 50
+            },
+            hue: {
+                min: 0,
+                max: 360
+            },
+            delay: {
+                min: 30,
+                max: 60
+            },
+            speed: 2,
+            acceleration: 1.05,
+            friction: 0.97,
+            gravity: 1.5,
+            particles: 90,
+            traceLength: 3,
+            traceSpeed: 10,
+            explosion: 6,
+            intensity: 30,
+            flickering: 50,
+            lineStyle: 'round',
+            lineWidth: {
+                explosion: {
+                    min: 1,
+                    max: 4
+                },
+                trace: {
+                    min: 0.1,
+                    max: 1
+                }
+            },
+            brightness: {
+                min: 50,
+                max: 80,
+            },
+            decay: {
+                min: 0.01,
+                max: 0.03
+            },
+            mouse: {
+                click: false, // Fare tıklamasıyla havai fişek başlatmayı kapat
+                move: false, // Fare hareketiyle havai fişek başlatmayı kapat
+                max: 1
+            }
+        });
+
+        function startFireworksAnimation() {
+            fireworks.start();
+            setTimeout(() => {
+                fireworks.stop();
+            }, 10000); // 10000 milisaniye = 10 saniye
+        }
+
+        fisekButton.addEventListener('click', startFireworksAnimation);
+
+        // Speech Recognition
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        if (SpeechRecognition) {
+            const recognition = new SpeechRecognition();
+            recognition.lang = 'tr-TR';
+            recognition.continuous = false; // Tek bir komut sonrası durması için
+            recognition.interimResults = false;
+
+            recognition.onstart = () => {
+                statusP.textContent = "Dinleniyor...";
+                console.log("Speech recognition started.");
+            };
+
+            recognition.onresult = (event) => {
+                const transcript = event.results[event.results.length - 1][0].transcript.trim().toLowerCase();
+                statusP.textContent = "Algılanan komut: " + transcript;
+                console.log("Recognized:", transcript);
+
+                if (transcript === "fişekler") {
+                    statusP.textContent = "Fişekler komutu algılandı! Gösteri başlıyor...";
+                    startFireworksAnimation();
+                } else {
+                    statusP.textContent = "Komut anlaşılamadı: " + transcript + ". 'Fişekler' demeyi deneyin.";
+                }
+            };
+
+            recognition.onerror = (event) => {
+                console.error("Speech recognition error:", event.error);
+                let errorMessage = "Ses tanıma hatası: " + event.error;
+                if (event.error === 'not-allowed' || event.error === 'service-not-allowed') {
+                    errorMessage = "Mikrofon erişim izni reddedildi. Lütfen izin verin ve sayfayı yenileyin.";
+                } else if (event.error === 'no-speech') {
+                    errorMessage = "Ses algılanamadı. Tekrar deneniyor...";
+                }
+                statusP.textContent = errorMessage;
+            };
+
+            recognition.onend = () => {
+                console.log("Speech recognition ended. Restarting if not a 'not-allowed' error.");
+                // 'not-allowed' veya 'service-not-allowed' değilse yeniden başlat
+                // (Kullanıcı izni reddettiyse sonsuz döngüye girmemek için)
+                // Ancak, bazen 'no-speech' sonrası da onend tetiklenebilir ve yeniden başlatmak isteyebiliriz.
+                // Şimdilik basitçe, hata "not-allowed" değilse yeniden başlatmayı deneyelim.
+                // Chrome'da, izin verilmediyse veya mikrofon yoksa, 'onend' sürekli 'not-allowed' ile tetiklenir.
+                // Bu yüzden onend içinde sürekli başlatmaktan kaçınmak önemli.
+                // İlk başta otomatik başlatıyoruz, hata durumunda kullanıcı manuel başlatmalı (örneğin bir butonla)
+                // veya hata mesajına göre hareket etmeli.
+                // Daha sağlam bir çözüm: kullanıcı etkileşimiyle (örn. butona tıklayarak) başlatmak.
+                // Şimdilik, 'no-speech' durumunda ve 'not-allowed' olmadığında yeniden başlatmayı deneyelim.
+                if (recognition.continuous === false && !['not-allowed', 'service-not-allowed'].includes(recognition.error) ) {
+                    try {
+                        recognition.start(); // Hata yoksa veya "no-speech" ise yeniden başlat
+                    } catch(e) {
+                        console.error("Error restarting recognition:", e);
+                        statusP.textContent = "Yeniden başlatma hatası. Lütfen sayfayı yenileyin.";
+                    }
+                } else if (['not-allowed', 'service-not-allowed'].includes(recognition.error)) {
+                     statusP.textContent = "Mikrofon erişimi engellendi. Sesli komut kullanılamıyor.";
+                } else {
+                     statusP.textContent = "Ses tanıma durdu. 'Fişekler' diyerek tekrar deneyin veya butonu kullanın.";
+                }
+            };
+
+            // Sayfa yüklendiğinde otomatik olarak dinlemeye başla
+            // Kullanıcı mikrofon izni vermesi gerekecek
+            try {
+                 recognition.start();
+            } catch (e) {
+                console.error("Could not start recognition (possibly already started or an issue):", e);
+                statusP.textContent = "Ses tanıma başlatılamadı. Lütfen mikrofon izniniz olduğundan emin olun.";
+            }
+
+
+        } else {
+            statusP.textContent = "Tarayıcınız ses tanımayı desteklemiyor. Lütfen butonu kullanın.";
+            console.warn("Speech Recognition API not supported.");
+        }
+    </script>
+</body>
+</html>
