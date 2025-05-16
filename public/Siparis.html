@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sipariş Sayfası</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-database.js"></script>
+    <!-- Firebase config and initialization -->
+    <script src="db.js"></script>
+    <style>
+
+
+      .SipBut{
+        background-color: rgb(169, 103, 3);
+        cursor: pointer;
+        color:rgb(227, 223, 216);
+        width:100px;
+        height:30px;
+      }
+
+      .SipBut:hover{
+
+        background-color:rgb(171, 111, 21);
+
+      }
+
+      .deliver-button{
+
+        background-color: rgb(169, 103, 3);
+        cursor: pointer;
+        color:rgb(227, 223, 216);
+        width:100px;
+        height:30px;
+
+      }
+
+      .deliver-button:hover{
+        background-color:rgb(171, 111, 21);
+      }
+
+      .MasaUst{
+
+        width:1000px;
+        height:120px;
+
+        margin-left:100px;
+
+        display:flex;
+        align-items:center;
+        justify-content:center;
+
+        background-color: aqua;
+      }
+
+      .con{
+        height:600px;
+      }
+
+      h2 {
+            text-align: center;
+            margin: 20px 0;
+            color: black;
+        }
+
+        .coffee-table {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            background-color: rgb(95, 72, 35);
+        }
+
+        .filters {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+        }
+
+        .filters button {
+            padding: 10px 20px;
+            font-size: 14px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            background-color:rgb(169, 103, 3);
+            color: white;
+            transition: background-color 0.3s ease;
+        }
+
+        .filters button:hover {
+            background-color: rgb(171, 111, 21);
+        }
+
+        #coffeeTable {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            background-color:rgb(192, 166, 124);
+        }
+
+        #coffeeTable thead {
+            background-color: rgb(193, 159, 105);
+        }
+
+        #coffeeTable th, #coffeeTable td {
+            padding: 15px;
+            border: 1px solid #ddd;
+        }
+
+        #coffeeTable th {
+            text-align: center;
+        }
+
+        #coffeeTable tbody tr {
+            transition: background-color 0.3s ease;
+        }
+
+        #coffeeTable tbody tr:hover {
+            background-color:rgb(194, 173, 140);
+        }
+
+        .order-button {
+            padding: 8px 12px;
+            font-size: 14px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            background-color: #28a745;
+            color: white;
+            transition: background-color 0.3s ease;
+        }
+
+        .order-button:hover {
+            background-color: #218838;
+        }
+
+        .image-cell img {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+
+        .Body1 img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          object-position: cover;
+          }
+
+  .Body1 .content {
+    position:absolute;
+    justify-content:center;
+    text-align: center;
+    color: black;
+    opacity: 1;
+    z-index: 4;
+  }
+
+  .Body3{
+    height:300px;
+    width:300px;
+    background-color:rgb(193, 159, 105);
+
+    margin-left:50px;
+    margin-bottom: 20px;
+    margin-right: 50px;
+
+}
+
+  .Body3Title{
+    width: 300px;
+    height:50px;
+    background-color:rgb(77, 51, 9);
+    display:flex;
+
+    justify-content:center;
+    text-align:center;
+    align-items:center;
+
+    border-color:black;
+    
+    font-size:20px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    color: rgb(227, 224, 216);
+  }
+
+  .Body3Body{
+
+    width:300px;
+    height:250px;
+
+    display:flex;
+
+    justify-content:center;
+    align-items:center;
+
+    
+
+  }
+
+  /* Styles for Personnel Panel (similar to old Body3) */
+  .Body3-personnel {
+    width:300px;
+    background-color:rgb(193, 159, 105);
+    margin-left:50px;
+    margin-bottom: 20px;
+    margin-right: 50px;
+    display: inline-block; /* To line them up */
+    vertical-align: top;
+  }
+
+  .Body3Title-personnel {
+    width: 300px;
+    height:50px;
+    background-color:rgb(77, 51, 9);
+    display:flex;
+    justify-content:center;
+    text-align:center;
+    align-items:center;
+    border-color:black;
+    font-size:20px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    color: rgb(227, 224, 216);
+  }
+
+  .Body3Body-personnel {
+    width:300px;
+    min-height:200px; /* Ensure some height */
+    padding: 10px; /* Add some padding */
+    display:flex;
+    flex-direction: column; /* Stack orders vertically */
+    justify-content:flex-start;
+    align-items:center;
+  }
+  .Body3Body-personnel table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  .Body3Body-personnel th, .Body3Body-personnel td {
+    border: 1px solid black;
+    text-align: center;
+    padding: 8px;
+  }
+  .Body3Body-personnel th {
+    background-color:rgb(129, 83, 20);
+    color:rgb(227, 224, 216);
+  }
+  .table-orders-container {
+    /* text-align: center; /* Center the inline-block Body3-personnel divs */
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; /* Or flex-start if you prefer items aligned to the left */
+    padding: 10px; /* Add some padding around the container */
+  }
+
+  /* New styles for customer table container */
+  .masa-container-customer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; /* Center tables */
+    padding: 10px;
+  }
+
+  /* Adjust .Body1 for flex layout if needed */
+  .Body1 {
+    /* Assuming Body1 elements have intrinsic size or specific CSS for width/height */
+    /* For a 2-column layout, you might set a flex-basis or max-width */
+    /* E.g., flex-basis: calc(50% - 20px); to account for margins */
+    margin: 10px; /* Add some margin for spacing */
+    /* Ensure existing .Body1 styles like position relative for .content work well */
+  }
+
+  /* Adjust .Body3-personnel for flex layout */
+  .Body3-personnel {
+    width:300px; /* Existing width */
+    background-color:rgb(193, 159, 105);
+    /* margin-left:50px; Removed to be more symmetrical in flex */
+    /* margin-right: 50px; Removed for symmetry */
+    margin: 15px; /* Uniform margin for flex items */
+    /* display: inline-block; Changed by flex container */
+    vertical-align: top;
+    /* flex-basis: calc(50% - 30px); /* Adjust if needed, considering margins */
+  }
+
+
+
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="Container">
+
+    <div class="kahdiv">
+        <input type="radio" name="toggle" id="toggleOpen" value="toggleOpen">
+        <input type="radio" name="toggle" id="toggleClose" value="toggleClose">
+        <figure id="welcomeMessage">
+          <figcaption>
+            <h1> 
+              <label for="toggleOpen"></label>
+              <label for="toggleClose" title="Click to Close">✖</label>
+              <b>
+                -
+                <a href="javascript:void(0);" title="Anasayfa">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+                    <defs>
+                      <lineargradient id="svgGradient" x1="0" y1="0" x2="20" y2="0" gradientUnits="userSpaceOnUse">
+                        <stop offset="0" stop-color="#00ffc3" />
+                        <stop offset="0.09090909090909091" stop-color="#00fad9" />
+                        <stop offset="0.18181818181818182" stop-color="#00f4f0" />
+                        <stop offset="0.2727272727272727" stop-color="#00eeff" />
+                        <stop offset="0.36363636363636365" stop-color="#00e6ff" />
+                        <stop offset="0.4545454545454546" stop-color="#00dcff" />
+                        <stop offset="0.5454545454545454" stop-color="#00d2ff" />
+                        <stop offset="0.6363636363636364" stop-color="#00c5ff" />
+                        <stop offset="0.7272727272727273" stop-color="#00b8ff" />
+                        <stop offset="0.8181818181818182" stop-color="#6da8ff" />
+                        <stop offset="0.9090909090909092" stop-color="#9f97ff" />
+                        <stop offset="1" stop-color="#c285ff" />
+                      </lineargradient>
+                    </defs>
+                    <path fill-rule="evenodd" d="m8 3.293 6 6V13.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5V9.293l6-6zm5-.793V6l-2-2V2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5z" />
+                    <path fill-rule="evenodd" d="M7.293 1.5a1 1 0 0 1 1.414 0l6.647 6.646a.5.5 0 0 1-.708.708L8 2.207 1.354 8.854a.5.5 0 1 1-.708-.708L7.293 1.5z" />
+                  </svg>
+                </a>
+              </b>
+              <b>
+                k
+                <a href="AnaBilgi.html" title="Bilgi">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+                    <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm8.93 4.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM8 5.5a1 1 0 1 0 0-2 1 1 0 0 0 0 2z" />
+                  </svg>
+                </a>
+              </b>
+              <b>
+                a
+                <a href="javascript:void(0);" title="">
+                  <svg class="svg-icon" viewBox="0 0 20 20">
+                    <path d="M19.432,7.157c-0.312-1.113-1.624-1.858-3.496-2.17c0.279,0.331,0.532,0.685,0.754,1.06c1.043,0.299,1.748,0.764,1.911,1.344c0.095,0.335,0.014,0.729-0.24,1.169c-0.274,0.476-0.768,1.007-1.455,1.542c0-0.034,0.005-0.067,0.005-0.101c0-3.816-3.094-6.91-6.91-6.91c-3.816,0-6.91,3.094-6.91,6.91c0,1.169,0.293,2.268,0.805,3.232c-1.366-0.277-2.303-0.805-2.495-1.487c-0.094-0.336-0.013-0.729,0.241-1.169c0.138-0.239,0.35-0.496,0.595-0.756c0.011-0.449,0.055-0.89,0.138-1.317c-1.398,1.144-2.112,2.386-1.805,3.476c0.338,1.205,1.845,1.98,3.968,2.24C5.8,15.854,7.774,16.91,10,16.91c3.389,0,6.201-2.44,6.791-5.659C18.735,9.951,19.795,8.448,19.432,7.157 M10,16.047c-1.651,0-3.147-0.664-4.238-1.738c0.147,0.005,0.295,0.008,0.447,0.008c1.502,0,3.195-0.212,4.941-0.658c1.734-0.443,3.297-1.064,4.595-1.776C14.952,14.299,12.682,16.047,10,16.047 M15.998,10.733c-1.27,0.797-2.973,1.554-5.062,2.088c-1.616,0.414-3.251,0.632-4.727,0.632c-0.427,0-0.827-0.025-1.213-0.061C4.338,12.425,3.954,11.258,3.954,10c0-3.339,2.707-6.046,6.046-6.046c3.34,0,6.047,2.708,6.047,6.046C16.047,10.249,16.027,10.492,15.998,10.733"></path>
+                  </svg>
+                </a>
+              </b>
+              <b>
+                h
+                <a href="Siparis.html" title="Sipariş">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+                    <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" />
+                  </svg>
+                </a>
+              </b>
+              <b>
+                v
+                <a href="javascript:void(0);" title="">
+                  <svg class="svg-icon" viewBox="0 0 20 20">
+                    <path d="M19.432,7.157c-0.312-1.113-1.624-1.858-3.496-2.17c0.279,0.331,0.532,0.685,0.754,1.06c1.043,0.299,1.748,0.764,1.911,1.344c0.095,0.335,0.014,0.729-0.24,1.169c-0.274,0.476-0.768,1.007-1.455,1.542c0-0.034,0.005-0.067,0.005-0.101c0-3.816-3.094-6.91-6.91-6.91c-3.816,0-6.91,3.094-6.91,6.91c0,1.169,0.293,2.268,0.805,3.232c-1.366-0.277-2.303-0.805-2.495-1.487c-0.094-0.336-0.013-0.729,0.241-1.169c0.138-0.239,0.35-0.496,0.595-0.756c0.011-0.449,0.055-0.89,0.138-1.317c-1.398,1.144-2.112,2.386-1.805,3.476c0.338,1.205,1.845,1.98,3.968,2.24C5.8,15.854,7.774,16.91,10,16.91c3.389,0,6.201-2.44,6.791-5.659C18.735,9.951,19.795,8.448,19.432,7.157 M10,16.047c-1.651,0-3.147-0.664-4.238-1.738c0.147,0.005,0.295,0.008,0.447,0.008c1.502,0,3.195-0.212,4.941-0.658c1.734-0.443,3.297-1.064,4.595-1.776C14.952,14.299,12.682,16.047,10,16.047 M15.998,10.733c-1.27,0.797-2.973,1.554-5.062,2.088c-1.616,0.414-3.251,0.632-4.727,0.632c-0.427,0-0.827-0.025-1.213-0.061C4.338,12.425,3.954,11.258,3.954,10c0-3.339,2.707-6.046,6.046-6.046c3.34,0,6.047,2.708,6.047,6.046C16.047,10.249,16.027,10.492,15.998,10.733"></path>
+                  </svg>
+                </a>
+              </b>
+              <b>
+                e
+                <a href="javascript:void(0);" title="Öneriler">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+                    <path d="M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414.05 3.555ZM0 4.697v7.104l5.803-3.558L0 4.697ZM6.761 8.83l-6.57 4.026A2 2 0 0 0 2 14h6.256A4.493 4.493 0 0 1 8 12.5a4.49 4.49 0 0 1 1.606-3.446l-.367-.225L8 9.586l-1.239-.757ZM16 4.697v4.974A4.491 4.491 0 0 0 12.5 8a4.49 4.49 0 0 0-1.965.45l-.338-.207L16 4.697Z" />
+                    <path d="M16 12.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Zm-3.5-2a.5.5 0 0 0-.5.5v1h-1a.5.5 0 0 0 0 1h1v1a.5.5 0 0 0 1 0v-1h1a.5.5 0 0 0 0-1h-1v-1a.5.5 0 0 0-.5-.5Z" />
+                  </svg>
+                </a>
+              </b>
+              <b>
+                -
+                <a href="Giris.html" title="Giriş">
+                  <svg class="svg-icon" viewBox="0 0 20 20">
+                    <path 
+                      d="M12.075,10.812c1.358-0.853,2.242-2.507,2.242-4.037c0-2.181-1.795-4.618-4.198-4.618S5.921,4.594,5.921,6.775c0,1.53,0.884,3.185,2.242,4.037c-3.222,0.865-5.6,3.807-5.6,7.298c0,0.23,0.189,0.42,0.42,0.42h14.273c0.23,0,0.42-0.189,0.42-0.42C17.676,14.619,15.297,11.677,12.075,10.812 M6.761,6.775c0-2.162,1.773-3.778,3.358-3.778s3.359,1.616,3.359,3.778c0,2.162-1.774,3.778-3.359,3.778S6.761,8.937,6.761,6.775 M3.415,17.69c0.218-3.51,3.142-6.297,6.704-6.297c3.562,0,6.486,2.787,6.705,6.297H3.415z" 
+                    ></path>
+                  </svg>
+                </a>
+              </b>
+            </h1>
+          </figcaption>
+        </figure>
+       </div>
+
+   <!-- <h1>Hoş Geldiniz, <?php echo htmlspecialchars($user['username']); ?>!</h1> -->
+
+
+
+<!------------------------------------------------------ ADMİN KISMI BAŞLANGIÇ (REMOVED) ----------------------------------------------------->
+
+
+    <!-- Admin Paneli Removed -->
+        
+
+<!------------------------------------------------------ ADMİN KISMI SON (REMOVED) ----------------------------------------------------->
+
+<!------------------------------------------------------ PERSONEL KISMI BAŞLANGIÇ (REMOVED) ----------------------------------------------------->
+
+    <!-- Personel Paneli Removed -->
+        
+<!------------------------------------------------------ PERSONEL KISMI SON (REMOVED) ----------------------------------------------------->       
+
+<!------------------------------------------------------ KULLANICI KISMI BAŞLANGIÇ ----------------------------------------------------->
+
+    <!-- Kullanıcı Paneli -->
+
+        <div id="customerView" style="display: none;">
+            <button id="goBackButton" class="hidden">Geri Dön</button>
+       
+            <div class="masa-container-customer">
+                <div class="Body1" data-table="1"><img src="Gorsel/YanMasa.png"><div class="content">MASA1</div></div>
+                <div class="Body1" data-table="2"><img src="Gorsel/YanMasa.png"><div class="content">MASA2</div></div>
+                <div class="Body1" data-table="3"><img src="Gorsel/YanMasa.png"><div class="content">MASA3</div></div>
+                <div class="Body1" data-table="4"><img src="Gorsel/YanMasa.png"><div class="content">MASA4</div></div>
+                <div class="Body1" data-table="5"><img src="Gorsel/YanMasa.png"><div class="content">MASA5</div></div>
+                <div class="Body1" data-table="6"><img src="Gorsel/YanMasa.png"><div class="content">MASA6</div></div>
+            </div>
+            
+            <div class="order-form" id="orderForm">
+
+
+            <h2>SİPARİŞ PANELİ</h2>
+    <div class="coffee-table">
+        <div class="filters"> 
+            <button onclick="loadCoffees('Sıcak Kahve')">Sıcak Kahve</button>
+            <button onclick="loadCoffees('Soğuk Kahve')">Soğuk Kahve</button>
+            <button onclick="loadCoffees('Sıcak Çay')">Sıcak Çay</button>
+            <button onclick="loadCoffees('Soğuk Çay')">Soğuk Çay</button>
+            <button onclick="loadCoffees('Diğer')">Diğer</button>
+        </div>
+        <table id="coffeeTable">
+            <thead>
+                <tr>
+                    <th>Resim</th>
+                    <th>İsim</th>
+                    <th>Fiyat</th>
+                    <th>Sipariş Ver</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Coffee items will be loaded here by JavaScript -->
+            </tbody>
+        </table>
+    </div>
+
+
+
+        </div>
+    </div> <!-- End of customerView -->
+
+    <div id="personnelView" style="display: none;">
+        <h2>Personel Sipariş Takip Paneli</h2>
+        <!-- Order display for personnel will be dynamically generated here -->
+        <!-- Example structure for displaying orders per table -->
+        <div class="table-orders-container">
+            <!-- Masa 1 Siparişleri -->
+            <div class="Body3-personnel" data-table-personnel="1">
+                <div class="Body3Title-personnel">MASA 1</div>
+                <div class="Body3Body-personnel">Siparişler yükleniyor...</div>
+            </div>
+            <!-- Masa 2 Siparişleri -->
+            <div class="Body3-personnel" data-table-personnel="2">
+                <div class="Body3Title-personnel">MASA 2</div>
+                <div class="Body3Body-personnel">Siparişler yükleniyor...</div>
+            </div>
+            <!-- Masa 3 Siparişleri -->
+            <div class="Body3-personnel" data-table-personnel="3">
+                <div class="Body3Title-personnel">MASA 3</div>
+                <div class="Body3Body-personnel">Siparişler yükleniyor...</div>
+            </div>
+            <!-- Masa 4 Siparişleri -->
+            <div class="Body3-personnel" data-table-personnel="4">
+                <div class="Body3Title-personnel">MASA 4</div>
+                <div class="Body3Body-personnel">Siparişler yükleniyor...</div>
+            </div>
+            <!-- Masa 5 Siparişleri -->
+            <div class="Body3-personnel" data-table-personnel="5">
+                <div class="Body3Title-personnel">MASA 5</div>
+                <div class="Body3Body-personnel">Siparişler yükleniyor...</div>
+            </div>
+            <!-- Masa 6 Siparişleri -->
+            <div class="Body3-personnel" data-table-personnel="6">
+                <div class="Body3Title-personnel">MASA 6</div>
+                <div class="Body3Body-personnel">Siparişler yükleniyor...</div>
+            </div>
+        </div>
+    </div> <!-- End of personnelView -->
+
+
+
+        
+    <!-- PHP else block removed -->
+
+<!------------------------------------------------------ KULLANICI KISMI SON ----------------------------------------------------->
+
+
+        <!-- Geçersiz Role (Removed as PHP logic is gone) -->
+    <!-- Removed a_href for logout as PHP session is gone -->
+
+</div>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const mainContainer = document.querySelector('.Container');
+    const customerView = document.getElementById('customerView');
+    const personnelView = document.getElementById('personnelView');
+
+    if (mainContainer) mainContainer.style.display = 'none'; // Hide main container initially
+    if (customerView) customerView.style.display = 'none';
+    if (personnelView) personnelView.style.display = 'none';
+
+    firebase.auth().onAuthStateChanged(user => {
+        if (user) {
+            const userId = user.uid;
+            const userRoleRef = firebase.database().ref('users/' + userId + '/role');
+
+            userRoleRef.once('value').then(snapshot => {
+                const role = snapshot.val();
+                console.log("User Authenticated. UID:", userId, "Role:", role);
+                if (mainContainer) mainContainer.style.display = ''; // Show main container
+
+                if (role === 'admin' || role === 'employee') {
+                    console.log("Initializing personnel panel.");
+                    if (customerView) customerView.style.display = 'none';
+                    if (personnelView) personnelView.style.display = 'block'; // Use 'block' or 'flex' depending on layout needs
+                    initializePersonnelPanel();
+                } else if (role === 'user' || role === 'customer') {
+                    console.log("User is customer. Initializing customer panel.");
+                    if (personnelView) personnelView.style.display = 'none';
+                    if (customerView) customerView.style.display = 'block'; // Use 'block' or 'flex'
+                    initializeCustomerPanel();
+                } else {
+                    console.log('User role not found or not recognized (", role, "). Redirecting to login.');
+                    window.location.href = 'Giris.html';
+                }
+            }).catch(error => {
+                console.error("Error fetching user role: ", error);
+                window.location.href = 'Giris.html';
+            });
+        } else {
+            console.log('No user signed in. Redirecting to login.');
+            window.location.href = 'Giris.html';
+        }
+    });
+});
+
+function initializeCustomerPanel() {
+    console.log("Initializing customer panel UI and event listeners...");
+    const tables = document.querySelectorAll("#customerView .Body1"); // Scope to customerView
+    const orderForm = document.getElementById("orderForm"); // Assumes orderForm is inside customerView
+    const goBackButton = document.getElementById("goBackButton"); // Assumes goBackButton is inside customerView
+
+    tables.forEach(table => {
+        table.addEventListener("click", (event) => {
+            event.preventDefault();
+            window.activeMasaId = table.getAttribute("data-table");
+            console.log("Masa " + window.activeMasaId + " seçildi.");
+
+            tables.forEach(t => t.classList.add("hidden"));
+            if (orderForm) orderForm.classList.add("active");
+            if (goBackButton) goBackButton.classList.add("visible");
+            
+            if (typeof loadCoffees === 'function') {
+                loadCoffees('Sıcak Kahve');
+            } else {
+                console.error("loadCoffees function is not defined.");
+            }
+        });
+    });
+
+    if (goBackButton) {
+        goBackButton.addEventListener("click", () => {
+            console.log("Geri dönüldü, masa bilgisi sıfırlandı.");
+            tables.forEach(t => t.classList.remove("hidden"));
+            if (orderForm) orderForm.classList.remove("active");
+            if (goBackButton) goBackButton.classList.remove("visible");
+            window.activeMasaId = null;
+        });
+    }
+}
+
+function initializePersonnelPanel() {
+    console.log("Initializing personnel panel UI and event listeners...");
+    // This is where you'll load and display orders for personnel.
+    // For now, it's a placeholder.
+    // Example: loadPersonnelOrders();
+    const personnelViewTitle = document.querySelector("#personnelView h2");
+    if (personnelViewTitle) {
+        personnelViewTitle.textContent = "Personel Sipariş Takip Paneli (Aktif Siparişler)";
+    }
+    loadPersonnelOrders(); // Call the function to load orders
+}
+
+// New function to load orders for personnel panel
+function loadPersonnelOrders() {
+    if (!window.db) {
+        console.error("Firebase DB not initialized!");
+        return;
+    }
+    const ordersRef = window.db.ref('orders').orderByChild('status').equalTo('pending'); // Fetch only pending orders
+
+    ordersRef.on('value', snapshot => { // Use .on for real-time updates
+        const allOrders = snapshot.val();
+        const personnelTableContainers = document.querySelectorAll('.Body3Body-personnel');
+
+        personnelTableContainers.forEach(container => {
+            const tableId = container.parentElement.getAttribute('data-table-personnel');
+            container.innerHTML = ''; // Clear previous orders
+
+            let ordersForThisTableFound = false;
+            if (allOrders) {
+                const tableElement = document.createElement('table');
+                tableElement.innerHTML = `<thead><tr><th>Sipariş ID</th><th>Ürün</th><th>İşlem</th></tr></thead><tbody></tbody>`;
+                const tbody = tableElement.querySelector('tbody');
+
+                Object.keys(allOrders).forEach(orderKey => {
+                    const order = allOrders[orderKey];
+                    if (order.masa_id === tableId && order.status === 'pending') {
+                        ordersForThisTableFound = true;
+                        const row = tbody.insertRow();
+                        row.innerHTML = `
+                            <td>${orderKey.substring(0,6)}...</td>
+                            <td>${order.coffee_name}</td>
+                            <td><button class="deliver-button" data-order-id="${orderKey}">Teslim Edildi</button></td>
+                        `;
+                    }
+                });
+
+                if (ordersForThisTableFound) {
+                    container.appendChild(tableElement);
+                } else {
+                    container.textContent = "Bu masa için aktif sipariş yok.";
+                }
+            } else {
+                container.textContent = "Aktif sipariş yok.";
+            }
+        });
+
+        // Add event listeners for new deliver buttons
+        document.querySelectorAll('#personnelView .deliver-button').forEach(button => {
+            // To prevent multiple listeners, clone and replace the button
+            const newButton = button.cloneNode(true);
+            button.parentNode.replaceChild(newButton, button);
+
+            newButton.addEventListener('click', () => {
+                const orderId = newButton.getAttribute('data-order-id');
+                console.log("Teslim ediliyor orderId: ", orderId);
+                // Update order status to 'delivered' or remove it
+                // For simplicity, let's remove. For tracking, update status.
+                const orderRef = window.db.ref('orders/' + orderId);
+                orderRef.update({ status: 'delivered' }) // or orderRef.remove()
+                    .then(() => {
+                        console.log("Sipariş ", orderId, " teslim edildi olarak işaretlendi.");
+                        // loadPersonnelOrders(); // Re-fetch or let real-time update handle it
+                    })
+                    .catch(error => {
+                        console.error("Sipariş güncellenirken hata: ", error);
+                        alert("Sipariş güncellenirken bir hata oluştu.");
+                    });
+            });
+        });
+
+    }, error => {
+        console.error("Personel siparişleri Firebase'den yüklenirken hata: ", error);
+        personnelTableContainers.forEach(container => {
+            container.textContent = "Siparişler yüklenemedi.";
+        });
+    });
+}
+
+</script>
+
+
+
+
+
+<script>
+// Ensure db is initialized and available from db.js
+
+function loadCoffees(categoryFilter) {
+    if (!window.db) {
+        console.error("Firebase DB not initialized!");
+        alert("Veritabanı bağlantı hatası!");
+        return;
+    }
+    const coffeeRef = window.db.ref('2/data'); // Path to coffee data
+    coffeeRef.once('value').then(snapshot => {
+        const coffees = snapshot.val();
+        const tbody = document.querySelector("#coffeeTable tbody");
+        tbody.innerHTML = ""; // Clear previous data
+
+        if (coffees) {
+            Object.keys(coffees).forEach(key => {
+                const coffee = coffees[key];
+                // Ensure coffee has an 'id' field or use the Firebase key.
+                // For consistency with original `orderCoffee(coffee.id, ...)`, let's assume coffee.id exists
+                // If not, you might need to pass `key` instead of `coffee.id` to orderCoffee
+                // or add the key as an 'id' property to the coffee object before processing.
+                // For this example, let's assume coffee object has an 'id' from your data structure.
+                // If 'id' is not directly in the object, use 'key'.
+                const coffeeItemId = coffee.id || key;
+
+
+                if (coffee.category === categoryFilter) {
+                    const row = document.createElement("tr");
+                    row.innerHTML = `
+                        <td><img src="${coffee.image_url || 'placeholder.png'}" alt="${coffee.name}" width="50"></td>
+                        <td>${coffee.name}</td>
+                        <td>${coffee.fiyat !== undefined ? coffee.fiyat : 'N/A'} TL</td>
+                        <td><button class="SipBut" onclick="orderCoffee('${coffeeItemId}', '${coffee.name}')">Sipariş Ver</button></td>
+                    `;
+                    tbody.appendChild(row);
+                }
+            });
+        } else {
+            tbody.innerHTML = '<tr><td colspan="4">Bu kategoride ürün bulunmamaktadır.</td></tr>';
+        }
+    }).catch(error => {
+        console.error('Kahveler Firebase\'den yüklenirken hata oluştu:', error);
+        alert('Ürünler yüklenirken bir hata oluştu.');
+        const tbody = document.querySelector("#coffeeTable tbody");
+        tbody.innerHTML = '<tr><td colspan="4">Ürünler yüklenemedi.</td></tr>';
+    });
+}
+
+function orderCoffee(coffeeId, coffeeName) {
+    if (!window.db) {
+        console.error("Firebase DB not initialized for ordering!");
+        alert("Sipariş verilirken veritabanı bağlantı hatası!");
+        return;
+    }
+    if (!window.activeMasaId) {
+        alert("Lütfen önce bir masa seçin!");
+        return;
+    }
+
+    const ordersRef = window.db.ref('orders');
+    const newOrderRef = ordersRef.push(); // Generates a unique ID for the order
+
+    newOrderRef.set({
+        masa_id: window.activeMasaId,
+        coffee_id: coffeeId,
+        coffee_name: coffeeName,
+        timestamp: firebase.database.ServerValue.TIMESTAMP, // For server-side timestamp
+        status: "pending" // Example status
+    }).then(() => {
+        alert("Sipariş başarılı bir şekilde Firebase'e eklendi.");
+    }).catch(error => {
+        console.error("Sipariş Firebase'e eklenirken hata oluştu: ", error);
+        alert("Sipariş sırasında hata oluştu: " + error.message);
+    });
+}
+</script>
+
+
+
+
+
+<!-- Removed the script block for loadOrders and deliver-button as admin/employee panels are removed -->
+<!--
+<script>
+
+document.addEventListener("DOMContentLoaded", () => {
+    const loadOrders = () => {
+        // This logic is removed as it pertains to admin/employee views
+    };
+
+    // loadOrders(); // Call removed
+});
+</script>
+-->
+
+
+</body>
+</html>
