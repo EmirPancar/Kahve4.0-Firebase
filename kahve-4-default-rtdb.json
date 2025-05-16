@@ -1,14 +1,14 @@
-[
-  {
+{
+  "0": {
     "comment": "Export to JSON plugin for PHPMyAdmin",
     "type": "header",
     "version": "5.2.1"
   },
-  {
+  "1": {
     "name": "kahhve",
     "type": "database"
   },
-  {
+  "2": {
     "data": [
       {
         "category": "Espresso",
@@ -525,27 +525,61 @@
     "name": "coffee_cards",
     "type": "table"
   },
-  {
-    "database": "kahhve",
-    "name": "masa",
-    "type": "table"
-  },
-  {
-    "database": "kahhve",
-    "name": "orders",
-    "type": "table"
-  },
-  {
-    "data": [
-      {
-        "name": "Kullanıcı Adı",
-        "email": "kullanici@email.com",
-        "role": "customer/employee/admin",
-        "createdAt": ""
-      }
-    ],
-    "database": "kahhve",
-    "name": "users",
-    "type": "table"
+  "Masalar": [
+    null,
+    {
+      "Name": "",
+      "Order_ID": 0
+    },
+    {
+      "Name": "",
+      "Order_Id": 0
+    },
+    {
+      "Name": "",
+      "Order_ID": 0
+    },
+    {
+      "Name": "",
+      "Order_ID": 0
+    },
+    {
+      "Name": "",
+      "Order_ID": 0
+    },
+    {
+      "Name": "",
+      "Order_ID": 0
+    }
+  ],
+  "users": {
+    "2c5uYyh4LyQh18ZDfKDaZaEpmz43": {
+      "createdAt": "11.05.2025 13:56:07",
+      "email": "ledeneme19@gmail.com",
+      "name": "Personel Emir",
+      "role": "employee",
+      "username": "Emo-P"
+    },
+    "Dtihts6ZftNoF41652KTdGCtxpJ3": {
+      "createdAt": "11.05.2025 13:55:36",
+      "email": "ledeneme18@gmail.com",
+      "name": "Müşteri Emir",
+      "role": "customer",
+      "username": "Emo-M"
+    },
+    "thE8CNT9feSLS3XAjQQv1vTjrjr1": {
+      "createdAt": "11.05.2025 13:56:57",
+      "email": "ledeneme17@gmail.com",
+      "name": "Admin Emir",
+      "role": "admin",
+      "username": "Emo"
+    },
+    "xXeYh1U9cfh4d5C2coQco6nnTYl1": {
+      "createdAt": "11.05.2025 14:56:06",
+      "email": "gulumseyenkedy@gmail.com",
+      "name": "efe demirtürk",
+      "role": "customer",
+      "username": "Geniş Efe"
+    }
   }
-]
+}

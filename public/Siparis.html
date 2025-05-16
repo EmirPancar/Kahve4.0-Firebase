@@ -390,24 +390,6 @@
         </figure>
        </div>
 
-   <!-- <h1>Hoş Geldiniz, <?php echo htmlspecialchars($user['username']); ?>!</h1> -->
-
-
-
-<!------------------------------------------------------ ADMİN KISMI BAŞLANGIÇ (REMOVED) ----------------------------------------------------->
-
-
-    <!-- Admin Paneli Removed -->
-        
-
-<!------------------------------------------------------ ADMİN KISMI SON (REMOVED) ----------------------------------------------------->
-
-<!------------------------------------------------------ PERSONEL KISMI BAŞLANGIÇ (REMOVED) ----------------------------------------------------->
-
-    <!-- Personel Paneli Removed -->
-        
-<!------------------------------------------------------ PERSONEL KISMI SON (REMOVED) ----------------------------------------------------->       
-
 <!------------------------------------------------------ KULLANICI KISMI BAŞLANGIÇ ----------------------------------------------------->
 
     <!-- Kullanıcı Paneli -->
@@ -494,16 +476,7 @@
         </div>
     </div> <!-- End of personnelView -->
 
-
-
-        
-    <!-- PHP else block removed -->
-
 <!------------------------------------------------------ KULLANICI KISMI SON ----------------------------------------------------->
-
-
-        <!-- Geçersiz Role (Removed as PHP logic is gone) -->
-    <!-- Removed a_href for logout as PHP session is gone -->
 
 </div>
 
@@ -555,124 +528,209 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function initializeCustomerPanel() {
     console.log("Initializing customer panel UI and event listeners...");
-    const tables = document.querySelectorAll("#customerView .Body1"); // Scope to customerView
-    const orderForm = document.getElementById("orderForm"); // Assumes orderForm is inside customerView
-    const goBackButton = document.getElementById("goBackButton"); // Assumes goBackButton is inside customerView
+    const tables = document.querySelectorAll("#customerView .Body1"); 
+    const orderForm = document.getElementById("orderForm"); 
+    const goBackButton = document.getElementById("goBackButton"); 
 
     tables.forEach(table => {
         table.addEventListener("click", (event) => {
             event.preventDefault();
-            window.activeMasaId = table.getAttribute("data-table");
-            console.log("Masa " + window.activeMasaId + " seçildi.");
+            window.activeMasaNumarasi = table.getAttribute("data-table");
+            const currentUser = firebase.auth().currentUser;
 
-            tables.forEach(t => t.classList.add("hidden"));
-            if (orderForm) orderForm.classList.add("active");
-            if (goBackButton) goBackButton.classList.add("visible");
-            
-            if (typeof loadCoffees === 'function') {
-                loadCoffees('Sıcak Kahve');
+            if (currentUser) {
+                const userId = currentUser.uid;
+                firebase.database().ref('users/' + userId).once('value').then(userSnapshot => {
+                    const userData = userSnapshot.val();
+                    window.activeMusteriAdi = userData ? userData.name : (currentUser.displayName || "Bilinmeyen Kullanıcı");
+                    window.activeMusteriId = userId; // Still useful for other potential logic, not stored in Masalar
+                    
+                    window.activeOrderID = Date.now(); // Numeric Order_ID (timestamp)
+
+                    console.log(`Masa ${window.activeMasaNumarasi} seçildi. Müşteri: ${window.activeMusteriAdi}. Session Order_ID: ${window.activeOrderID}`);
+
+                    const tableRef = firebase.database().ref(`Masalar/${window.activeMasaNumarasi}`);
+                    tableRef.set({
+                        Name: window.activeMusteriAdi,
+                        Order_ID: window.activeOrderID, // Stored as number
+                        // musteri_id: window.activeMusteriId, // Removed as per request
+                        status: "occupied"
+                    }).then(() => {
+                        console.log(`Masalar/${window.activeMasaNumarasi} güncellendi.`);
+                    }).catch(error => {
+                        console.error(`Masalar/${window.activeMasaNumarasi} güncellenirken hata: `, error);
+                    });
+
+                    tables.forEach(t => t.classList.add("hidden"));
+                    if (orderForm) orderForm.classList.add("active");
+                    if (goBackButton) goBackButton.classList.add("visible");
+                    
+                    if (typeof loadCoffees === 'function') {
+                        loadCoffees('Sıcak Kahve');
+                    } else {
+                        console.error("loadCoffees function is not defined.");
+                    }
+                }).catch(error => {
+                    console.error("Kullanıcı bilgileri alınırken hata: ", error);
+                    alert("Kullanıcı bilgileri alınamadı. Lütfen tekrar deneyin.");
+                });
             } else {
-                console.error("loadCoffees function is not defined.");
+                console.log('Masa seçimi için kullanıcı girişi gerekli. Yönlendiriliyor...');
+                alert("Lütfen giriş yapınız.");
+                window.location.href = 'Giris.html';
             }
         });
     });
 
     if (goBackButton) {
         goBackButton.addEventListener("click", () => {
-            console.log("Geri dönüldü, masa bilgisi sıfırlandı.");
+            console.log("Geri dönüldü, masa ve sipariş bilgisi sıfırlandı.");
+            if(window.activeMasaNumarasi){
+                 const tableRefToClear = firebase.database().ref(`Masalar/${window.activeMasaNumarasi}`);
+                 tableRefToClear.set({
+                    Name: null, 
+                    Order_ID: null, 
+                    status: "available"
+                 }).then(() => {
+                    console.log(`Masalar/${window.activeMasaNumarasi} temizlendi (geri tuşu).`);
+                 }).catch(error => {
+                    console.error(`Masalar/${window.activeMasaNumarasi} temizlenirken hata (geri tuşu): `, error);
+                 });
+            }
             tables.forEach(t => t.classList.remove("hidden"));
             if (orderForm) orderForm.classList.remove("active");
             if (goBackButton) goBackButton.classList.remove("visible");
-            window.activeMasaId = null;
+            window.activeMasaNumarasi = null;
+            window.activeMusteriId = null; // Clear stored user id
+            window.activeMusteriAdi = null;
+            window.activeOrderID = null; 
         });
     }
 }
 
 function initializePersonnelPanel() {
     console.log("Initializing personnel panel UI and event listeners...");
-    // This is where you'll load and display orders for personnel.
-    // For now, it's a placeholder.
-    // Example: loadPersonnelOrders();
     const personnelViewTitle = document.querySelector("#personnelView h2");
     if (personnelViewTitle) {
         personnelViewTitle.textContent = "Personel Sipariş Takip Paneli (Aktif Siparişler)";
     }
-    loadPersonnelOrders(); // Call the function to load orders
+    loadPersonnelOrders(); 
 }
 
-// New function to load orders for personnel panel
 function loadPersonnelOrders() {
     if (!window.db) {
         console.error("Firebase DB not initialized!");
         return;
     }
-    const ordersRef = window.db.ref('orders').orderByChild('status').equalTo('pending'); // Fetch only pending orders
 
-    ordersRef.on('value', snapshot => { // Use .on for real-time updates
-        const allOrders = snapshot.val();
-        const personnelTableContainers = document.querySelectorAll('.Body3Body-personnel');
+    const personnelTableDisplayElements = document.querySelectorAll('#personnelView .Body3-personnel');
 
-        personnelTableContainers.forEach(container => {
-            const tableId = container.parentElement.getAttribute('data-table-personnel');
-            container.innerHTML = ''; // Clear previous orders
+    personnelTableDisplayElements.forEach(tableDisplayElement => {
+        const tableNum = tableDisplayElement.getAttribute('data-table-personnel');
+        const titleElement = tableDisplayElement.querySelector('.Body3Title-personnel');
+        const ordersBodyElement = tableDisplayElement.querySelector('.Body3Body-personnel');
 
-            let ordersForThisTableFound = false;
-            if (allOrders) {
-                const tableElement = document.createElement('table');
-                tableElement.innerHTML = `<thead><tr><th>Sipariş ID</th><th>Ürün</th><th>İşlem</th></tr></thead><tbody></tbody>`;
-                const tbody = tableElement.querySelector('tbody');
-
-                Object.keys(allOrders).forEach(orderKey => {
-                    const order = allOrders[orderKey];
-                    if (order.masa_id === tableId && order.status === 'pending') {
-                        ordersForThisTableFound = true;
-                        const row = tbody.insertRow();
-                        row.innerHTML = `
-                            <td>${orderKey.substring(0,6)}...</td>
-                            <td>${order.coffee_name}</td>
-                            <td><button class="deliver-button" data-order-id="${orderKey}">Teslim Edildi</button></td>
-                        `;
-                    }
-                });
-
-                if (ordersForThisTableFound) {
-                    container.appendChild(tableElement);
-                } else {
-                    container.textContent = "Bu masa için aktif sipariş yok.";
-                }
+        // Listener for Table Name from "Masalar"
+        const masalarTableRef = window.db.ref(`Masalar/${tableNum}`);
+        masalarTableRef.on('value', masalarSnapshot => {
+            const tableData = masalarSnapshot.val();
+            if (tableData && tableData.Name && tableData.status === "occupied") {
+                titleElement.textContent = `MASA ${tableNum} (${tableData.Name})`;
             } else {
-                container.textContent = "Aktif sipariş yok.";
+                titleElement.textContent = `MASA ${tableNum} (Boş)`;
             }
         });
 
-        // Add event listeners for new deliver buttons
-        document.querySelectorAll('#personnelView .deliver-button').forEach(button => {
-            // To prevent multiple listeners, clone and replace the button
-            const newButton = button.cloneNode(true);
-            button.parentNode.replaceChild(newButton, button);
+        // Listener for active orders for THIS specific table
+        const ordersForThisTableRef = window.db.ref('orders')
+                                      .orderByChild('masa_id') 
+                                      .equalTo(tableNum);    
 
-            newButton.addEventListener('click', () => {
-                const orderId = newButton.getAttribute('data-order-id');
-                console.log("Teslim ediliyor orderId: ", orderId);
-                // Update order status to 'delivered' or remove it
-                // For simplicity, let's remove. For tracking, update status.
-                const orderRef = window.db.ref('orders/' + orderId);
-                orderRef.update({ status: 'delivered' }) // or orderRef.remove()
-                    .then(() => {
-                        console.log("Sipariş ", orderId, " teslim edildi olarak işaretlendi.");
-                        // loadPersonnelOrders(); // Re-fetch or let real-time update handle it
-                    })
-                    .catch(error => {
-                        console.error("Sipariş güncellenirken hata: ", error);
-                        alert("Sipariş güncellenirken bir hata oluştu.");
-                    });
+        ordersForThisTableRef.on('value', ordersSnapshot => {
+            ordersBodyElement.innerHTML = ''; 
+            let activeOrdersFound = false;
+
+            const tableElement = document.createElement('table');
+            tableElement.innerHTML = `<thead><tr><th>Sipariş ID</th><th>Ürün</th><th>Müşteri Adı</th><th>İşlem</th></tr></thead><tbody></tbody>`;
+            const tbody = tableElement.querySelector('tbody');
+
+            ordersSnapshot.forEach(orderChildSnapshot => {
+                const order = orderChildSnapshot.val();
+                const orderKey = orderChildSnapshot.key;
+
+                if (order.status === 'pending') {
+                    activeOrdersFound = true;
+                    const row = tbody.insertRow();
+                    row.innerHTML = `
+                        <td>${orderKey.substring(0, 6)}...</td>
+                        <td>${order.coffee_name}</td>
+                        <td>${order.musteri_adi || 'N/A'}</td> 
+                        <td><button class="deliver-button"
+                            data-order-id="${orderKey}"
+                            data-masa-id="${order.masa_id || tableNum}"
+                            data-musteri-adi="${order.musteri_adi || ''}"
+                            data-kahve-adi="${order.coffee_name || ''}"
+                            data-timestamp="${order.timestamp || ''}"
+                            >Teslim Edildi</button></td>
+                    `;
+                }
             });
-        });
 
-    }, error => {
-        console.error("Personel siparişleri Firebase'den yüklenirken hata: ", error);
-        personnelTableContainers.forEach(container => {
-            container.textContent = "Siparişler yüklenemedi.";
+            if (activeOrdersFound) {
+                ordersBodyElement.appendChild(tableElement);
+            } else {
+                // Check Masalar status to provide a more accurate message if table is occupied but no orders
+                window.db.ref(`Masalar/${tableNum}`).once('value').then(snap => {
+                    const currentTableStatus = snap.val();
+                    if (currentTableStatus && currentTableStatus.status === "occupied"){
+                       ordersBodyElement.textContent = "Müşteri masada, aktif siparişi yok.";
+                    } else {
+                       ordersBodyElement.textContent = "Bu masa için aktif sipariş yok veya masa boş.";
+                    }
+                });
+            }
+            addDeliverButtonListeners();
+        });
+    });
+}
+
+function addDeliverButtonListeners() {
+    document.querySelectorAll('#personnelView .deliver-button').forEach(button => {
+        const newButton = button.cloneNode(true);
+        button.parentNode.replaceChild(newButton, button);
+
+        newButton.addEventListener('click', () => {
+            const orderId = newButton.dataset.orderId;
+            const masaId = newButton.dataset.masaId; 
+            const musteriAdi = newButton.dataset.musteriAdi;
+            const kahveAdi = newButton.dataset.kahveAdi;
+            const orderTimestampString = newButton.dataset.timestamp;
+            const orderTimestamp = orderTimestampString && !isNaN(parseInt(orderTimestampString)) ? parseInt(orderTimestampString) : Date.now();
+
+            console.log(`Teslim ediliyor: Order ID ${orderId} for Masa ${masaId}`);
+
+            const pastOrdersRef = window.db.ref('past_orders').push();
+            const pastOrderData = {
+                original_order_id: orderId,
+                masa_id: masaId,
+                musteri_adi: musteriAdi,
+                kahve_adi: kahveAdi,
+                siparis_tarihi_saati: new Date(orderTimestamp).toLocaleString('tr-TR'),
+                teslim_tarihi_saati: firebase.database.ServerValue.TIMESTAMP
+            };
+
+            pastOrdersRef.set(pastOrderData)
+            .then(() => {
+                console.log(`Sipariş ${orderId} geçmiş siparişlere taşındı.`);
+                return window.db.ref(`orders/${orderId}`).update({ status: 'delivered' }); 
+            })
+            .then(() => {
+                console.log(`Sipariş ${orderId} durumu 'delivered' olarak güncellendi.`);
+            })
+            .catch(error => {
+                console.error("Sipariş teslim edilirken hata: ", error);
+                alert("Sipariş teslim edilirken bir hata oluştu.");
+            });
         });
     });
 }
@@ -738,22 +796,32 @@ function orderCoffee(coffeeId, coffeeName) {
         alert("Sipariş verilirken veritabanı bağlantı hatası!");
         return;
     }
-    if (!window.activeMasaId) {
+    if (!window.activeMasaNumarasi) { 
         alert("Lütfen önce bir masa seçin!");
         return;
     }
+    if (!window.activeOrderID) {
+        alert("Aktif sipariş ID bulunamadı. Lütfen masayı tekrar seçin.");
+        return;
+    }
+    if (!window.activeMusteriAdi) { // Check for activeMusteriAdi instead of activeMusteriId
+        alert("Müşteri adı eksik. Lütfen masayı tekrar seçin.");
+        return;
+    }
 
-    const ordersRef = window.db.ref('orders');
-    const newOrderRef = ordersRef.push(); // Generates a unique ID for the order
+    // Use String(window.activeOrderID) as the key for the orders table
+    const orderRef = window.db.ref('orders/' + String(window.activeOrderID)); 
 
-    newOrderRef.set({
-        masa_id: window.activeMasaId,
+    orderRef.set({
+        masa_id: window.activeMasaNumarasi, 
         coffee_id: coffeeId,
         coffee_name: coffeeName,
-        timestamp: firebase.database.ServerValue.TIMESTAMP, // For server-side timestamp
-        status: "pending" // Example status
+        // musteri_id: window.activeMusteriId, // Removed as per request
+        musteri_adi: window.activeMusteriAdi,
+        timestamp: firebase.database.ServerValue.TIMESTAMP, 
+        status: "pending" 
     }).then(() => {
-        alert("Sipariş başarılı bir şekilde Firebase'e eklendi.");
+        alert("Sipariş başarılı bir şekilde Firebase'e eklendi (ID: " + String(window.activeOrderID) + ").");
     }).catch(error => {
         console.error("Sipariş Firebase'e eklenirken hata oluştu: ", error);
         alert("Sipariş sırasında hata oluştu: " + error.message);
@@ -761,24 +829,29 @@ function orderCoffee(coffeeId, coffeeName) {
 }
 </script>
 
-
-
-
-
-<!-- Removed the script block for loadOrders and deliver-button as admin/employee panels are removed -->
-<!--
 <script>
-
-document.addEventListener("DOMContentLoaded", () => {
-    const loadOrders = () => {
-        // This logic is removed as it pertains to admin/employee views
-    };
-
-    // loadOrders(); // Call removed
+// Handle clearing table data on page unload
+window.addEventListener('beforeunload', function (e) {
+    if (window.activeMasaNumarasi) {
+        // Standard practice: Do not include UI prompts like alert/confirm in beforeunload.
+        // Try to make the operation as quick and non-blocking as possible.
+        // Firebase Realtime Database operations are asynchronous.
+        // There's no guarantee this will complete before the page unloads,
+        // but it's a best-effort attempt for cleanup.
+        const tableRefToClearOnUnload = firebase.database().ref(`Masalar/${window.activeMasaNumarasi}`);
+        tableRefToClearOnUnload.set({
+            Name: null, 
+            Order_ID: null, 
+            status: "available"
+        });
+        // According to MDN, to ensure the event fires, you might need to set returnValue
+        // However, this is often used to prompt the user, which we don't want here for silent cleanup.
+        // For a silent cleanup, just performing the action is the main goal.
+        // e.returnValue = ''; // This line can trigger a confirmation dialog in some browsers.
+        console.log(`Attempting to clear Masalar/${window.activeMasaNumarasi} on page unload.`);
+    }
 });
 </script>
--->
-
 
 </body>
 </html>
