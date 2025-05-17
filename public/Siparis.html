@@ -720,6 +720,8 @@ function loadPersonnelOrders() {
             for (let i = 1; i <= 4; i++) {
                 const slotKey = `slot_${i}`;
                 const slotDiv = slotsContainerElement.querySelector(`.personnel-table-slot[data-slot-key="${slotKey}"]`);
+                if (!slotDiv) continue; // Should not happen if placeholders are made correctly
+                
                 const customerNameDiv = slotDiv.querySelector('.customer-name');
                 const ordersListUl = slotDiv.querySelector('.orders-list');
                 ordersListUl.innerHTML = ''; // Clear previous orders for this slot
@@ -728,42 +730,50 @@ function loadPersonnelOrders() {
 
                 if (slotInfo && slotInfo.status === "occupied" && slotInfo.Name) {
                     customerNameDiv.textContent = `${slotInfo.Name} (Slot ${i})`;
-                    const slotOrderID = String(slotInfo.Order_ID); // Order_ID from the slot in Masalar
+                    const slotSessionID = slotInfo.Order_ID; // This is the timestamp ID for the slot session
 
-                    // Listener for active orders for THIS specific slot's Order_ID
-                    if (slotOrderID) {
-                        const ordersForThisSlotRef = window.db.ref('orders/' + slotOrderID);
-                        ordersForThisSlotRef.on('value', orderSnapshot => {
-                            ordersListUl.innerHTML = ''; // Clear specific slot's orders before re-adding
-                            const order = orderSnapshot.val();
-                            const orderKey = orderSnapshot.key;
+                    if (slotSessionID) {
+                        // Query orders table for items matching this slot's session ID
+                        const ordersQuery = window.db.ref('orders')
+                                                .orderByChild('slot_session_id')
+                                                .equalTo(slotSessionID);
 
-                            if (order && order.status === 'pending') {
-                                const li = document.createElement('li');
-                                li.innerHTML = `
-                                    ${order.coffee_name} 
-                                    <button class="deliver-button"
-                                        data-order-id="${orderKey}"
-                                        data-masa-id="${tableNum}"
-                                        data-slot-key="${slotKey}"
-                                        data-musteri-adi="${slotInfo.Name || ''}"
-                                        data-kahve-adi="${order.coffee_name || ''}"
-                                        data-order-timestamp="${order.timestamp || ''}"
-                                        data-slot-order-id="${slotOrderID}"
-                                        >Teslim Edildi</button>
-                                `;
-                                ordersListUl.appendChild(li);
-                            } else if (ordersListUl.children.length === 0) { // Check if list is empty after potential clear
+                        ordersQuery.on('value', ordersSnapshot => {
+                            ordersListUl.innerHTML = ''; // Clear before re-populating for this slot session
+                            let activeOrdersForSlotFound = false;
+                            ordersSnapshot.forEach(orderChildSnapshot => {
+                                const order = orderChildSnapshot.val();
+                                const uniqueOrderItemKey = orderChildSnapshot.key;
+
+                                if (order.status === 'pending' && order.slot_key === slotKey && order.masa_id === tableNum) { // Additional check for slotKey and masa_id
+                                    activeOrdersForSlotFound = true;
+                                    const li = document.createElement('li');
+                                    li.innerHTML = `
+                                        ${order.coffee_name} 
+                                        <button class="deliver-button"
+                                            data-order-id="${uniqueOrderItemKey}" 
+                                            data-masa-id="${order.masa_id}"
+                                            data-slot-key="${order.slot_key}"
+                                            data-musteri-adi="${order.musteri_adi || ''}"
+                                            data-kahve-adi="${order.coffee_name || ''}"
+                                            data-order-timestamp="${order.timestamp || ''}"
+                                            >Teslim Edildi</button>
+                                    `;
+                                    ordersListUl.appendChild(li);
+                                }
+                            });
+
+                            if (!activeOrdersForSlotFound) {
                                 ordersListUl.innerHTML = '<li>Aktif sipariş yok.</li>';
                             }
-                            addDeliverButtonListeners(); // Re-attach listeners for new/updated buttons
+                            addDeliverButtonListeners(); 
                         });
-                    } else if (ordersListUl.children.length === 0) {
+                    } else {
                          ordersListUl.innerHTML = '<li>Oturum ID yok, siparişler izlenemiyor.</li>';
                     }
                 } else {
                     customerNameDiv.textContent = `Slot ${i} (Boş)`;
-                    ordersListUl.innerHTML = ''; // Clear orders if slot becomes empty
+                    ordersListUl.innerHTML = ''; 
                 }
             }
         });
@@ -772,23 +782,22 @@ function loadPersonnelOrders() {
 
 function addDeliverButtonListeners() {
     document.querySelectorAll('#personnelView .deliver-button').forEach(button => {
-        const newButton = button.cloneNode(true); // Clone to avoid multiple event listener attachments
+        const newButton = button.cloneNode(true); 
         button.parentNode.replaceChild(newButton, button);
 
         newButton.addEventListener('click', () => {
-            const orderId = newButton.dataset.orderId; // This is the key from 'orders' table (String(slotOrderID))
+            const uniqueOrderItemKey = newButton.dataset.orderId; // This is the unique key of the order item
             const masaId = newButton.dataset.masaId; 
             const slotKey = newButton.dataset.slotKey;
             const musteriAdi = newButton.dataset.musteriAdi;
             const kahveAdi = newButton.dataset.kahveAdi;
             const orderTimestamp = newButton.dataset.orderTimestamp ? parseInt(newButton.dataset.orderTimestamp) : Date.now();
-            // const slotOrderID = newButton.dataset.slotOrderId; // from Masalar/slots/slot_X/Order_ID, same as orderId
 
-            console.log(`Teslim ediliyor: Order ID ${orderId} for Masa ${masaId}, Slot ${slotKey}`);
+            console.log(`Teslim ediliyor: Sipariş Kalemi ID ${uniqueOrderItemKey} for Masa ${masaId}, Slot ${slotKey}`);
 
             const pastOrdersRef = window.db.ref('past_orders').push();
             const pastOrderData = {
-                original_order_id: orderId,
+                original_order_id: uniqueOrderItemKey, 
                 masa_id: masaId,
                 slot_key: slotKey,
                 musteri_adi: musteriAdi,
@@ -799,17 +808,16 @@ function addDeliverButtonListeners() {
 
             pastOrdersRef.set(pastOrderData)
             .then(() => {
-                console.log(`Sipariş ${orderId} geçmiş siparişlere taşındı.`);
-                return window.db.ref(`orders/${orderId}`).update({ status: 'delivered' }); 
+                console.log(`Sipariş kalemi ${uniqueOrderItemKey} geçmiş siparişlere taşındı.`);
+                // Now remove the order from the main 'orders' table
+                return window.db.ref(`orders/${uniqueOrderItemKey}`).remove(); 
             })
             .then(() => {
-                console.log(`Sipariş ${orderId} durumu 'delivered' olarak güncellendi.`);
-                // After delivery, the slot in 'Masalar' is NOT automatically cleared here.
-                // It's cleared by customer via "Geri Dön" or page unload.
+                console.log(`Sipariş kalemi ${uniqueOrderItemKey} 'orders' tablosundan silindi.`);
             })
             .catch(error => {
-                console.error("Sipariş teslim edilirken hata: ", error);
-                alert("Sipariş teslim edilirken bir hata oluştu.");
+                console.error("Sipariş teslim edilirken veya silinirken hata: ", error);
+                alert("Sipariş işlenirken bir hata oluştu.");
             });
         });
     });
@@ -885,8 +893,8 @@ function orderCoffee(coffeeId, coffeeName) {
         alert("Lütfen önce bir masa ve slot seçin!");
         return;
     }
-    if (!window.activeSlotOrderID) {
-        alert("Aktif Slot Sipariş ID bulunamadı. Lütfen masayı tekrar seçin.");
+    if (!window.activeSlotOrderID) { // This is the Slot Session ID (timestamp)
+        alert("Aktif Slot Oturum ID bulunamadı. Lütfen masayı tekrar seçin.");
         return;
     }
     if (!window.activeMusteriAdi) { 
@@ -894,19 +902,19 @@ function orderCoffee(coffeeId, coffeeName) {
         return;
     }
 
-    const orderKey = String(window.activeSlotOrderID); // Order key is the Slot's Order_ID
-    const orderRef = window.db.ref('orders/' + orderKey); 
+    const newOrderRef = window.db.ref('orders').push(); // Generate a new unique key for each order item
 
-    orderRef.set({
+    newOrderRef.set({
         masa_id: window.activeMasaNumarasi, 
-        slot_key: window.activeSlotKey, // For linking back to the slot if needed
+        slot_key: window.activeSlotKey, 
+        slot_session_id: window.activeSlotOrderID, // Link to the customer's session in the slot
         coffee_id: coffeeId,
         coffee_name: coffeeName,
-        musteri_adi: window.activeMusteriAdi, // Customer name for the order
-        timestamp: firebase.database.ServerValue.TIMESTAMP, 
+        musteri_adi: window.activeMusteriAdi, 
+        timestamp: firebase.database.ServerValue.TIMESTAMP, // Actual order time
         status: "pending"
     }).then(() => {
-        alert(`Sipariş (${coffeeName}) Firebase'e eklendi (ID: ${orderKey}).`);
+        alert(`Sipariş (${coffeeName}) Firebase'e eklendi (Yeni Sipariş ID: ${newOrderRef.key}).`);
     }).catch(error => {
         console.error("Sipariş Firebase'e eklenirken hata oluştu: ", error);
         alert("Sipariş sırasında hata oluştu: " + error.message);
