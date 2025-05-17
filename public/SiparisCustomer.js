@@ -89,6 +89,35 @@ function clearSlotAndCancelOrders(callback) {
         });
     }).then(() => {
         console.log(`Masalar/${masaNumToClear}/slots/${slotKeyToClear} temizlendi.`);
+        
+        // ---- NEW: Additional cleanup for any other orphaned orders in this specific slot ----
+        console.log(`Performing additional check for orphaned orders in Masalar/${masaNumToClear}/slots/${slotKeyToClear}...`);
+        const orphanedOrdersQuery = firebase.database().ref('orders')
+                                    .orderByChild('masa_id') // Query by masa_id
+                                    .equalTo(masaNumToClear); // masaNumToClear is already the table number like "1"
+
+        return orphanedOrdersQuery.once('value').then(ordersSnapshot => {
+            const updates = {};
+            let orphanedFound = false;
+            ordersSnapshot.forEach(orderChildSnapshot => {
+                const order = orderChildSnapshot.val();
+                // Must match the specific slot_key AND be pending
+                if (order.slot_key === slotKeyToClear && order.status === 'pending') {
+                    console.log(`Additional orphaned order found for MASA ${masaNumToClear}, Slot ${slotKeyToClear}: ${orderChildSnapshot.key}. Marking for deletion.`);
+                    updates[`orders/${orderChildSnapshot.key}`] = null;
+                    orphanedFound = true;
+                }
+            });
+            if (orphanedFound) {
+                return firebase.database().ref().update(updates).then(() => {
+                    console.log(`Additional orphaned orders for MASA ${masaNumToClear}, Slot ${slotKeyToClear} deleted.`);
+                });
+            }
+            // Ensure a promise is returned even if no orphaned orders are found to continue the chain
+            return Promise.resolve(); 
+        });
+        // ---- END NEW ----
+    }).then(() => { // This .then() is chained after the additional cleanup or the slot clearing if no additional cleanup was needed.
         if(callback) callback();
     }).catch(error => {
         console.error("Sipariş iptali veya slot temizleme sırasında hata: ", error);
@@ -98,12 +127,44 @@ function clearSlotAndCancelOrders(callback) {
 
 function initializeCustomerPanel() {
     console.log("Initializing customer panel UI and event listeners...");
-    const tables = document.querySelectorAll("#customerView .Body1"); 
+    const tables = document.querySelectorAll("#customerView .Body1.custom-table-layout"); 
     const orderForm = document.getElementById("orderForm"); 
     const goBackButton = document.getElementById("goBackButton"); 
     const customerActiveOrdersContainer = document.getElementById('customerActiveOrders');
 
+    // Hide active orders container initially until a table is chosen and orders are loaded
+    if (customerActiveOrdersContainer) customerActiveOrdersContainer.style.display = 'none';
+
     tables.forEach(table => {
+        const tableNum = table.getAttribute("data-table");
+        const slotsElements = {
+            slot_1: table.querySelector('.slot-top[data-slot-key="slot_1"]'),
+            slot_2: table.querySelector('.slot-bottom[data-slot-key="slot_2"]'),
+            slot_3: table.querySelector('.slot-left[data-slot-key="slot_3"]'),
+            slot_4: table.querySelector('.slot-right[data-slot-key="slot_4"]')
+        };
+
+        // Set up Firebase listener for slots of this table
+        const tableSlotsRef = firebase.database().ref(`Masalar/${tableNum}/slots`);
+        tableSlotsRef.on('value', slotsSnapshot => {
+            const slotsData = slotsSnapshot.val() || {};
+            ['slot_1', 'slot_2', 'slot_3', 'slot_4'].forEach(slotKey => {
+                const slotDiv = slotsElements[slotKey];
+                if (!slotDiv) return; // Should not happen if HTML is correct
+
+                const slotInfo = slotsData[slotKey];
+                if (slotInfo && slotInfo.status === "occupied" && slotInfo.Name) {
+                    slotDiv.textContent = slotInfo.Name;
+                    slotDiv.classList.add('occupied');
+                    slotDiv.classList.remove('available');
+                } else {
+                    slotDiv.textContent = "BOŞ";
+                    slotDiv.classList.add('available');
+                    slotDiv.classList.remove('occupied');
+                }
+            });
+        });
+
         table.addEventListener("click", (event) => {
             event.preventDefault();
             const clickedMasaNumarasi = table.getAttribute("data-table");
@@ -139,7 +200,9 @@ function initializeCustomerPanel() {
                             window.activeSlotOrderID = Date.now(); 
 
                             console.log(`Masa ${window.activeMasaNumarasi}, Slot ${window.activeSlotKey} seçildi. Müşteri: ${window.activeMusteriAdi}. Slot Order_ID: ${window.activeSlotOrderID}`);
-                            displayCustomerActiveOrders(window.activeSlotOrderID); // Display active orders
+                            // Display active orders for this new session
+                            if (customerActiveOrdersContainer) customerActiveOrdersContainer.style.display = 'block'; // Show it now
+                            displayCustomerActiveOrders(window.activeSlotOrderID); 
 
                             const slotRef = firebase.database().ref(`Masalar/${window.activeMasaNumarasi}/slots/${window.activeSlotKey}`);
                             slotRef.set({
@@ -179,7 +242,7 @@ function initializeCustomerPanel() {
                 tables.forEach(t => t.classList.remove("hidden"));
                 if (orderForm) orderForm.classList.remove("active");
                 if (goBackButton) goBackButton.classList.remove("visible");
-                if (customerActiveOrdersContainer) customerActiveOrdersContainer.style.display = 'none';
+                if (customerActiveOrdersContainer) customerActiveOrdersContainer.style.display = 'none'; // Hide when going back
                 
                 window.activeMasaNumarasi = null;
                 window.activeMusteriId = null; 

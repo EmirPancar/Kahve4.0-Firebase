@@ -265,7 +265,7 @@
     padding-left: 0;
     font-size: 0.9em;
   }
-  .personnel-table-slot .orders-list li {
+  .personnel-table-layout .orders-list li {
     padding: 2px 0;
   }
 
@@ -369,6 +369,94 @@
 
   #customerOrdersList li:hover {
     background-color: rgba(188, 170, 164, 0.1); /* Subtle hover for dashed list */
+  }
+
+  /* New styles for custom table layout */
+  .custom-table-layout {
+    display: grid;
+    grid-template-areas:
+        ". top ."
+        "left center right"
+        ". bottom .";
+    grid-template-rows: 85px 131px 85px;    /* Further Increased size */
+    grid-template-columns: 112px 169px 112px; /* Further Increased size */
+    width: 393px; /* Sum of new columns */
+    height: 301px; /* Sum of new rows */
+    border: 2px solid rgb(77, 51, 9); /* Dark brown border, matching Body3Title */
+    border-radius: 8px;
+    position: relative;
+    margin: 15px; /* Increased margin for better spacing */
+    background-color: rgb(245, 222, 179); /* Light Lighter color from personnel-table-slot */
+    cursor: pointer;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+  }
+
+  .custom-table-layout:hover {
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    transform: translateY(-2px); /* Slight lift effect */
+    transition: box-shadow 0.2s ease-in-out, transform 0.2s ease-in-out;
+  }
+
+  .custom-table-layout .table-center {
+    grid-area: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(193, 159, 105); /* Matching Body3 background */
+    border: 1px solid rgb(77, 51, 9);
+    border-radius: 8px; 
+    font-weight: bold;
+    color: rgb(77, 51, 9); /* Dark brown text */
+    font-size: 1.5em; /* Further Increased font size */
+    padding: 5px;
+  }
+
+  .custom-table-layout .table-slot {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px dashed rgb(129, 83, 20); /* Dashed border from personnel slot */
+    font-size: 1.1em; /* Further Increased font size */
+    padding: 5px;
+    text-align: center;
+    color: rgb(77, 51, 9);
+    background-color: rgba(255, 255, 255, 0.5); /* Slightly transparent white */
+    border-radius: 4px;
+  }
+
+  .custom-table-layout .slot-top { grid-area: top; }
+  .custom-table-layout .slot-left { grid-area: left; }
+  .custom-table-layout .slot-right { grid-area: right; }
+  .custom-table-layout .slot-bottom { grid-area: bottom; }
+
+  /* Styling for when a slot is occupied */
+  .custom-table-layout .table-slot.occupied {
+    background-color: rgb(227, 200, 150); /* A slightly darker, distinct shade */
+    font-weight: bold;
+    color: rgb(50, 30, 5);
+  }
+
+  /* Styling for when a slot is available */
+  .custom-table-layout .table-slot.available {
+    background-color: rgb(250, 235, 210); /* Lighter, indicating availability */
+    color: rgb(100, 80, 50);
+  }
+
+  /* Hide original .Body1 image and content when custom layout is used */
+  .Body1.custom-table-layout img, 
+  .Body1.custom-table-layout .content {
+      display: none;
+  }
+
+  .masa-container-customer .hidden {
+    display: none !important; /* Ensure hidden tables stay hidden */
+  }
+  #orderForm.active {
+    display: block; /* Or flex, depending on its content */
+  }
+  #goBackButton.visible {
+    display: inline-block; /* Or block */
   }
 
     </style>
@@ -477,12 +565,48 @@
             <button id="goBackButton" class="hidden">Geri Dön</button>
        
             <div class="masa-container-customer">
-                <div class="Body1" data-table="1"><img src="Gorsel/YanMasa.png"><div class="content">MASA1</div></div>
-                <div class="Body1" data-table="2"><img src="Gorsel/YanMasa.png"><div class="content">MASA2</div></div>
-                <div class="Body1" data-table="3"><img src="Gorsel/YanMasa.png"><div class="content">MASA3</div></div>
-                <div class="Body1" data-table="4"><img src="Gorsel/YanMasa.png"><div class="content">MASA4</div></div>
-                <div class="Body1" data-table="5"><img src="Gorsel/YanMasa.png"><div class="content">MASA5</div></div>
-                <div class="Body1" data-table="6"><img src="Gorsel/YanMasa.png"><div class="content">MASA6</div></div>
+                <div class="Body1 custom-table-layout" data-table="1">
+                    <div class="table-slot slot-top" data-slot-key="slot_1">BOŞ</div>
+                    <div class="table-slot slot-left" data-slot-key="slot_3">BOŞ</div>
+                    <div class="table-center">MASA 1</div>
+                    <div class="table-slot slot-right" data-slot-key="slot_4">BOŞ</div>
+                    <div class="table-slot slot-bottom" data-slot-key="slot_2">BOŞ</div>
+                </div>
+                <div class="Body1 custom-table-layout" data-table="2">
+                    <div class="table-slot slot-top" data-slot-key="slot_1">BOŞ</div>
+                    <div class="table-slot slot-left" data-slot-key="slot_3">BOŞ</div>
+                    <div class="table-center">MASA 2</div>
+                    <div class="table-slot slot-right" data-slot-key="slot_4">BOŞ</div>
+                    <div class="table-slot slot-bottom" data-slot-key="slot_2">BOŞ</div>
+                </div>
+                <div class="Body1 custom-table-layout" data-table="3">
+                    <div class="table-slot slot-top" data-slot-key="slot_1">BOŞ</div>
+                    <div class="table-slot slot-left" data-slot-key="slot_3">BOŞ</div>
+                    <div class="table-center">MASA 3</div>
+                    <div class="table-slot slot-right" data-slot-key="slot_4">BOŞ</div>
+                    <div class="table-slot slot-bottom" data-slot-key="slot_2">BOŞ</div>
+                </div>
+                <div class="Body1 custom-table-layout" data-table="4">
+                    <div class="table-slot slot-top" data-slot-key="slot_1">BOŞ</div>
+                    <div class="table-slot slot-left" data-slot-key="slot_3">BOŞ</div>
+                    <div class="table-center">MASA 4</div>
+                    <div class="table-slot slot-right" data-slot-key="slot_4">BOŞ</div>
+                    <div class="table-slot slot-bottom" data-slot-key="slot_2">BOŞ</div>
+                </div>
+                <div class="Body1 custom-table-layout" data-table="5">
+                    <div class="table-slot slot-top" data-slot-key="slot_1">BOŞ</div>
+                    <div class="table-slot slot-left" data-slot-key="slot_3">BOŞ</div>
+                    <div class="table-center">MASA 5</div>
+                    <div class="table-slot slot-right" data-slot-key="slot_4">BOŞ</div>
+                    <div class="table-slot slot-bottom" data-slot-key="slot_2">BOŞ</div>
+                </div>
+                <div class="Body1 custom-table-layout" data-table="6">
+                    <div class="table-slot slot-top" data-slot-key="slot_1">BOŞ</div>
+                    <div class="table-slot slot-left" data-slot-key="slot_3">BOŞ</div>
+                    <div class="table-center">MASA 6</div>
+                    <div class="table-slot slot-right" data-slot-key="slot_4">BOŞ</div>
+                    <div class="table-slot slot-bottom" data-slot-key="slot_2">BOŞ</div>
+                </div>
             </div>
             
             <div class="order-form" id="orderForm">
@@ -610,23 +734,70 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     window.addEventListener('beforeunload', function (e) {
-        if (window.activeMasaNumarasi && window.activeSlotKey) {
-            const tableSlotRefToClear = firebase.database().ref(`Masalar/${window.activeMasaNumarasi}/slots/${window.activeSlotKey}`);
-            // Directly clear the slot. Name and Order_ID are set to null, status to "available".
-            // This might leave orders in a temporarily orphaned state if not handled by another process (e.g., in SiparisPersonel.js).
+        const masaNumToClear = window.activeMasaNumarasi;
+        const slotKeyToClear = window.activeSlotKey;
+        const slotSessionIDToCancel = window.activeSlotOrderID;
+
+        if (masaNumToClear && slotKeyToClear) {
+            console.log(`beforeunload: Attempting to clear Masa ${masaNumToClear}, Slot ${slotKeyToClear}. Session ID: ${slotSessionIDToCancel || 'N/A'}`);
+
+            // Directly update the Masalar table to clear the slot
+            // This is the most critical operation for this event
+            const tableSlotRefToClear = firebase.database().ref(`Masalar/${masaNumToClear}/slots/${slotKeyToClear}`);
             tableSlotRefToClear.set({
                 Name: null,
-                Order_ID: null, // Ensure Order_ID is nulled out so the slot doesn't retain old session ID
+                Order_ID: null,
                 status: "available"
             }).then(() => {
-                console.log(`beforeunload: Slot Masalar/${window.activeMasaNumarasi}/slots/${window.activeSlotKey} marked as available.`);
+                console.log(`beforeunload: Successfully set Masalar/${masaNumToClear}/slots/${slotKeyToClear} to available.`);
             }).catch(error => {
-                console.error(`beforeunload: Error clearing slot Masalar/${window.activeMasaNumarasi}/slots/${window.activeSlotKey}:`, error);
+                console.error(`beforeunload: Error setting Masalar/${masaNumToClear}/slots/${slotKeyToClear} to available:`, error);
             });
-            // Note: Asynchronous Firebase operations in 'beforeunload' are best-effort and not guaranteed to complete.
+
+            // Attempt to delete orders associated with this slot. This is a secondary, best-effort operation.
+            // First, try by session ID if available
+            if (slotSessionIDToCancel) {
+                const sessionOrdersQuery = firebase.database().ref('orders')
+                                            .orderByChild('slot_session_id')
+                                            .equalTo(slotSessionIDToCancel);
+                sessionOrdersQuery.once('value').then(snapshot => {
+                    const updates = {};
+                    if (snapshot.exists()) {
+                        snapshot.forEach(childSnapshot => {
+                            if (childSnapshot.val().status === 'pending') {
+                                updates[`orders/${childSnapshot.key}`] = null;
+                            }
+                        });
+                        firebase.database().ref().update(updates)
+                            .then(() => console.log(`beforeunload: Pending orders for session ${slotSessionIDToCancel} deleted.`))
+                            .catch(err => console.error(`beforeunload: Error deleting session orders for ${slotSessionIDToCancel}:`, err));
+                    }
+                }).catch(err => console.error(`beforeunload: Error querying session orders for ${slotSessionIDToCancel}:`, err));
+            }
+
+            // Second, do a general cleanup for any other pending orders in this specific slot.
+            const generalSlotOrdersQuery = firebase.database().ref('orders')
+                                        .orderByChild('masa_id')
+                                        .equalTo(masaNumToClear);
+            generalSlotOrdersQuery.once('value').then(snapshot => {
+                const updates = {};
+                if (snapshot.exists()){
+                    snapshot.forEach(childSnapshot => {
+                        const order = childSnapshot.val();
+                        if (order.slot_key === slotKeyToClear && order.status === 'pending') {
+                            updates[`orders/${childSnapshot.key}`] = null;
+                        }
+                    });
+                    firebase.database().ref().update(updates)
+                        .then(() => console.log(`beforeunload: General orphaned orders for Masa ${masaNumToClear}, Slot ${slotKeyToClear} deleted.`))
+                        .catch(err => console.error(`beforeunload: Error deleting general orphaned orders for ${masaNumToClear}, ${slotKeyToClear}:`, err));
+                }
+            }).catch(err => console.error(`beforeunload: Error querying general orphaned orders for ${masaNumToClear}, ${slotKeyToClear}:`, err));
+
         } else {
             console.log("beforeunload: No active customer masa/slot detected. No slot cleanup needed.");
         }
+        // Synchronous return for 'beforeunload'. Firebase operations are async and best-effort.
     });
 });
 
