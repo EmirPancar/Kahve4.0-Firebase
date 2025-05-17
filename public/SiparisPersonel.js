@@ -88,6 +88,43 @@ function loadPersonnelOrders() {
                 } else {
                     customerNameDiv.textContent = `Slot ${i} (Boş)`;
                     ordersListUl.innerHTML = ''; 
+
+                    // --- BEGIN ORPHANED ORDER CLEANUP ---
+                    const currentTableIdForQuery = tableNum; // `tableNum` is like "1", "2", etc.
+                    const currentSlotKeyForQuery = slotKey;  // `slotKey` is like "slot_1", "slot_2"
+
+                    const ordersRef = window.db.ref('orders');
+                    // Query by masa_id, then filter slot_key and status on the client 
+                    // as Firebase RTDB only allows one orderByChild per query directly.
+                    // Ensure masa_id in orders table matches format like "1", "2" if tableNum is numeric.
+                    // Based on your data, order.masa_id seems to be just the number, not "MASA" prefixed.
+                    const orphanedOrdersQuery = window.db.ref('orders')
+                                                .orderByChild('masa_id')
+                                                .equalTo(currentTableIdForQuery); // tableNum is already string e.g. "1"
+
+                    orphanedOrdersQuery.once('value').then(ordersSnapshot => {
+                        const updates = {};
+                        let orphanedFound = false;
+                        ordersSnapshot.forEach(orderChildSnapshot => {
+                            const order = orderChildSnapshot.val();
+                            // Check if it matches the current EMPTY slot and is pending
+                            if (order.slot_key === currentSlotKeyForQuery && order.status === 'pending') {
+                                console.log(`Orphaned order found for MASA ${currentTableIdForQuery}, Slot ${currentSlotKeyForQuery}: ${orderChildSnapshot.key}. Marking for deletion.`);
+                                updates[`orders/${orderChildSnapshot.key}`] = null;
+                                orphanedFound = true;
+                            }
+                        });
+                        if (orphanedFound) {
+                            window.db.ref().update(updates).then(() => {
+                                console.log(`Orphaned orders for MASA ${currentTableIdForQuery}, Slot ${currentSlotKeyForQuery} deleted.`);
+                            }).catch(err => {
+                                console.error(`Error deleting orphaned orders for MASA ${currentTableIdForQuery}, Slot ${currentSlotKeyForQuery}:`, err);
+                            });
+                        }
+                    }).catch(error => {
+                        console.error(`Error querying for orphaned orders for MASA ${currentTableIdForQuery}, Slot ${currentSlotKeyForQuery}:`, error);
+                    });
+                    // --- END ORPHANED ORDER CLEANUP ---
                 }
             }
         });

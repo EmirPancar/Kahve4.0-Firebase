@@ -67,8 +67,8 @@
         }
 
         .coffee-table {
-            max-width: 800px;
-            margin: 0 auto;
+            max-width: 1100px;
+            margin: 20px auto;
             background: #fff;
             padding: 20px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -78,7 +78,8 @@
 
         .filters {
             display: flex;
-            justify-content: space-around;
+            justify-content: center;
+            gap: 10px;
             margin-bottom: 20px;
         }
 
@@ -317,8 +318,58 @@
     /* flex-basis: calc(50% - 30px); /* Adjust if needed, considering margins */
   }
 
+  #customerActiveOrders {
+    background-color: #cdb291; /* New light coffee background color */
+    border: 1px solid #DCDCDC; 
+    border-radius: 6px; 
+    padding: 20px;
+    margin: 20px auto;
+    max-width: 500px; /* Reduced width */
+  }
 
+  #customerActiveOrders h3 {
+    text-align: center;
+    color: rgb(77, 51, 9);
+    margin-top: 0;
+    margin-bottom: 25px; /* Increased margin for the line */
+    font-size: 1.6em; /* Slightly larger */
+    position: relative; /* For the pseudo-element line */
+  }
 
+  #customerActiveOrders h3::after {
+    content: '';
+    display: block;
+    width: 300px; /* Further increased line width */
+    height: 2px;
+    background-color: rgb(129, 83, 20); 
+    position: absolute;
+    bottom: -10px; /* Position below the text */
+    left: 50%;
+    transform: translateX(-50%); /* Center the line */
+  }
+
+  #customerOrdersList {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  #customerOrdersList li {
+    background-color: transparent; /* Remove individual background */
+    padding: 15px 10px; /* Adjust padding */
+    margin-bottom: 0; /* Remove margin, use border for separation */
+    font-size: 1em;
+    color: #444; /* Slightly darker text */
+    border-bottom: 1px dashed #BCAAA4; /* Dashed light brown separator */
+  }
+
+  #customerOrdersList li:last-child {
+    border-bottom: none; /* No line for the last item */
+  }
+
+  #customerOrdersList li:hover {
+    background-color: rgba(188, 170, 164, 0.1); /* Subtle hover for dashed list */
+  }
 
     </style>
 
@@ -437,6 +488,13 @@
             <div class="order-form" id="orderForm">
 
 
+            
+            <div id="customerActiveOrders" style="display:none; margin-top: 20px; padding: 15px; border-radius: 8px;">
+                <h3 style="text-align:center; color: rgb(77, 51, 9);">Aktif Siparişlerim</h3>
+                <ul id="customerOrdersList" style="list-style-type: none; padding: 0;">
+                    <!-- Active orders will be listed here -->
+                </ul>
+            </div>
             <h2>SİPARİŞ PANELİ</h2>
     <div class="coffee-table">
         <div class="filters"> 
@@ -460,8 +518,6 @@
             </tbody>
         </table>
     </div>
-
-
 
         </div>
     </div> <!-- End of customerView -->
@@ -554,14 +610,22 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     window.addEventListener('beforeunload', function (e) {
-        if (window.activeMasaNumarasi && window.activeSlotKey) { // Check for activeSlotKey too
+        if (window.activeMasaNumarasi && window.activeSlotKey) {
             const tableSlotRefToClear = firebase.database().ref(`Masalar/${window.activeMasaNumarasi}/slots/${window.activeSlotKey}`);
+            // Directly clear the slot. Name and Order_ID are set to null, status to "available".
+            // This might leave orders in a temporarily orphaned state if not handled by another process (e.g., in SiparisPersonel.js).
             tableSlotRefToClear.set({
                 Name: null,
-                Order_ID: null,
+                Order_ID: null, // Ensure Order_ID is nulled out so the slot doesn't retain old session ID
                 status: "available"
+            }).then(() => {
+                console.log(`beforeunload: Slot Masalar/${window.activeMasaNumarasi}/slots/${window.activeSlotKey} marked as available.`);
+            }).catch(error => {
+                console.error(`beforeunload: Error clearing slot Masalar/${window.activeMasaNumarasi}/slots/${window.activeSlotKey}:`, error);
             });
-            console.log(`Attempting to clear Masalar/${window.activeMasaNumarasi}/slots/${window.activeSlotKey} on page unload.`);
+            // Note: Asynchronous Firebase operations in 'beforeunload' are best-effort and not guaranteed to complete.
+        } else {
+            console.log("beforeunload: No active customer masa/slot detected. No slot cleanup needed.");
         }
     });
 });
