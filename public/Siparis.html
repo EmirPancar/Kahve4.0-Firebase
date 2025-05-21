@@ -243,6 +243,11 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
+    let currentUserSessionRef = null;
+    let currentUserID = null;
+    let currentDeviceSessionID = null;
+    let sessionListenerActive = false; // To manage listener state during logout or conflicts
+
     const mainContainer = document.querySelector('.Container');
     const customerView = document.getElementById('customerView');
     const personnelView = document.getElementById('personnelView');
@@ -253,7 +258,70 @@ document.addEventListener('DOMContentLoaded', () => {
 
     firebase.auth().onAuthStateChanged(user => {
         if (user) {
-            const userId = user.uid;
+            currentUserID = user.uid; // Store current user ID
+
+            // Handle device session ID
+            currentDeviceSessionID = localStorage.getItem('deviceSessionID');
+            if (!currentDeviceSessionID) {
+                currentDeviceSessionID = firebase.database().ref().push().key; // Generate a unique ID if not present
+                localStorage.setItem('deviceSessionID', currentDeviceSessionID);
+            }
+            console.log("Current device session ID:", currentDeviceSessionID);
+
+            const userSessionDbRef = firebase.database().ref('users/' + currentUserID + '/activeDeviceSessionID');
+            
+            // Set this device's session ID as active in the database
+            userSessionDbRef.set(currentDeviceSessionID).then(() => {
+                console.log('Active session ID successfully set in DB for this device:', currentDeviceSessionID);
+            }).catch(error => {
+                console.error('Error setting active session ID in DB:', error);
+            });
+
+            // Detach any existing listener before attaching a new one
+            if (currentUserSessionRef) {
+                currentUserSessionRef.off();
+                console.log("Detached previous session listener for user:", currentUserID);
+            }
+            
+            currentUserSessionRef = firebase.database().ref('users/' + currentUserID + '/activeDeviceSessionID');
+            sessionListenerActive = true; // Mark listener as active for the current user
+            console.log("Attaching session listener for user:", currentUserID);
+
+            currentUserSessionRef.on('value', (snapshot) => {
+                if (!sessionListenerActive) {
+                    console.log('Session listener is not active for this device, ignoring value event.');
+                    return;
+                }
+                
+                const sessionIDFromDB = snapshot.val();
+                console.log('Session ID from DB changed to:', sessionIDFromDB, '| Current device session ID:', currentDeviceSessionID);
+
+                if (sessionIDFromDB && currentDeviceSessionID && sessionIDFromDB !== currentDeviceSessionID) {
+                    console.log('Session conflict detected. This device session ID:', currentDeviceSessionID, 'DB session ID:', sessionIDFromDB, '. Logging out from this device.');
+                    
+                    sessionListenerActive = false; // Deactivate listener for this device
+                    if (currentUserSessionRef) {
+                        currentUserSessionRef.off(); // Detach listener
+                        currentUserSessionRef = null;
+                         console.log("Detached session listener due to conflict.");
+                    }
+                    
+                    firebase.auth().signOut().then(() => {
+                        // onAuthStateChanged will handle redirection.
+                        // Alert is placed here to ensure it's shown before navigation by onAuthStateChanged.
+                        alert('Oturumunuz başka bir cihazda açıldığı için bu cihazdaki oturum sonlandırıldı.');
+                    }).catch(error => {
+                        console.error('Error signing out due to session conflict:', error);
+                        // If sign out fails, the user might still be technically logged in here.
+                        // Re-evaluate if the listener should be re-enabled or redirect anyway.
+                        // For now, onAuthStateChanged should eventually redirect if signout was successful.
+                    });
+                }
+            }, (error) => {
+                console.error("Error in session listener:", error);
+            });
+
+            const userId = user.uid; // userId already defined, using currentUserID for consistency
             const userRoleRef = firebase.database().ref('users/' + userId + '/role');
 
             userRoleRef.once('value').then(snapshot => {
@@ -279,7 +347,40 @@ document.addEventListener('DOMContentLoaded', () => {
                 console.error("Error fetching user role: ", error);
                 window.location.href = 'Giris.html';
             });
-        } else {
+        } else { // User is signed out or auth state changed to no user
+            console.log('No user signed in or user signed out.');
+            sessionListenerActive = false; // Deactivate listener for any previous user
+
+            if (currentUserSessionRef) {
+                currentUserSessionRef.off();
+                currentUserSessionRef = null;
+                console.log("Detached session listener on logout/auth state change to no user.");
+            }
+
+            // Attempt to clear activeDeviceSessionID from DB only if this device held that session
+            if (currentUserID && currentDeviceSessionID) {
+                const userSessionDbRefToClear = firebase.database().ref('users/' + currentUserID + '/activeDeviceSessionID');
+                userSessionDbRefToClear.once('value').then(snapshot => {
+                    if (snapshot.val() === currentDeviceSessionID) {
+                        console.log('This device was the active session holder. Removing session ID from DB.');
+                        userSessionDbRefToClear.remove().then(() => {
+                            console.log('Active session ID removed from DB for user:', currentUserID);
+                        }).catch(error => {
+                            console.error('Error removing active session ID from DB for user:', currentUserID, error);
+                        });
+                    } else {
+                        console.log('This device was NOT the active session holder. Not removing session ID from DB.');
+                    }
+                }).catch(error => {
+                    console.error('Error checking session ID before removal on logout for user:', currentUserID, error);
+                });
+            }
+
+            localStorage.removeItem('deviceSessionID');
+            console.log("Removed deviceSessionID from localStorage.");
+            currentUserID = null; // Reset global currentUserID
+            currentDeviceSessionID = null; // Reset global currentDeviceSessionID
+            
             console.log('No user signed in. Redirecting to login.');
             window.location.href = 'Giris.html';
         }

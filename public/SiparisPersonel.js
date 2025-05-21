@@ -90,6 +90,7 @@ function loadPersonnelOrders() {
                     ordersListUl.innerHTML = ''; 
 
                     // --- BEGIN ORPHANED ORDER CLEANUP ---
+                    console.log(`ORPHANED CHECK: Initiating for MASA ${tableNum}, Slot ${slotKey} which is now BOŞ.`);
                     const currentTableIdForQuery = tableNum; // `tableNum` is like "1", "2", etc.
                     const currentSlotKeyForQuery = slotKey;  // `slotKey` is like "slot_1", "slot_2"
 
@@ -105,24 +106,36 @@ function loadPersonnelOrders() {
                     orphanedOrdersQuery.once('value').then(ordersSnapshot => {
                         const updates = {};
                         let orphanedFound = false;
+                        if (!ordersSnapshot.exists()) {
+                            console.log(`ORPHANED CHECK: No orders found at all for MASA ${currentTableIdForQuery}. Skipping orphaned check for Slot ${currentSlotKeyForQuery}.`);
+                            return;
+                        }
+                        console.log(`ORPHANED CHECK: Found ${ordersSnapshot.numChildren()} order(s) for MASA ${currentTableIdForQuery}. Checking Slot ${currentSlotKeyForQuery}.`);
                         ordersSnapshot.forEach(orderChildSnapshot => {
                             const order = orderChildSnapshot.val();
+                            const orderKey = orderChildSnapshot.key;
+                            console.log(`ORPHANED CHECK: Evaluating order ${orderKey}: masa_id=${order.masa_id}, slot_key=${order.slot_key}, status=${order.status}`);
                             // Check if it matches the current EMPTY slot and is pending
                             if (order.slot_key === currentSlotKeyForQuery && order.status === 'pending') {
-                                console.log(`Orphaned order found for MASA ${currentTableIdForQuery}, Slot ${currentSlotKeyForQuery}: ${orderChildSnapshot.key}. Marking for deletion.`);
-                                updates[`orders/${orderChildSnapshot.key}`] = null;
+                                console.log(`ORPHANED CHECK: Orphaned order FOUND for MASA ${currentTableIdForQuery}, Slot ${currentSlotKeyForQuery}: ${orderKey}. Order details:`, JSON.stringify(order) ,`. Marking for deletion.`);
+                                updates[`orders/${orderKey}`] = null;
                                 orphanedFound = true;
+                            } else {
+                                console.log(`ORPHANED CHECK: Order ${orderKey} does NOT match criteria for orphaned in Slot ${currentSlotKeyForQuery}. SlotKey Match: ${order.slot_key === currentSlotKeyForQuery}, Status Match: ${order.status === 'pending'}`);
                             }
                         });
                         if (orphanedFound) {
+                            console.log(`ORPHANED CHECK: Deleting ${Object.keys(updates).length} orphaned order(s) for MASA ${currentTableIdForQuery}, Slot ${currentSlotKeyForQuery}. Updates:`, JSON.stringify(updates));
                             window.db.ref().update(updates).then(() => {
-                                console.log(`Orphaned orders for MASA ${currentTableIdForQuery}, Slot ${currentSlotKeyForQuery} deleted.`);
+                                console.log(`ORPHANED CHECK: Orphaned orders for MASA ${currentTableIdForQuery}, Slot ${currentSlotKeyForQuery} deleted successfully.`);
                             }).catch(err => {
-                                console.error(`Error deleting orphaned orders for MASA ${currentTableIdForQuery}, Slot ${currentSlotKeyForQuery}:`, err);
+                                console.error(`ORPHANED CHECK: Error deleting orphaned orders for MASA ${currentTableIdForQuery}, Slot ${currentSlotKeyForQuery}:`, err);
                             });
+                        } else {
+                            console.log(`ORPHANED CHECK: No orphaned orders found to delete for MASA ${currentTableIdForQuery}, Slot ${currentSlotKeyForQuery}.`);
                         }
                     }).catch(error => {
-                        console.error(`Error querying for orphaned orders for MASA ${currentTableIdForQuery}, Slot ${currentSlotKeyForQuery}:`, error);
+                        console.error(`ORPHANED CHECK: Error querying for orphaned orders for MASA ${currentTableIdForQuery}, Slot ${currentSlotKeyForQuery}:`, error);
                     });
                     // --- END ORPHANED ORDER CLEANUP ---
                 }

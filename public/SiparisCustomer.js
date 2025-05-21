@@ -200,17 +200,30 @@ function initializeCustomerPanel() {
                             window.activeSlotOrderID = Date.now(); 
 
                             console.log(`Masa ${window.activeMasaNumarasi}, Slot ${window.activeSlotKey} seçildi. Müşteri: ${window.activeMusteriAdi}. Slot Order_ID: ${window.activeSlotOrderID}`);
+                            
+                            const slotRef = firebase.database().ref(`Masalar/${window.activeMasaNumarasi}/slots/${window.activeSlotKey}`);
+                            
                             // Display active orders for this new session
                             if (customerActiveOrdersContainer) customerActiveOrdersContainer.style.display = 'block'; // Show it now
                             displayCustomerActiveOrders(window.activeSlotOrderID); 
 
-                            const slotRef = firebase.database().ref(`Masalar/${window.activeMasaNumarasi}/slots/${window.activeSlotKey}`);
                             slotRef.set({
                                 Name: window.activeMusteriAdi,
                                 Order_ID: window.activeSlotOrderID,
                                 status: "occupied"
                             }).then(() => {
                                 console.log(`Masalar/${window.activeMasaNumarasi}/slots/${window.activeSlotKey} güncellendi.`);
+                                // Setup onDisconnect for this slot
+                                slotRef.onDisconnect().set({
+                                    Name: null,
+                                    Order_ID: null,
+                                    status: "available"
+                                }).then(() => {
+                                    console.log(`onDisconnect for Masalar/${window.activeMasaNumarasi}/slots/${window.activeSlotKey} is set.`);
+                                }).catch(error => {
+                                    console.error(`Error setting onDisconnect for slot: `, error);
+                                });
+
                                 firebase.database().ref(`Masalar/${window.activeMasaNumarasi}/overall_status`).set("partially_occupied"); 
                             }).catch(error => console.error(`Masalar slot güncellenirken hata: `, error));
 
@@ -238,6 +251,18 @@ function initializeCustomerPanel() {
 
     if (goBackButton) {
         goBackButton.addEventListener("click", () => {
+            // Cancel onDisconnect for the current slot before clearing it manually
+            if (window.activeMasaNumarasi && window.activeSlotKey) {
+                const slotRefToCancelDisconnect = firebase.database().ref(`Masalar/${window.activeMasaNumarasi}/slots/${window.activeSlotKey}`);
+                slotRefToCancelDisconnect.onDisconnect().cancel(error => {
+                    if (error) {
+                        console.error("Error cancelling onDisconnect for slot:", `Masalar/${window.activeMasaNumarasi}/slots/${window.activeSlotKey}`, error);
+                    } else {
+                        console.log(`onDisconnect for Masalar/${window.activeMasaNumarasi}/slots/${window.activeSlotKey} cancelled successfully.`);
+                    }
+                });
+            }
+
             clearSlotAndCancelOrders(() => {
                 tables.forEach(t => t.classList.remove("hidden"));
                 if (orderForm) orderForm.classList.remove("active");
