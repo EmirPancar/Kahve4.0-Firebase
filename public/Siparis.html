@@ -258,23 +258,50 @@ document.addEventListener('DOMContentLoaded', () => {
 
     firebase.auth().onAuthStateChanged(user => {
         if (user) {
-            currentUserID = user.uid; // Store current user ID
+            console.log("[Auth State Changed] User is present. User object:", JSON.stringify(user, null, 2));
+            currentUserID = user.uid;
+            console.log("[Session Init] Current User ID:", currentUserID);
+
+            if (!currentUserID) {
+                console.error("[Session Init] CRITICAL: currentUserID is null or undefined after user object is present. Aborting session init.");
+                // Potentially redirect to login or show an error to the user
+                if (mainContainer) mainContainer.style.display = 'none';
+                if (customerView) customerView.style.display = 'none';
+                if (personnelView) personnelView.style.display = 'none';
+                window.location.href = 'Giris.html'; // Force redirect if user ID is bad
+                return;
+            }
 
             // Handle device session ID
-            currentDeviceSessionID = localStorage.getItem('deviceSessionID');
-            if (!currentDeviceSessionID) {
-                currentDeviceSessionID = firebase.database().ref().push().key; // Generate a unique ID if not present
-                localStorage.setItem('deviceSessionID', currentDeviceSessionID);
+            try {
+                currentDeviceSessionID = localStorage.getItem('deviceSessionID');
+                if (!currentDeviceSessionID) {
+                    console.log("[Session Init] No deviceSessionID found in localStorage. Generating a new one.");
+                    currentDeviceSessionID = firebase.database().ref().push().key;
+                    localStorage.setItem('deviceSessionID', currentDeviceSessionID);
+                    console.log("[Session Init] New deviceSessionID generated and stored in localStorage:", currentDeviceSessionID);
+                } else {
+                    console.log("[Session Init] Found deviceSessionID in localStorage:", currentDeviceSessionID);
+                }
+            } catch (e) {
+                console.error("[Session Init] Error accessing localStorage for deviceSessionID:", e);
+                // Fallback or error display if localStorage is critical and unavailable
+                alert("Tarayıcı depolamasına erişirken bir hata oluştu. Oturum yönetimi etkilenebilir.");
+                // We can still try to proceed without localStorage persistence for this session, but it won't be ideal.
+                if (!currentDeviceSessionID) currentDeviceSessionID = firebase.database().ref().push().key; 
             }
-            console.log("Current device session ID:", currentDeviceSessionID);
-
-            const userSessionDbRef = firebase.database().ref('users/' + currentUserID + '/activeDeviceSessionID');
             
-            // Set this device's session ID as active in the database
+            console.log("[Session Init] Final Current device session ID to be used:", currentDeviceSessionID);
+
+            const userSessionDbPath = 'users/' + currentUserID + '/activeDeviceSessionID';
+            const userSessionDbRef = firebase.database().ref(userSessionDbPath);
+            
+            console.log(`[Session Init] Attempting to set activeDeviceSessionID at path: ${userSessionDbPath} with value: ${currentDeviceSessionID}`);
             userSessionDbRef.set(currentDeviceSessionID).then(() => {
-                console.log('Active session ID successfully set in DB for this device:', currentDeviceSessionID);
+                console.log(`[Session Init] Active session ID successfully set in DB for this device. Path: ${userSessionDbPath}, Value: ${currentDeviceSessionID}`);
             }).catch(error => {
-                console.error('Error setting active session ID in DB:', error);
+                console.error(`[Session Init] Error setting active session ID in DB. Path: ${userSessionDbPath}, Value: ${currentDeviceSessionID}. Error:`, error);
+                // This is a critical point to check for permissions issues.
             });
 
             // Detach any existing listener before attaching a new one
