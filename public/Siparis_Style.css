@@ -286,7 +286,7 @@ padding: 10px;
 /* Assuming Body1 elements have intrinsic size or specific CSS for width/height */
 /* For a 2-column layout, you might set a flex-basis or max-width */
 /* E.g., flex-basis: calc(50% - 20px); to account for margins */
-margin: 10px; /* Add some margin for spacing */
+/* Add some margin for spacing */
 /* Ensure existing .Body1 styles like position relative for .content work well */
 }
 
@@ -588,6 +588,73 @@ display: inline-block; /* Or block */
         padding: 6px 10px; /* Smaller padding */
         font-size: 10px;   /* Smaller font size */
     }
+
+    /* Added styles for coffeeTable at 480px */
+    #coffeeTable thead {
+        display: none;
+    }
+
+    #coffeeTable tbody tr {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        padding: 5px 0;
+        border-bottom: 1px solid #eee;
+    }
+    
+    #coffeeTable tbody tr:last-child {
+        border-bottom: none;
+    }
+
+    #coffeeTable tbody td {
+        border: none;
+        padding: 6px;
+        display: flex;
+        align-items: center;
+    }
+
+    #coffeeTable tbody td:nth-child(1) { /* Image */
+        flex-basis: 38px;
+        flex-shrink: 0;
+        padding-right: 4px;
+    }
+    
+    /* Specific image cell styling for 480px if not covered by general .image-cell img */
+    #coffeeTable .image-cell img { /* More specific selector */
+        width: 35px;
+        height: 35px;
+    }
+
+    #coffeeTable tbody td:nth-child(2) { /* Name */
+        flex-grow: 1;
+        font-size: 12px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        min-width: 75px;
+    }
+
+    #coffeeTable tbody td:nth-child(3) { /* Price */
+        flex-basis: auto;
+        font-size: 12px;
+        padding: 0 4px;
+        white-space: nowrap;
+    }
+
+    #coffeeTable tbody td:nth-child(4) { /* Button cell */
+        flex-basis: auto;
+        justify-content: flex-end;
+        flex-shrink: 0; /* Prevent this cell from shrinking */
+    }
+
+    #coffeeTable .SipBut, #coffeeTable .order-button { /* More specific selector */
+        padding: 5px 8px;
+        font-size: 10px;
+        min-width: unset;
+        width: auto;
+        white-space: nowrap; /* Prevent text inside button from wrapping */
+    }
 }
 
 
@@ -618,49 +685,52 @@ display: inline-block; /* Or block */
     }
 
     #coffeeTable tbody td:nth-child(1) { /* Image */
-        flex-basis: 40px; /* Fixed width for image container */
+        flex-basis: 25px; /* Fixed width for image container */
         flex-shrink: 0;
-        padding-right: 5px;
+        padding-right: 1px;
     }
     
     .image-cell img {
-        width: 35px; /* Smaller image */
-        height: 35px;
+        width: 20px; /* Smaller image */
+        height: 20px;
     }
 
     #coffeeTable tbody td:nth-child(2) { /* Name */
         flex-grow: 1; /* Allow name to take available space */
-        font-size: 12px; /* Smaller font for name */
+        font-size: 9px; /* Smaller font for name */
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-        min-width: 80px; /* Minimum width before ellipsis */
+        min-width: 50px; /* Minimum width before ellipsis */
     }
 
     #coffeeTable tbody td:nth-child(3) { /* Price */
         flex-basis: auto; /* Price takes its content width */
-        font-size: 12px; /* Smaller font for price */
-        padding: 0 5px;
+        font-size: 9px; /* Smaller font for price */
+        padding: 0 1px;
         white-space: nowrap;
     }
 
     #coffeeTable tbody td:nth-child(4) { /* Button */
         flex-basis: auto; /* Button takes its content width */
         justify-content: flex-end; /* Align button to the right of its cell */
+        flex-shrink: 0; /* Add this to prevent the button cell from shrinking */
     }
 
     .SipBut { /* Order button class from LoadCoffees.js */
-        padding: 5px 8px; /* Further reduce button padding */
-        font-size: 10px; /* Smaller font for button */
+        padding: 2px 4px; /* Further reduce button padding */
+        font-size: 7px; /* Smaller font for button */
         min-width: unset; /* Remove any min-width */
         width: auto; /* Fit content */
+        white-space: nowrap; /* Prevent text inside button from wrapping */
     }
     
     .order-button { /* Also target .order-button if used */
-        padding: 5px 8px; 
-        font-size: 10px; 
+        padding: 2px 4px; 
+        font-size: 7px; 
         min-width: unset;
         width: auto;
+        white-space: nowrap; /* Prevent text inside button from wrapping */
     }
 
     #customerActiveOrders {
