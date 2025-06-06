@@ -71,11 +71,6 @@ body,html{
 }
 
 
-
-
-
-
-
 @keyframes moveToTop {
   0% {
     transform: translate(300px, 100px); /* Mevcut konum */
