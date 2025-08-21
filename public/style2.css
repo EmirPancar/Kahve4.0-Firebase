@@ -295,3 +295,102 @@
 }
 
 /*--------------------------------------------------Button Bitiş-------------------------------------------*/
+
+      .music-control {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: rgba(255, 255, 255, 0.2);
+        border: none;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        z-index: 1000;
+        transition: all 0.3s ease;
+      }
+
+      .music-control:hover {
+        background: rgba(255, 255, 255, 0.3);
+        transform: scale(1.1);
+      }
+
+      .music-control.playing {
+        animation: pulse 2s infinite;
+      }
+
+      @keyframes pulse {
+        0% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.1);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+
+      .arrow-indicator {
+        position: absolute;
+        top: 140px; 
+        transform: translateY(-50%);
+        color: white;
+        font-size: 38px; 
+        display: flex;
+        align-items: center;
+        z-index: 1001;
+        text-shadow: 2px 2px 5px rgba(0,0,0,0.7); 
+        transition: opacity 0.5s ease-in-out;
+      }
+
+      #toggleOpen:checked ~ .arrow-indicator {
+        opacity: 0;
+        pointer-events: none;
+      }
+      
+      #toggleClose:checked ~ .arrow-indicator {
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      .arrow-indicator.left {
+        left: calc(50% - 550px); 
+        flex-direction: row;
+        animation: point-left 2s infinite ease-in-out;
+      }
+
+      .arrow-indicator.right {
+        right: calc(50% - 550px); 
+        flex-direction: row-reverse;
+        animation: point-right 2s infinite ease-in-out;
+      }
+
+      .arrow-indicator span {
+        margin: 0 15px;
+        font-size: 20px; 
+        font-family: 'Poppins', sans-serif;
+      }
+
+      @keyframes point-left {
+        0%, 100% {
+          transform: translateY(-50%) translateX(0);
+        }
+        50% {
+          transform: translateY(-50%) translateX(15px);
+        }
+      }
+
+      @keyframes point-right {
+        0%, 100% {
+          transform: translateY(-50%) translateX(0);
+        }
+        50% {
+          transform: translateY(-50%) translateX(-15px);
+        }
+      }
+

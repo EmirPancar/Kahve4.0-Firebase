@@ -54,6 +54,66 @@
           transform: scale(1);
         }
       }
+
+      .arrow-indicator {
+        position: absolute;
+        top: 140px; /* Adjusted for vertical alignment */
+        transform: translateY(-50%);
+        color: white;
+        font-size: 38px; /* Increased size */
+        display: flex;
+        align-items: center;
+        z-index: 1001;
+        text-shadow: 2px 2px 5px rgba(0,0,0,0.7); /* Enhanced shadow for visibility */
+        transition: opacity 0.5s ease-in-out;
+      }
+
+      #toggleOpen:checked ~ .arrow-indicator {
+        opacity: 0;
+        pointer-events: none;
+      }
+      
+      #toggleClose:checked ~ .arrow-indicator {
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      .arrow-indicator.left {
+        left: calc(50% - 550px); /* Positioned to the left of the central menu */
+        flex-direction: row;
+        animation: point-left 2s infinite ease-in-out;
+      }
+
+      .arrow-indicator.right {
+        right: calc(50% - 550px); /* Positioned to the right of the central menu */
+        flex-direction: row-reverse;
+        animation: point-right 2s infinite ease-in-out;
+      }
+
+      .arrow-indicator span {
+        margin: 0 15px;
+        font-size: 20px; /* Increased size */
+        font-family: 'Poppins', sans-serif;
+      }
+
+      @keyframes point-left {
+        0%, 100% {
+          transform: translateY(-50%) translateX(0);
+        }
+        50% {
+          transform: translateY(-50%) translateX(15px);
+        }
+      }
+
+      @keyframes point-right {
+        0%, 100% {
+          transform: translateY(-50%) translateX(0);
+        }
+        50% {
+          transform: translateY(-50%) translateX(-15px);
+        }
+      }
+
      </style>
 </head>
 <body>
@@ -71,6 +131,8 @@
      <div class="kahdiv">
       <input type="radio" name="toggle" id="toggleOpen" value="toggleOpen">
       <input type="radio" name="toggle" id="toggleClose" value="toggleClose">
+      <div class="arrow-indicator left"><span>bana tıkla</span> &rarr;</div>
+      <div class="arrow-indicator right"><span>bana tıkla</span> &larr;</div>
       <figure id="welcomeMessage">
         <figcaption>
           <h1> 
@@ -90,7 +152,7 @@
                       <stop offset="0.4545454545454546" stop-color="#00dcff" />
                       <stop offset="0.5454545454545454" stop-color="#00d2ff" />
                       <stop offset="0.6363636363636364" stop-color="#00c5ff" />
-                      <stop offset="0.7272727272727273" stop-color="#00b8ff" />
+                      <stop offset="0.72727272727273" stop-color="#00b8ff" />
                       <stop offset="0.8181818181818182" stop-color="#6da8ff" />
                       <stop offset="0.9090909090909092" stop-color="#9f97ff" />
                       <stop offset="1" stop-color="#c285ff" />
@@ -278,10 +340,8 @@
 
   function updateSlider() {
     sliderItems.forEach((item, index) => {
-      // Remove all classes first
       item.classList.remove('active', 'prev', 'next', 'hidden');
       
-      // Calculate relative positions
       const diff = (index - currentIndex + sliderItems.length) % sliderItems.length;
       
       if (diff === 0) {
